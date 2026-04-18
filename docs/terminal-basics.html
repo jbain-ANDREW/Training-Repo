@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terminal Basics | ECE GitHub Training</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .terminal {
+      background: #1a1a2e;
+      color: #c9d1d9;
+      padding: 1.1rem 1.3rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      line-height: 1.8;
+      margin: 0.6rem 0;
+    }
+    .terminal .prompt { color: #58a6ff; }
+    .terminal .comment { color: #8b949e; }
+    .terminal .output { color: #adbac7; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .screenshot { background: #dde3ea; border: 2px dashed #aab; border-radius: 6px; padding: 2rem 1rem; text-align: center; color: #667; font-size: 0.88rem; margin: 0.8rem 0; }
+    .screenshot strong { display: block; margin-bottom: 0.3rem; font-size: 0.95rem; color: #445; }
+    .screenshot img { max-width: 100%; border-radius: 4px; display: block; margin: 0 auto; }
+
+    .command-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.92rem; }
+    .command-table th { background: #0f3460; color: white; padding: 0.6rem 0.8rem; text-align: left; }
+    .command-table td { padding: 0.6rem 0.8rem; background: white; border-bottom: 1px solid #dde; vertical-align: top; }
+    .command-table tr:last-child td { border-bottom: none; }
+    .command-table td:first-child { font-family: 'Courier New', monospace; font-size: 0.88rem; white-space: nowrap; color: #0f3460; font-weight: bold; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      padding: 0.9rem 1rem 0.9rem 3.2rem;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      position: relative;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute; left: 1rem; top: 1rem;
+      background: #0f3460; color: white;
+      width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: bold;
+    }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+    .steps li p { margin-top: 0.3rem; font-size: 0.94rem; color: #444; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Terminal Basics</h1>
+  <p>What the terminal is, how to open it on Windows, and the commands you need to get started</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="splash-pages/">Splash Page Archive</a>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <section>
+    <h2>What Is a Terminal?</h2>
+    <p>
+      A terminal (also called a command line, shell, or console) is a text-based way to control your computer.
+      Instead of clicking icons, you type commands and the computer responds with text.
+    </p>
+    <p>
+      It might look intimidating at first, but you only need a small handful of commands to do everything
+      in this course. By the end of this page you will know all of them.
+    </p>
+    <div class="tip">
+      The terminal is not fragile — typing a wrong command doesn't break anything. The worst that usually
+      happens is an error message. Experiment freely.
+    </div>
+  </section>
+
+  <section>
+    <h2>Opening a Terminal on Windows</h2>
+    <p>Windows has several terminal options. Here are the three you'll encounter:</p>
+
+    <h3>Option 1 — VS Code Terminal (recommended)</h3>
+    <p>If you have VS Code open, press <code>Ctrl+`</code> (the backtick key, top-left of the keyboard).
+    A terminal panel will open at the bottom of VS Code. This is the most convenient option because
+    it's already in the right folder for your project.</p>
+    <div class="screenshot">
+      <strong>Screenshot: VS Code with terminal panel open at the bottom</strong>
+      <!-- Replace with: <img src="assets/images/terminal-vscode.png" alt="VS Code terminal panel"> -->
+      [ screenshot: VS Code — terminal panel open at bottom, showing a prompt ]
+    </div>
+
+    <h3>Option 2 — Command Prompt (cmd)</h3>
+    <p>Press <code>Win + R</code>, type <code>cmd</code>, press Enter.</p>
+    <div class="screenshot">
+      <strong>Screenshot: Windows Run dialog with "cmd" typed</strong>
+      <!-- Replace with: <img src="assets/images/terminal-run-cmd.png" alt="Windows Run dialog"> -->
+      [ screenshot: Win+R dialog — type "cmd" → Enter ]
+    </div>
+
+    <h3>Option 3 — PowerShell</h3>
+    <p>Press <code>Win</code>, search for <strong>PowerShell</strong>, click to open.
+    PowerShell is more powerful than cmd and is the default terminal in newer versions of Windows.
+    For this course, cmd and PowerShell are interchangeable.</p>
+
+    <div class="tip">
+      VS Code's terminal starts in your project folder automatically. cmd and PowerShell start in
+      your home folder (<code>C:\Users\yourname</code>). You'll need to navigate to your project
+      folder manually — see the <code>cd</code> command below.
+    </div>
+  </section>
+
+  <section>
+    <h2>Reading the Prompt</h2>
+    <p>When the terminal is ready for input, it shows a <strong>prompt</strong> — a line ending with
+    <code>&gt;</code> or <code>$</code>. This is where you type commands.</p>
+    <div class="terminal">
+      <span class="comment"># This is what a prompt looks like</span><br>
+      C:\Users\yourname&gt; <span style="animation: blink 1s step-end infinite;">_</span>
+    </div>
+    <p>The text before <code>&gt;</code> shows your current location in the file system (your working directory).
+    This matters — commands like <code>git clone</code> create files <em>in the folder you're currently in</em>.</p>
+  </section>
+
+  <section>
+    <h2>The Commands You Need</h2>
+    <p>You only need five commands for this course. Here they are:</p>
+
+    <table class="command-table">
+      <tr>
+        <th>Command</th>
+        <th>What it does</th>
+        <th>Example</th>
+      </tr>
+      <tr>
+        <td>pwd</td>
+        <td>Print Working Directory — shows where you are right now</td>
+        <td><code>pwd</code></td>
+      </tr>
+      <tr>
+        <td>ls</td>
+        <td>List — shows files and folders in the current directory<br><small style="color:#888;">(use <code>dir</code> in cmd if <code>ls</code> doesn't work)</small></td>
+        <td><code>ls</code></td>
+      </tr>
+      <tr>
+        <td>cd</td>
+        <td>Change Directory — move to a different folder</td>
+        <td><code>cd Documents</code><br><code>cd ..</code> (go up one level)</td>
+      </tr>
+      <tr>
+        <td>mkdir</td>
+        <td>Make Directory — create a new folder</td>
+        <td><code>mkdir my-project</code></td>
+      </tr>
+      <tr>
+        <td>cp</td>
+        <td>Copy — copy a file to a new location</td>
+        <td><code>cp file.html copy.html</code></td>
+      </tr>
+    </table>
+
+    <div class="tip">
+      In VS Code's terminal on Windows, both <code>ls</code> and <code>dir</code> work.
+      In plain cmd, only <code>dir</code> works. When in doubt, use <code>dir</code>.
+    </div>
+  </section>
+
+  <section>
+    <h2>Try It — Navigate Your File System</h2>
+    <ol class="steps">
+      <li>
+        <strong>Open a terminal</strong>
+        <p>Use any of the three options above. You should see a prompt.</p>
+      </li>
+      <li>
+        <strong>Find out where you are</strong>
+        <p>Type <code>pwd</code> and press Enter. You'll see a path like <code>C:\Users\yourname</code>.</p>
+        <div class="terminal">
+          <span class="prompt">C:\Users\yourname&gt;</span> pwd<br>
+          <span class="output">C:\Users\yourname</span>
+        </div>
+      </li>
+      <li>
+        <strong>See what's in the current folder</strong>
+        <pre style="background:#1a1a2e;color:#c9d1d9;padding:0.8rem 1rem;border-radius:6px;font-size:0.88rem;margin-top:0.4rem;">ls</pre>
+        <p>You'll see a list of files and folders. These are the same things you'd see in File Explorer.</p>
+      </li>
+      <li>
+        <strong>Move into a folder</strong>
+        <p>Pick any folder from the list and navigate into it:</p>
+        <pre style="background:#1a1a2e;color:#c9d1d9;padding:0.8rem 1rem;border-radius:6px;font-size:0.88rem;margin-top:0.4rem;">cd Documents</pre>
+        <p>Notice the prompt changes to show your new location.</p>
+      </li>
+      <li>
+        <strong>Go back up one level</strong>
+        <pre style="background:#1a1a2e;color:#c9d1d9;padding:0.8rem 1rem;border-radius:6px;font-size:0.88rem;margin-top:0.4rem;">cd ..</pre>
+        <p><code>..</code> always means "the folder above this one". Two dots, no space.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Useful Shortcuts</h2>
+
+    <h3>Tab completion</h3>
+    <p>Start typing a folder or file name and press <code>Tab</code> — the terminal will complete it for you.
+    If there are multiple matches, press Tab again to cycle through them. This saves a lot of typing and prevents typos.</p>
+
+    <h3>Command history</h3>
+    <p>Press the <code>↑</code> arrow key to cycle through commands you've previously run. No need to retype long commands.</p>
+
+    <h3>Clearing the screen</h3>
+    <p>Type <code>cls</code> (cmd) or <code>clear</code> (PowerShell / VS Code terminal) to clear the terminal output. Your work is not deleted — the screen just gets cleaned up.</p>
+
+    <h3>Cancelling a running command</h3>
+    <p>Press <code>Ctrl+C</code> to stop whatever is currently running and return to the prompt.</p>
+  </section>
+
+  <section>
+    <h2>Common Mistakes</h2>
+
+    <h3>"The system cannot find the path specified" or "No such file or directory"</h3>
+    <p>Usually means you're in the wrong folder. Run <code>pwd</code> to see where you are, and <code>ls</code> to see what's available. Check your spelling — file paths are case-sensitive on some systems.</p>
+
+    <h3>Nothing happens after I type a command</h3>
+    <p>Make sure you pressed <code>Enter</code>. Commands only run when you press Enter.</p>
+
+    <h3>The terminal seems stuck</h3>
+    <p>A running command (like a long install) can look like nothing is happening. Wait a moment.
+    If it's genuinely stuck, press <code>Ctrl+C</code> to cancel.</p>
+  </section>
+
+  <section>
+    <h2>Ready for the GitHub Exercise?</h2>
+    <p>You now know everything you need. The GitHub exercise uses only <code>cd</code>, <code>cp</code>, and a few <code>git</code> commands — which follow the same pattern: type the command, press Enter, read the response.</p>
+    <a class="btn" href="github-exercise.html">Go to the GitHub Exercise →</a>
+  </section>
+
+</main>
+
+<footer>ECE GitHub Training &mdash; jbain-ANDREW</footer>
+</body>
+</html>

@@ -35,35 +35,6 @@
     }
     nav a:hover { background: #0f3460; }
 
-    .nav-dropdown { position: relative; }
-    .nav-dropdown > span {
-      color: #e0e0e0;
-      font-size: 0.95rem;
-      padding: 0.3rem 0.8rem;
-      border-radius: 4px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .nav-dropdown > span:hover { background: #0f3460; }
-    .nav-dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: #0f3460;
-      border-radius: 4px;
-      min-width: 180px;
-      z-index: 100;
-      padding: 0.3rem 0;
-    }
-    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
-    .nav-dropdown-menu a {
-      display: block;
-      padding: 0.45rem 1rem;
-      border-radius: 0;
-      white-space: nowrap;
-    }
-    .nav-dropdown-menu a:hover { background: #16213e; }
 
     main {
       max-width: 900px;
@@ -139,14 +110,6 @@
 <nav>
   <a href="../index.html">Home</a>
   <a href="#">Splash Page Archive</a>
-  <div class="nav-dropdown">
-    <span>Setup Guides ▾</span>
-    <div class="nav-dropdown-menu">
-      <a href="../python-setup.html">Python — Fresh Install</a>
-      <a href="../python-cleanup.html">Python — Already Installed</a>
-      <a href="../python-complexity.html">Python — When It Gets Complex</a>
-    </div>
-  </div>
   <a href="../feedback.html">Report a Problem</a>
   <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
 </nav>

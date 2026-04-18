@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Exercise — Desktop App | ECE GitHub Training</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      padding: 0.9rem 1rem 0.9rem 3.2rem;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      position: relative;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute; left: 1rem; top: 1rem;
+      background: #0f3460; color: white;
+      width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: bold;
+    }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+    .steps li p { margin-top: 0.3rem; font-size: 0.94rem; color: #444; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .screenshot { background: #dde3ea; border: 2px dashed #aab; border-radius: 6px; padding: 2rem 1rem; text-align: center; color: #667; font-size: 0.88rem; margin: 0.8rem 0; }
+    .screenshot strong { display: block; margin-bottom: 0.3rem; font-size: 0.95rem; color: #445; }
+    .screenshot img { max-width: 100%; border-radius: 4px; display: block; margin: 0 auto; }
+
+    .concept-map {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .concept-map table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    .concept-map th { background: #0f3460; color: white; padding: 0.6rem 0.8rem; text-align: left; }
+    .concept-map td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #eef; }
+    .concept-map tr:last-child td { border-bottom: none; }
+    .concept-map td:first-child { font-family: 'Courier New', monospace; font-size: 0.88rem; color: #555; }
+
+    .try-other {
+      background: #1a1a2e;
+      color: white;
+      border-radius: 8px;
+      padding: 1.3rem 1.5rem;
+      margin-top: 1rem;
+    }
+    .try-other h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+    .try-other p { font-size: 0.9rem; opacity: 0.8; line-height: 1.6; margin-bottom: 0.8rem; }
+    .try-other a { display: inline-block; background: white; color: #0f3460; padding: 0.5rem 1.2rem; border-radius: 5px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .try-other a:hover { opacity: 0.85; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>GitHub Exercise — Desktop App</h1>
+  <p>Clone, branch, commit, and open a Pull Request using GitHub Desktop — no terminal required</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="splash-pages/">Splash Page Archive</a>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <section>
+    <h2>What Is GitHub Desktop?</h2>
+    <p>GitHub Desktop is a free app that gives you a visual interface for all the Git operations that the terminal exercise does with commands. Every concept — clone, branch, commit, push, pull request — is the same. You just click instead of type.</p>
+    <div class="tip">
+      If you haven't done the terminal exercise yet, you can start here — the concepts will still make sense.
+      But if you do both, you'll understand Git much more deeply. The callout at the bottom explains why.
+    </div>
+  </section>
+
+  <section>
+    <h2>Step 1 — Install GitHub Desktop</h2>
+    <ol class="steps">
+      <li>
+        <strong>Download GitHub Desktop</strong>
+        <p>Go to <a href="https://desktop.github.com" target="_blank">desktop.github.com</a> and click the download button for Windows.</p>
+        <div class="screenshot">
+          <strong>Screenshot: desktop.github.com download page</strong>
+          <!-- Replace with: <img src="assets/images/ghd-download.png" alt="GitHub Desktop download page"> -->
+          [ screenshot: desktop.github.com — Windows download button ]
+        </div>
+      </li>
+      <li>
+        <strong>Run the installer</strong>
+        <p>The installer runs silently and opens GitHub Desktop when done — there are no options to configure.</p>
+      </li>
+      <li>
+        <strong>Sign in to GitHub</strong>
+        <p>GitHub Desktop will ask you to sign in. Click <strong>Sign in to GitHub.com</strong> and use your GitHub account credentials.</p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Desktop sign-in screen</strong>
+          <!-- Replace with: <img src="assets/images/ghd-signin.png" alt="GitHub Desktop sign in screen"> -->
+          [ screenshot: GitHub Desktop — "Sign in to GitHub.com" button ]
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Step 2 — Clone the Repository</h2>
+    <ol class="steps">
+      <li>
+        <strong>Open the Clone dialog</strong>
+        <p>In GitHub Desktop, go to <strong>File → Clone repository…</strong></p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Desktop — File menu → Clone repository</strong>
+          <!-- Replace with: <img src="assets/images/ghd-clone-menu.png" alt="GitHub Desktop File menu"> -->
+          [ screenshot: GitHub Desktop File menu — Clone repository ]
+        </div>
+      </li>
+      <li>
+        <strong>Find the Training Repo</strong>
+        <p>Click the <strong>URL</strong> tab and paste:</p>
+        <code>https://github.com/jbain-ANDREW/Training-Repo</code>
+        <p style="margin-top:0.5rem;">Choose a local folder where you want the project saved, then click <strong>Clone</strong>.</p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Desktop clone dialog with URL filled in</strong>
+          <!-- Replace with: <img src="assets/images/ghd-clone-dialog.png" alt="GitHub Desktop clone dialog"> -->
+          [ screenshot: Clone dialog — URL tab — Training-Repo URL pasted — Clone button ]
+        </div>
+      </li>
+    </ol>
+    <div class="tip"><strong>What just happened?</strong> GitHub Desktop downloaded the entire repository to your machine, exactly like <code>git clone</code> does in the terminal.</div>
+  </section>
+
+  <section>
+    <h2>Step 3 — Create Your Branch</h2>
+    <ol class="steps">
+      <li>
+        <strong>Click "Current Branch"</strong>
+        <p>At the top of GitHub Desktop you'll see a bar showing the current branch (<code>main</code>). Click it.</p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Desktop — Current Branch dropdown showing "main"</strong>
+          <!-- Replace with: <img src="assets/images/ghd-branch-dropdown.png" alt="GitHub Desktop branch dropdown"> -->
+          [ screenshot: GitHub Desktop top bar — "Current Branch: main" dropdown ]
+        </div>
+      </li>
+      <li>
+        <strong>Create a new branch</strong>
+        <p>Click <strong>New Branch</strong>, type your name in lowercase with a hyphen (e.g. <code>jane-smith</code>), and click <strong>Create Branch</strong>.</p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Desktop — New Branch dialog with name typed</strong>
+          <!-- Replace with: <img src="assets/images/ghd-new-branch.png" alt="GitHub Desktop new branch dialog"> -->
+          [ screenshot: New Branch dialog — "jane-smith" typed — Create Branch button ]
+        </div>
+      </li>
+    </ol>
+    <div class="tip"><strong>What just happened?</strong> You created a private branch, the same as <code>git checkout -b firstname-lastname</code> in the terminal.</div>
+  </section>
+
+  <section>
+    <h2>Step 4 — Make Your Splash Page</h2>
+    <ol class="steps">
+      <li>
+        <strong>Open the repo folder in VS Code</strong>
+        <p>In GitHub Desktop, click <strong>Open in Visual Studio Code</strong> (or go to <strong>Repository → Open in Visual Studio Code</strong>).</p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Desktop — "Open in Visual Studio Code" button</strong>
+          <!-- Replace with: <img src="assets/images/ghd-open-vscode.png" alt="GitHub Desktop open in VS Code button"> -->
+          [ screenshot: GitHub Desktop — "Open in Visual Studio Code" button ]
+        </div>
+      </li>
+      <li>
+        <strong>Copy the template</strong>
+        <p>In VS Code's file explorer (left panel), navigate to <code>exercises/splash-page/</code>. Right-click <code>template.html</code> and choose <strong>Copy</strong>. Then navigate to <code>docs/splash-pages/</code>, right-click and choose <strong>Paste</strong>. Rename the pasted file to <code>firstname-lastname.html</code>.</p>
+        <div class="screenshot">
+          <strong>Screenshot: VS Code file explorer — right-click copy/paste of template file</strong>
+          <!-- Replace with: <img src="assets/images/ghd-vscode-copy.png" alt="VS Code file explorer copy paste"> -->
+          [ screenshot: VS Code file explorer — copy template.html → paste into docs/splash-pages/ → rename ]
+        </div>
+      </li>
+      <li>
+        <strong>Edit your file</strong>
+        <p>Open your renamed file and customize the title, background color, emoji, and personal info. The template has numbered comments guiding each change.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Step 5 — Commit Your Changes</h2>
+    <ol class="steps">
+      <li>
+        <strong>Switch back to GitHub Desktop</strong>
+        <p>GitHub Desktop will automatically detect your new file and show it in the <strong>Changes</strong> panel on the left.</p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Desktop — Changes panel showing new file</strong>
+          <!-- Replace with: <img src="assets/images/ghd-changes.png" alt="GitHub Desktop changes panel"> -->
+          [ screenshot: GitHub Desktop Changes panel — new file listed with a green + icon ]
+        </div>
+      </li>
+      <li>
+        <strong>Write a commit message</strong>
+        <p>At the bottom-left, type a short description in the <strong>Summary</strong> box, e.g. <em>Add splash page: Firstname Lastname</em>.</p>
+      </li>
+      <li>
+        <strong>Click "Commit to firstname-lastname"</strong>
+        <p>The button at the bottom confirms the branch name. Click it.</p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Desktop — commit message filled in, Commit button</strong>
+          <!-- Replace with: <img src="assets/images/ghd-commit.png" alt="GitHub Desktop commit panel"> -->
+          [ screenshot: GitHub Desktop — Summary: "Add splash page: Jane Smith" — Commit to jane-smith button ]
+        </div>
+      </li>
+    </ol>
+    <div class="tip"><strong>What just happened?</strong> You saved a snapshot of your changes — the same as <code>git add</code> + <code>git commit</code> in the terminal, but in one click.</div>
+  </section>
+
+  <section>
+    <h2>Step 6 — Push and Open a Pull Request</h2>
+    <ol class="steps">
+      <li>
+        <strong>Push your branch to GitHub</strong>
+        <p>Click the <strong>Publish branch</strong> button at the top of GitHub Desktop (it may say <strong>Push origin</strong> if you've pushed before).</p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Desktop — "Publish branch" button in top bar</strong>
+          <!-- Replace with: <img src="assets/images/ghd-publish.png" alt="GitHub Desktop publish branch button"> -->
+          [ screenshot: GitHub Desktop top bar — "Publish branch" button ]
+        </div>
+      </li>
+      <li>
+        <strong>Create a Pull Request</strong>
+        <p>After pushing, GitHub Desktop shows a <strong>Create Pull Request</strong> button. Click it — your browser will open to the GitHub PR form with your branch pre-selected.</p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Desktop — "Create Pull Request" button</strong>
+          <!-- Replace with: <img src="assets/images/ghd-create-pr.png" alt="GitHub Desktop create pull request button"> -->
+          [ screenshot: GitHub Desktop — "Create Pull Request" button ]
+        </div>
+      </li>
+      <li>
+        <strong>Submit the Pull Request on GitHub</strong>
+        <p>Add a title, fill in the checklist, and click <strong>Create pull request</strong>. Your instructor will review and merge it, and your page will appear in the <a href="splash-pages/">Splash Page Archive</a>.</p>
+      </li>
+    </ol>
+    <div class="warn">Only edit files inside <code>docs/splash-pages/</code>. Changes outside that folder will not be accepted.</div>
+  </section>
+
+  <section>
+    <h2>GitHub Desktop vs. the Terminal — What's the Same?</h2>
+    <div class="concept-map">
+      <table>
+        <tr>
+          <th>Terminal command</th>
+          <th>GitHub Desktop equivalent</th>
+        </tr>
+        <tr>
+          <td>git clone &lt;url&gt;</td>
+          <td>File → Clone repository → paste URL</td>
+        </tr>
+        <tr>
+          <td>git checkout -b branch-name</td>
+          <td>Current Branch → New Branch → type name</td>
+        </tr>
+        <tr>
+          <td>git add &lt;file&gt;</td>
+          <td>Check the checkbox next to the file in Changes</td>
+        </tr>
+        <tr>
+          <td>git commit -m "message"</td>
+          <td>Type message in Summary → click Commit</td>
+        </tr>
+        <tr>
+          <td>git push origin branch-name</td>
+          <td>Publish branch / Push origin button</td>
+        </tr>
+        <tr>
+          <td>Open PR on github.com</td>
+          <td>Create Pull Request button → browser opens</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="try-other">
+      <h3>Now try it the other way</h3>
+      <p>
+        You just completed the full GitHub workflow by clicking through GitHub Desktop.
+        Now try the same exercise using <strong>terminal commands</strong> — no buttons, just text.
+        The operations are identical; the experience is very different. Engineers use both depending on the task,
+        and knowing both makes you more adaptable.
+      </p>
+      <a href="github-exercise.html">Try the Terminal Exercise →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>ECE GitHub Training &mdash; jbain-ANDREW</footer>
+</body>
+</html>

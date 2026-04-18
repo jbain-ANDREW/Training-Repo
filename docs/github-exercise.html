@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Exercise — Terminal | ECE GitHub Training</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      padding: 0.9rem 1rem 0.9rem 3.2rem;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      position: relative;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute; left: 1rem; top: 1rem;
+      background: #0f3460; color: white;
+      width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: bold;
+    }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+    .steps li p { margin-top: 0.3rem; font-size: 0.94rem; color: #444; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+    pre { background: #1a1a2e; color: #c9d1d9; padding: 1.1rem 1.3rem; border-radius: 6px; overflow-x: auto; font-size: 0.88rem; line-height: 1.6; margin-top: 0.6rem; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .try-other {
+      background: #1a1a2e;
+      color: white;
+      border-radius: 8px;
+      padding: 1.3rem 1.5rem;
+      margin-top: 1rem;
+    }
+    .try-other h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+    .try-other p { font-size: 0.9rem; opacity: 0.8; line-height: 1.6; margin-bottom: 0.8rem; }
+    .try-other a {
+      display: inline-block;
+      background: white;
+      color: #0f3460;
+      padding: 0.5rem 1.2rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .try-other a:hover { opacity: 0.85; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.95rem; transition: background 0.2s; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>GitHub Exercise — Terminal</h1>
+  <p>Clone, branch, commit, and open a Pull Request using terminal commands</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="splash-pages/">Splash Page Archive</a>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <section>
+    <h2>Before You Start</h2>
+    <p>This exercise uses the terminal. If you have never used one before, read the <a href="terminal-basics.html">Terminal Basics</a> guide first — it covers everything you need to follow along here.</p>
+    <p style="margin-top:0.6rem;">You will also need a <a href="https://github.com" target="_blank">GitHub account</a> and <a href="https://code.visualstudio.com" target="_blank">VS Code</a> installed.</p>
+    <div class="tip">Prefer a visual app instead of typing commands? Do this exercise with <a href="github-desktop.html">GitHub Desktop</a> — or do both and compare.</div>
+  </section>
+
+  <section>
+    <h2>Step 1 — Install the Tools</h2>
+    <ul class="steps">
+      <li>
+        <strong>Install Git</strong>
+        <p>Download from <a href="https://git-scm.com/downloads" target="_blank">git-scm.com/downloads</a> and run the installer. The defaults are fine.</p>
+      </li>
+      <li>
+        <strong>Install VS Code</strong>
+        <p>Download from <a href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a> and install.</p>
+      </li>
+      <li>
+        <strong>Install the GitHub Pull Requests extension in VS Code</strong>
+        <p>Open VS Code → Extensions panel (<code>Ctrl+Shift+X</code>) → search <em>GitHub Pull Requests</em> → Install.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Step 2 — Clone the Repository</h2>
+    <p>Open the integrated terminal in VS Code with <code>Ctrl+`</code> and run:</p>
+    <pre>git clone https://github.com/jbain-ANDREW/Training-Repo.git
+cd Training-Repo</pre>
+    <p>VS Code will offer to open the folder — click <strong>Open</strong>.</p>
+    <div class="tip"><strong>What just happened?</strong> Cloning copies the entire repository from GitHub to your machine. You now have a local copy you can edit.</div>
+  </section>
+
+  <section>
+    <h2>Step 3 — Create Your Branch</h2>
+    <p>Never work directly on <code>main</code>. Create your own branch first:</p>
+    <pre>git checkout -b firstname-lastname</pre>
+    <p>Replace <code>firstname-lastname</code> with your actual name in lowercase, e.g. <code>jane-smith</code>.</p>
+    <div class="tip"><strong>What is a branch?</strong> A branch is your own private copy of the project where you can make changes without affecting anyone else's work. When your changes are ready, you merge them back via a Pull Request.</div>
+  </section>
+
+  <section>
+    <h2>Step 4 — Make Your Splash Page</h2>
+    <p>Copy the template and rename it to match your name:</p>
+    <pre>cp exercises/splash-page/template.html docs/splash-pages/firstname-lastname.html</pre>
+    <p>Open the new file in VS Code and customize it. The template has numbered comments guiding you through each change — title, background color, emoji, and personal info.</p>
+    <div class="tip">Stuck on what to write? Open <a href="splash-pages/example.html">example.html</a> to see a finished page.</div>
+  </section>
+
+  <section>
+    <h2>Step 5 — Commit Your Changes</h2>
+    <pre>git add docs/splash-pages/firstname-lastname.html
+git commit -m "Add splash page: Firstname Lastname"</pre>
+    <div class="tip"><strong>What is a commit?</strong> A commit is a saved snapshot of your changes with a message explaining what you did. Think of it as a checkpoint you can always return to.</div>
+  </section>
+
+  <section>
+    <h2>Step 6 — Push and Open a Pull Request</h2>
+    <pre>git push origin firstname-lastname</pre>
+    <p>After pushing, go to <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">github.com/jbain-ANDREW/Training-Repo</a>. GitHub will show a banner: <em>"firstname-lastname had recent pushes — Compare &amp; pull request."</em> Click it, fill in the form, and submit.</p>
+    <p style="margin-top:0.6rem;">Once your instructor reviews and merges it, your page will appear in the <a href="splash-pages/">Splash Page Archive</a>.</p>
+    <div class="warn">Only edit files inside <code>docs/splash-pages/</code>. Changes outside that folder will not be accepted.</div>
+    <a class="btn" href="https://github.com/jbain-ANDREW/Training-Repo/pulls" target="_blank" style="margin-top:0.8rem; display:inline-block;">View Open Pull Requests</a>
+  </section>
+
+  <section>
+    <div class="try-other">
+      <h3>Now try it the other way</h3>
+      <p>
+        You just completed the full GitHub workflow using terminal commands. Now try the same exercise using
+        <strong>GitHub Desktop</strong> — a visual app where you click instead of type. The concepts are identical;
+        the experience is completely different. Doing both builds a much stronger mental model of what's actually happening.
+      </p>
+      <a href="github-desktop.html">Try GitHub Desktop →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>ECE GitHub Training &mdash; jbain-ANDREW</footer>
+</body>
+</html>
