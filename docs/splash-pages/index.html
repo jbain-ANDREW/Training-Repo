@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Splash Page Archive</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header {
+      background: #1a1a2e;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    header h1 { font-size: 1.8rem; margin-bottom: 0.3rem; }
+    header p { opacity: 0.7; }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      background: #16213e;
+      padding: 0.75rem;
+    }
+    nav a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    nav a:hover { background: #0f3460; }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .intro {
+      margin-bottom: 1.5rem;
+      font-size: 0.97rem;
+      color: #555;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.13);
+    }
+    .card-preview {
+      height: 120px;
+      background: linear-gradient(135deg, #0f3460, #16213e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .card-body { padding: 0.9rem 1rem; }
+    .card-body h3 { font-size: 1rem; margin-bottom: 0.2rem; }
+    .card-body a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #0f3460;
+      text-decoration: none;
+    }
+    .card-body a:hover { text-decoration: underline; }
+
+    .empty {
+      text-align: center;
+      color: #999;
+      padding: 3rem 0;
+      font-size: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Splash Page Archive</h1>
+  <p>Every page here was made by a student just like you.</p>
+</header>
+
+<nav>
+  <a href="../index.html">Home</a>
+  <a href="#">Splash Page Archive</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
+</nav>
+
+<main>
+  <p class="intro">
+    Each card below links to a splash page submitted by a student via Pull Request.
+    Complete the exercise and your page will appear here too.
+  </p>
+
+  <div class="grid">
+
+    <!-- Example card — instructor-provided -->
+    <div class="card">
+      <div class="card-preview">👋</div>
+      <div class="card-body">
+        <h3>Example Page</h3>
+        <p style="font-size:0.85rem;color:#666;">The reference splash page.</p>
+        <a href="example.html">View page &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Student cards go here. Add a new card block for each merged PR. -->
+
+  </div>
+
+</main>
+
+<footer>ECE GitHub Training &mdash; jbain-ANDREW</footer>
+
+</body>
+</html>

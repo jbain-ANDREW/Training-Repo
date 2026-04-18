@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECE GitHub Training</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header {
+      background: #1a1a2e;
+      color: white;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      background: #16213e;
+      padding: 0.75rem;
+    }
+    nav a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    nav a:hover { background: #0f3460; }
+
+    main {
+      max-width: 860px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+    }
+
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      padding: 0.9rem 1rem 0.9rem 3.2rem;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      position: relative;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #0f3460;
+      color: white;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+
+    code {
+      background: #e8ecf0;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.9rem;
+      font-family: 'Courier New', monospace;
+    }
+
+    pre {
+      background: #1a1a2e;
+      color: #c9d1d9;
+      padding: 1.1rem 1.3rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-top: 0.6rem;
+    }
+
+    .tip {
+      background: #e7f3ff;
+      border-left: 4px solid #0f3460;
+      padding: 0.8rem 1rem;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.93rem;
+      margin-top: 0.8rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #0f3460;
+      color: white;
+      padding: 0.6rem 1.4rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #16213e; }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.85rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ECE GitHub Training</h1>
+  <p>Your first steps with Git, GitHub, and VS Code</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="splash-pages/">Splash Page Archive</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <section>
+    <h2>What Is This?</h2>
+    <p>This site is the starting point for your first GitHub exercise. You will set up VS Code, clone a repository, make a change, and submit it as a Pull Request. When your PR is merged, your work will appear on the <a href="splash-pages/">Splash Page Archive</a>.</p>
+  </section>
+
+  <section>
+    <h2>Step 1 — Install the Tools</h2>
+    <ul class="steps">
+      <li>
+        <strong>Install Git</strong>
+        Download from <a href="https://git-scm.com/downloads" target="_blank">git-scm.com/downloads</a> and run the installer (defaults are fine).
+      </li>
+      <li>
+        <strong>Install VS Code</strong>
+        Download from <a href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a> and install.
+      </li>
+      <li>
+        <strong>Create a GitHub account</strong>
+        Go to <a href="https://github.com" target="_blank">github.com</a> and sign up if you don't have one.
+      </li>
+      <li>
+        <strong>Install the GitHub Pull Requests extension in VS Code</strong>
+        Open VS Code → click the Extensions icon (left sidebar) → search <em>GitHub Pull Requests</em> → Install.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Step 2 — Clone the Repository</h2>
+    <p>Open the integrated terminal in VS Code with <code>Ctrl+`</code> and run:</p>
+    <pre>git clone https://github.com/jbain-ANDREW/Training-Repo.git
+cd Training-Repo</pre>
+    <p>VS Code will offer to open the folder — click <strong>Open</strong>.</p>
+  </section>
+
+  <section>
+    <h2>Step 3 — Create Your Branch</h2>
+    <p>Never work directly on <code>main</code>. Create your own branch first:</p>
+    <pre>git checkout -b firstname-lastname</pre>
+    <p>Replace <code>firstname-lastname</code> with your actual name, e.g. <code>jane-smith</code>.</p>
+  </section>
+
+  <section>
+    <h2>Step 4 — Make Your Splash Page</h2>
+    <p>Copy the template and rename it to match your branch:</p>
+    <pre>cp exercises/splash-page/template.html docs/splash-pages/firstname-lastname.html</pre>
+    <p>Open the new file in VS Code and customize it. See the template for guidance — change the title, colors, and content to make it yours.</p>
+    <div class="tip">Stuck? Open <a href="splash-pages/example.html">example.html</a> to see a finished splash page.</div>
+  </section>
+
+  <section>
+    <h2>Step 5 — Commit and Push</h2>
+    <pre>git add docs/splash-pages/firstname-lastname.html
+git commit -m "Add splash page: Firstname Lastname"
+git push origin firstname-lastname</pre>
+  </section>
+
+  <section>
+    <h2>Step 6 — Open a Pull Request</h2>
+    <p>After pushing, GitHub will show a banner with a link to create a Pull Request. Click it, fill in the form, and submit. Your instructor will review and merge it.</p>
+    <a class="btn" href="https://github.com/jbain-ANDREW/Training-Repo/pulls" target="_blank">View Open Pull Requests</a>
+  </section>
+
+</main>
+
+<footer>ECE GitHub Training &mdash; jbain-ANDREW</footer>
+
+</body>
+</html>
