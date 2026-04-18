@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Report a Problem | ECE GitHub Training</title>
+  <title>Report a Problem | Python &amp; GitHub Setup</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
@@ -15,6 +15,13 @@
     nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
     nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
     nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
 
     main { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
     section { margin-bottom: 2.5rem; }
@@ -93,9 +100,25 @@
 
 <nav>
   <a href="index.html">Home</a>
-  <a href="splash-pages/">Splash Page Archive</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
   <a href="feedback.html">Report a Problem</a>
   <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
+  <a href="splash-pages/">Splash Pages</a>
 </nav>
 
 <main>
@@ -184,6 +207,6 @@
 
 </main>
 
-<footer>ECE GitHub Training &mdash; jbain-ANDREW</footer>
+<footer>Python &amp; GitHub Setup &mdash; jbain-ANDREW</footer>
 </body>
 </html>
