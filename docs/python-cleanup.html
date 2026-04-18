@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python — Already Installed | ECE GitHub Training</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 180px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.2rem 0 0.5rem; color: #333; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      padding: 0.9rem 1rem 0.9rem 3.2rem;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      position: relative;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute; left: 1rem; top: 1rem;
+      background: #0f3460; color: white;
+      width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: bold;
+    }
+    .steps li strong { display: block; margin-bottom: 0.3rem; }
+    .steps li p { margin-top: 0.3rem; font-size: 0.94rem; color: #444; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+    pre { background: #1a1a2e; color: #c9d1d9; padding: 1.1rem 1.3rem; border-radius: 6px; overflow-x: auto; font-size: 0.88rem; line-height: 1.6; margin-top: 0.6rem; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .bad  { background: #fef2f2; border-left: 4px solid #dc2626; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .screenshot { background: #dde3ea; border: 2px dashed #aab; border-radius: 6px; padding: 2rem 1rem; text-align: center; color: #667; font-size: 0.88rem; margin: 0.8rem 0; }
+    .screenshot strong { display: block; margin-bottom: 0.3rem; font-size: 0.95rem; color: #445; }
+    .screenshot img { max-width: 100%; border-radius: 4px; display: block; margin: 0 auto; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; font-size: 0.92rem; }
+    th { background: #0f3460; color: white; padding: 0.6rem 0.8rem; text-align: left; }
+    td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #dde; background: white; }
+    tr:last-child td { border-bottom: none; }
+    .tag-ok   { color: #16a34a; font-weight: bold; }
+    .tag-warn { color: #d97706; font-weight: bold; }
+    .tag-bad  { color: #dc2626; font-weight: bold; }
+
+    .guide-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.55rem 1.3rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; }
+    .btn:hover { background: #16213e; }
+    .btn-outline { background: transparent; border: 2px solid #0f3460; color: #0f3460; }
+    .btn-outline:hover { background: #0f3460; color: white; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Python — Already Installed</h1>
+  <p>How to audit your existing Python setup and sort out common problems on Windows</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="splash-pages/">Splash Page Archive</a>
+  <div class="nav-dropdown">
+    <span>Setup Guides ▾</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Python — Fresh Install</a>
+      <a href="python-cleanup.html">Python — Already Installed</a>
+      <a href="python-complexity.html">Python — When It Gets Complex</a>
+    </div>
+  </div>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <section>
+    <h2>Why This Gets Complicated</h2>
+    <p>Windows makes it easy to end up with multiple Python installations without realizing it. Common culprits:</p>
+    <ul style="margin: 0.8rem 0 0 1.5rem; line-height: 2;">
+      <li>Python installed from <strong>python.org</strong> (the right way)</li>
+      <li>Python installed from the <strong>Microsoft Store</strong> (causes PATH conflicts)</li>
+      <li><strong>Anaconda or Miniconda</strong> — bundles its own Python</li>
+      <li>A <strong>previous course</strong> that installed an older version</li>
+    </ul>
+    <p style="margin-top:0.8rem;">Having multiple versions is not necessarily a problem, but you need to know which one your terminal is actually using.</p>
+  </section>
+
+  <section>
+    <h2>Step 1 — Find Out What You Have</h2>
+    <ol class="steps">
+      <li>
+        <strong>Open a terminal</strong>
+        <p>Press <code>Win + R</code>, type <code>cmd</code>, press Enter.</p>
+      </li>
+      <li>
+        <strong>Check which Python your terminal finds first</strong>
+        <pre>python --version</pre>
+        <p>This shows the version that runs when you type <code>python</code>. Note the version number.</p>
+        <div class="screenshot">
+          <strong>Screenshot: cmd — python --version output</strong>
+          <!-- Replace with: <img src="assets/images/cleanup-python-version.png" alt="cmd showing python version"> -->
+          [ screenshot: cmd — python --version → e.g. Python 3.9.7 ]
+        </div>
+      </li>
+      <li>
+        <strong>Find where it lives</strong>
+        <pre>where python</pre>
+        <p>This lists every Python executable Windows can find, in order of priority. The first line is the one that runs when you type <code>python</code>.</p>
+        <div class="screenshot">
+          <strong>Screenshot: cmd — "where python" listing multiple paths</strong>
+          <!-- Replace with: <img src="assets/images/cleanup-where-python.png" alt="where python showing multiple paths"> -->
+          [ screenshot: where python — may show multiple paths like C:\Users\...\AppData\Local\Programs\Python\... ]
+        </div>
+      </li>
+    </ol>
+
+    <h3>Reading the output of <code>where python</code></h3>
+    <table>
+      <tr>
+        <th>Path contains…</th>
+        <th>What it means</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td><code>AppData\Local\Programs\Python</code></td>
+        <td>Installed from python.org — the clean option</td>
+        <td class="tag-ok">Good</td>
+      </tr>
+      <tr>
+        <td><code>AppData\Local\Microsoft\WindowsApps</code></td>
+        <td>Microsoft Store Python — causes issues</td>
+        <td class="tag-warn">Problematic</td>
+      </tr>
+      <tr>
+        <td><code>anaconda3</code> or <code>miniconda3</code></td>
+        <td>Conda Python — fine if you use Conda intentionally</td>
+        <td class="tag-warn">Context-dependent</td>
+      </tr>
+      <tr>
+        <td><code>Program Files\Python</code></td>
+        <td>System-wide install from python.org</td>
+        <td class="tag-ok">Fine</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Step 2 — Common Situations &amp; Fixes</h2>
+
+    <h3>Situation A: "python is not recognized"</h3>
+    <p>Python is installed but not on your PATH. The quickest fix:</p>
+    <ol class="steps">
+      <li>
+        <strong>Re-run the python.org installer</strong>
+        <p>Download the latest installer from python.org, run it, and this time choose <strong>Modify</strong>. On the next screen, look for "Add Python to environment variables" and check it.</p>
+        <div class="screenshot">
+          <strong>Screenshot: Installer Modify screen — "Add Python to environment variables" checkbox</strong>
+          <!-- Replace with: <img src="assets/images/cleanup-modify-path.png" alt="Python installer modify screen"> -->
+          [ screenshot: installer Modify → Optional Features → "Add Python to environment variables" ]
+        </div>
+      </li>
+      <li>
+        <strong>Close and reopen your terminal</strong>
+        <p>PATH changes don't apply to already-open terminals. Close cmd and open it again, then try <code>python --version</code>.</p>
+      </li>
+    </ol>
+
+    <h3>Situation B: Microsoft Store Python is first in PATH</h3>
+    <div class="warn">The Microsoft Store version of Python has known issues with file paths and permissions on Windows. It is best to disable it.</div>
+    <ol class="steps">
+      <li>
+        <strong>Open App Execution Aliases</strong>
+        <p>Press <code>Win</code>, search for <strong>"Manage app execution aliases"</strong>, open it.</p>
+        <div class="screenshot">
+          <strong>Screenshot: Windows search — "Manage app execution aliases"</strong>
+          <!-- Replace with: <img src="assets/images/cleanup-app-aliases.png" alt="Windows app execution aliases settings"> -->
+          [ screenshot: Windows search showing "Manage app execution aliases" ]
+        </div>
+      </li>
+      <li>
+        <strong>Turn off the Python aliases</strong>
+        <p>Find <strong>python.exe</strong> and <strong>python3.exe</strong> in the list and toggle them <strong>Off</strong>.</p>
+        <div class="screenshot">
+          <strong>Screenshot: App execution aliases — python.exe toggled Off</strong>
+          <!-- Replace with: <img src="assets/images/cleanup-aliases-off.png" alt="python.exe alias toggled off"> -->
+          [ screenshot: python.exe and python3.exe toggles set to Off ]
+        </div>
+      </li>
+      <li>
+        <strong>Reopen your terminal and verify</strong>
+        <pre>where python
+python --version</pre>
+        <p>The Microsoft Store path should no longer appear.</p>
+      </li>
+    </ol>
+
+    <h3>Situation C: Old version from a previous course</h3>
+    <div class="tip">Having an old version alongside a new one is not a problem as long as you know which one is active. If you want to clean it up:</div>
+    <ol class="steps">
+      <li>
+        <strong>Open Apps &amp; Features</strong>
+        <p>Press <code>Win</code>, search <strong>"Add or remove programs"</strong>, open it. Search for <strong>Python</strong>.</p>
+        <div class="screenshot">
+          <strong>Screenshot: Add or remove programs — Python entries listed</strong>
+          <!-- Replace with: <img src="assets/images/cleanup-add-remove.png" alt="Add or remove programs showing Python versions"> -->
+          [ screenshot: Apps &amp; features — multiple Python versions listed ]
+        </div>
+      </li>
+      <li>
+        <strong>Uninstall the old version(s)</strong>
+        <p>Click the old version, click <strong>Uninstall</strong>. Leave the most recent python.org version in place.</p>
+      </li>
+    </ol>
+
+    <h3>Situation D: Anaconda installed and you want to keep it</h3>
+    <p>Anaconda installs its own Python and takes over the PATH. If you want the standard python.org Python to be your default:</p>
+    <ol class="steps">
+      <li>
+        <strong>Do not uninstall Anaconda</strong> — it may be needed for other courses. Leave it in place.</li>
+      <li>
+        <strong>Use the Anaconda Prompt for Conda work</strong> — it sets PATH correctly for Conda. Use the regular cmd or VS Code terminal for standard Python work.</li>
+      <li>
+        <strong>In VS Code</strong>, make sure the selected interpreter is the python.org one, not the Conda one (check the bottom-left status bar when a <code>.py</code> file is open).
+        <div class="screenshot">
+          <strong>Screenshot: VS Code status bar — Python interpreter selector</strong>
+          <!-- Replace with: <img src="assets/images/cleanup-vscode-interpreter.png" alt="VS Code interpreter selector in status bar"> -->
+          [ screenshot: VS Code bottom bar — Python 3.12.x interpreter selected ]
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Step 3 — Confirm a Clean State</h2>
+    <p>After any cleanup, run these three checks. All three should succeed:</p>
+    <pre>python --version
+pip --version
+where python</pre>
+    <div class="tip">The path shown by <code>where python</code> should point to <code>AppData\Local\Programs\Python</code> or <code>Program Files\Python</code> — not to WindowsApps, Anaconda, or anything unexpected.</div>
+  </section>
+
+  <section>
+    <h2>Still Stuck?</h2>
+    <p>If none of the above solves your problem, <a href="feedback.html">report it</a> with the output of <code>where python</code> and <code>python --version</code> included in your description.</p>
+    <div class="guide-links">
+      <a class="btn" href="python-setup.html">← Fresh Install Guide</a>
+      <a class="btn btn-outline" href="python-complexity.html">Learn about venv &amp; packages →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>ECE GitHub Training &mdash; jbain-ANDREW</footer>
+</body>
+</html>

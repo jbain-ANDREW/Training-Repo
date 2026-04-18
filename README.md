@@ -1,6 +1,6 @@
 # ECE GitHub Training Repo
 
-Welcome! This repository is your hands-on introduction to Git and GitHub.
+GitHub is how the software world shares and manages code. This repo teaches you the core workflow — clone, branch, commit, pull request — by having you build something real that gets published to the web.
 
 ## What You Will Learn
 

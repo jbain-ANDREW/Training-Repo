@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python — When It Gets Complex | ECE GitHub Training</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 180px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.1rem; margin: 1.4rem 0 0.6rem; color: #0f3460; }
+
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+    pre { background: #1a1a2e; color: #c9d1d9; padding: 1.1rem 1.3rem; border-radius: 6px; overflow-x: auto; font-size: 0.88rem; line-height: 1.6; margin: 0.6rem 0; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .card h3 { margin-top: 0; }
+
+    .scenario {
+      background: #f0f4f8;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid #64748b;
+    }
+    .scenario strong { display: block; margin-bottom: 0.3rem; }
+
+    .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    @media (max-width: 600px) { .comparison { grid-template-columns: 1fr; } }
+    .comparison-card { background: white; border-radius: 8px; padding: 1rem 1.2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+    .comparison-card h4 { margin-bottom: 0.5rem; font-size: 1rem; color: #0f3460; }
+    .comparison-card ul { padding-left: 1.2rem; font-size: 0.92rem; line-height: 1.8; color: #444; }
+
+    .guide-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.55rem 1.3rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; }
+    .btn:hover { background: #16213e; }
+    .btn-outline { background: transparent; border: 2px solid #0f3460; color: #0f3460; }
+    .btn-outline:hover { background: #0f3460; color: white; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Python — When It Gets Complex</h1>
+  <p>Why Python environments exist, what venv and conda are, and when you actually need them</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="splash-pages/">Splash Page Archive</a>
+  <div class="nav-dropdown">
+    <span>Setup Guides ▾</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Python — Fresh Install</a>
+      <a href="python-cleanup.html">Python — Already Installed</a>
+      <a href="python-complexity.html">Python — When It Gets Complex</a>
+    </div>
+  </div>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <section>
+    <h2>Start Here — Do You Even Need This?</h2>
+    <p>If you are just getting started with Python, <strong>you probably don't need any of this yet.</strong> A plain Python install is fine for writing and running scripts.</p>
+    <p>This page is for when you hit one of these situations:</p>
+    <div class="scenario">
+      <strong>Situation 1 — "It works on my machine but not yours"</strong>
+      You share a script with a classmate. It runs fine for you but crashes for them because they have a different version of a package installed.
+    </div>
+    <div class="scenario">
+      <strong>Situation 2 — Two projects need different package versions</strong>
+      Project A needs <code>numpy 1.24</code>. Project B needs <code>numpy 2.0</code>. Installing one breaks the other.
+    </div>
+    <div class="scenario">
+      <strong>Situation 3 — You installed a lot of packages and things are a mess</strong>
+      Running <code>pip list</code> shows 80 packages and you're not sure which ones you actually need.
+    </div>
+    <p>When you feel one of those pains, environments are the answer.</p>
+  </section>
+
+  <section>
+    <h2>What Is a Package?</h2>
+    <p>Python by itself can do a lot, but most real work relies on <strong>packages</strong> — libraries written by others that you install and import. Examples:</p>
+    <ul style="margin: 0.5rem 0 0.8rem 1.5rem; line-height: 2;">
+      <li><code>numpy</code> — fast numerical arrays and math</li>
+      <li><code>matplotlib</code> — plotting and graphs</li>
+      <li><code>pandas</code> — data tables (like Excel, but in code)</li>
+      <li><code>scipy</code> — scientific computing</li>
+    </ul>
+    <p>You install packages with pip:</p>
+    <pre>pip install numpy</pre>
+    <p>By default, pip installs packages <strong>globally</strong> — into the single Python installation on your machine. That's fine when you have one project. It becomes a problem when you have many.</p>
+  </section>
+
+  <section>
+    <h2>What Is a Virtual Environment (venv)?</h2>
+    <p>A virtual environment is an isolated copy of Python with its own separate set of packages. When you activate one, <code>pip install</code> puts packages there instead of globally.</p>
+
+    <h3>How it works in practice</h3>
+    <pre># Create a virtual environment in a folder called .venv
+python -m venv .venv
+
+# Activate it (Windows)
+.venv\Scripts\activate
+
+# Your terminal prompt changes to show (.venv)
+# Now pip installs go into .venv, not globally
+pip install numpy
+
+# When you're done
+deactivate</pre>
+
+    <div class="tip">
+      VS Code detects <code>.venv</code> folders automatically and offers to use them. Once activated, every time you open a terminal in VS Code it will activate the environment for you.
+    </div>
+
+    <h3>Why it helps</h3>
+    <div class="comparison">
+      <div class="comparison-card">
+        <h4>Without venv</h4>
+        <ul>
+          <li>All packages shared globally</li>
+          <li>Two projects can't use different versions of the same package</li>
+          <li>Hard to know what a project actually needs</li>
+          <li>Upgrading one project can break another</li>
+        </ul>
+      </div>
+      <div class="comparison-card">
+        <h4>With venv</h4>
+        <ul>
+          <li>Each project has its own packages</li>
+          <li>No version conflicts between projects</li>
+          <li><code>pip freeze</code> lists exactly what this project needs</li>
+          <li>Safe to update or delete without affecting other projects</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>requirements.txt — sharing your environment</h3>
+    <p>Once you have a working venv, you can export its package list:</p>
+    <pre>pip freeze > requirements.txt</pre>
+    <p>A classmate can then recreate your exact setup:</p>
+    <pre>python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt</pre>
+    <p>This is the standard way to share Python projects — commit <code>requirements.txt</code> to your repo, never commit the <code>.venv</code> folder itself.</p>
+  </section>
+
+  <section>
+    <h2>What Is Conda?</h2>
+    <p>Conda (via Anaconda or Miniconda) is an alternative to pip + venv. It manages both packages <em>and</em> Python versions, and it handles non-Python dependencies (like C libraries) that pip sometimes struggles with.</p>
+
+    <div class="card">
+      <h3>When Conda is the right choice</h3>
+      <ul style="padding-left:1.2rem; line-height:2; font-size:0.93rem; color:#444;">
+        <li>You work heavily with data science libraries (<code>numpy</code>, <code>scipy</code>, <code>tensorflow</code>)</li>
+        <li>Your instructor or course materials specify Conda</li>
+        <li>You need to switch between Python versions for different projects</li>
+        <li>You're on a machine where installing compiled packages with pip fails</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>When plain Python + venv is the right choice</h3>
+      <ul style="padding-left:1.2rem; line-height:2; font-size:0.93rem; color:#444;">
+        <li>You're new to Python and just getting started</li>
+        <li>Your project is general-purpose scripting or web work</li>
+        <li>You want a simpler mental model</li>
+        <li>You're sharing code that others will run without Conda</li>
+      </ul>
+    </div>
+
+    <div class="warn">
+      Mixing Conda and pip in the same environment can cause subtle problems. If you use Conda, prefer <code>conda install</code> for packages whenever possible, and only fall back to pip for packages not available in Conda channels.
+    </div>
+  </section>
+
+  <section>
+    <h2>What About pyenv?</h2>
+    <p><code>pyenv</code> is a tool for managing multiple Python <em>versions</em> on the same machine (e.g., Python 3.10 for one project, 3.12 for another). It is very common on Mac and Linux.</p>
+    <p>On Windows, there is a port called <strong>pyenv-win</strong>, but it requires extra setup and is generally not worth it for beginners. If you need multiple Python versions on Windows, Conda handles it more smoothly.</p>
+    <div class="tip">For most ECE coursework, one well-configured Python install is enough. You only need pyenv if you are actively maintaining projects that require different Python versions simultaneously.</div>
+  </section>
+
+  <section>
+    <h2>Summary — Which Tool Do You Need?</h2>
+    <div class="scenario">
+      <strong>Just starting out</strong>
+      Plain Python install from python.org. No venv needed yet.
+    </div>
+    <div class="scenario">
+      <strong>Starting a project that installs packages</strong>
+      Create a <code>venv</code> for that project. Commit a <code>requirements.txt</code>.
+    </div>
+    <div class="scenario">
+      <strong>Heavy data science / ML work</strong>
+      Consider Miniconda. Follow your course instructions.
+    </div>
+    <div class="scenario">
+      <strong>Need multiple Python versions</strong>
+      Use Conda environments, or ask your instructor.
+    </div>
+
+    <div class="guide-links">
+      <a class="btn" href="python-setup.html">← Fresh Install Guide</a>
+      <a class="btn btn-outline" href="python-cleanup.html">Already Have Python →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>ECE GitHub Training &mdash; jbain-ANDREW</footer>
+</body>
+</html>

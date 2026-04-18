@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report a Problem | ECE GitHub Training</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 180px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 760px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    p { line-height: 1.7; margin-bottom: 0.7rem; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .category-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      padding: 1rem 1.1rem;
+      text-decoration: none;
+      color: #222;
+      transition: transform 0.15s, box-shadow 0.15s;
+      display: block;
+    }
+    .category-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+    .category-card .icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .category-card h3 { font-size: 0.97rem; margin-bottom: 0.2rem; }
+    .category-card p { font-size: 0.85rem; color: #666; margin: 0; }
+
+    .steps { list-style: none; counter-reset: step; }
+    .steps li {
+      counter-increment: step;
+      padding: 0.9rem 1rem 0.9rem 3.2rem;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      position: relative;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute; left: 1rem; top: 1rem;
+      background: #0f3460; color: white;
+      width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: bold;
+    }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+    .steps li p { margin: 0.2rem 0 0; font-size: 0.93rem; color: #444; }
+
+    .btn-large {
+      display: inline-block;
+      background: #0f3460;
+      color: white;
+      padding: 0.9rem 2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 600;
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+    }
+    .btn-large:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Report a Problem</h1>
+  <p>Found something broken, confusing, or missing? Let us know.</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="splash-pages/">Splash Page Archive</a>
+  <div class="nav-dropdown">
+    <span>Setup Guides ▾</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Python — Fresh Install</a>
+      <a href="python-cleanup.html">Python — Already Installed</a>
+      <a href="python-complexity.html">Python — When It Gets Complex</a>
+    </div>
+  </div>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <section>
+    <h2>How Feedback Works</h2>
+    <p>
+      This site uses <strong>GitHub Issues</strong> to track problems and suggestions.
+      Submitting an issue is a one-click process — and since you already have a GitHub account
+      for this course, there's nothing extra to sign up for.
+    </p>
+    <div class="tip">
+      Reporting a problem here is also a small extra taste of how real software teams work —
+      filing issues is how bugs and improvements get tracked in professional projects.
+    </div>
+  </section>
+
+  <section>
+    <h2>What Kind of Problem?</h2>
+    <div class="category-grid">
+      <a class="category-card" href="https://github.com/jbain-ANDREW/Training-Repo/issues/new?template=site-feedback.md&labels=broken&title=%5BBroken%5D+">
+        <div class="icon">🔴</div>
+        <h3>Something is broken</h3>
+        <p>A link doesn't work, a page won't load, a step in a guide is wrong</p>
+      </a>
+      <a class="category-card" href="https://github.com/jbain-ANDREW/Training-Repo/issues/new?template=site-feedback.md&labels=confusing&title=%5BConfusing%5D+">
+        <div class="icon">🟡</div>
+        <h3>Something is confusing</h3>
+        <p>A step is unclear, terminology isn't explained, I got lost</p>
+      </a>
+      <a class="category-card" href="https://github.com/jbain-ANDREW/Training-Repo/issues/new?template=site-feedback.md&labels=missing&title=%5BMissing%5D+">
+        <div class="icon">🔵</div>
+        <h3>Something is missing</h3>
+        <p>A topic I expected isn't covered, a setup scenario isn't addressed</p>
+      </a>
+      <a class="category-card" href="https://github.com/jbain-ANDREW/Training-Repo/issues/new?template=site-feedback.md&labels=suggestion&title=%5BSuggestion%5D+">
+        <div class="icon">🟢</div>
+        <h3>I have a suggestion</h3>
+        <p>An idea for improvement, a better way to explain something</p>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2>How to File an Issue</h2>
+    <ol class="steps">
+      <li>
+        <strong>Click one of the cards above</strong>
+        <p>It will open a pre-filled GitHub Issue form for this repo.</p>
+      </li>
+      <li>
+        <strong>Fill in the title and description</strong>
+        <p>Be as specific as you can — which page, which step, what you expected vs. what happened.</p>
+      </li>
+      <li>
+        <strong>Click "Submit new issue"</strong>
+        <p>That's it. Your report is logged and visible to the instructor.</p>
+      </li>
+    </ol>
+    <p>Or if you prefer, go directly to the issues page and file one from scratch:</p>
+    <a class="btn-large" href="https://github.com/jbain-ANDREW/Training-Repo/issues/new?template=site-feedback.md" target="_blank">Open a GitHub Issue →</a>
+  </section>
+
+  <section>
+    <h2>Good Issue vs. Vague Issue</h2>
+    <p>A good issue makes it easy to find and fix the problem. Here's the difference:</p>
+    <table style="width:100%; border-collapse:collapse; font-size:0.92rem; margin-top:0.5rem;">
+      <tr>
+        <th style="background:#0f3460;color:white;padding:0.6rem 0.8rem;text-align:left;">Vague</th>
+        <th style="background:#0f3460;color:white;padding:0.6rem 0.8rem;text-align:left;">Specific</th>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem 0.8rem;background:white;border-bottom:1px solid #dde;">"The guide doesn't work"</td>
+        <td style="padding:0.6rem 0.8rem;background:white;border-bottom:1px solid #dde;">"On the Fresh Install page, Step 3: when I run <code>python --version</code> I get 'not recognized' even after checking the PATH box"</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem 0.8rem;background:white;border-bottom:1px solid #dde;">"Step 2 is confusing"</td>
+        <td style="padding:0.6rem 0.8rem;background:white;border-bottom:1px solid #dde;">"Python Cleanup page, Situation B — the instructions say to open 'App Execution Aliases' but I can't find it in Windows 11 search"</td>
+      </tr>
+      <tr>
+        <td style="padding:0.6rem 0.8rem;background:white;">"Add more stuff"</td>
+        <td style="padding:0.6rem 0.8rem;background:white;">"The complexity page doesn't cover what to do when VS Code shows the wrong interpreter — that tripped me up"</td>
+      </tr>
+    </table>
+  </section>
+
+</main>
+
+<footer>ECE GitHub Training &mdash; jbain-ANDREW</footer>
+</body>
+</html>
