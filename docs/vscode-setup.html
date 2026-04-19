@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VS Code — Install &amp; Setup | Get the tools. Use AI. Build things.</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .tip      { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn     { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .highlight { background: #d1fae5; border-left: 4px solid #059669; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .screenshot { background: #dde3ea; border: 2px dashed #aab; border-radius: 6px; padding: 2rem 1rem; text-align: center; color: #667; font-size: 0.88rem; margin: 0.8rem 0; }
+    .screenshot strong { display: block; margin-bottom: 0.3rem; font-size: 0.95rem; color: #445; }
+    .screenshot img { max-width: 100%; border-radius: 4px; display: block; margin: 0 auto; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li { counter-increment: step; padding: 0.9rem 1rem 0.9rem 3.2rem; background: white; border-radius: 6px; margin-bottom: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); position: relative; }
+    .steps li::before { content: counter(step); position: absolute; left: 1rem; top: 1rem; background: #0f3460; color: white; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+    .steps li p { margin-top: 0.3rem; font-size: 0.94rem; color: #444; }
+
+    .ext-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .ext-card { background: white; border-radius: 8px; padding: 1rem 1.2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .ext-card .ext-name { font-weight: 700; font-size: 0.97rem; margin-bottom: 0.2rem; }
+    .ext-card .ext-author { font-size: 0.78rem; color: #888; margin-bottom: 0.5rem; }
+    .ext-card p { font-size: 0.88rem; color: #444; line-height: 1.6; margin: 0; }
+    .ext-card .ext-badge { display: inline-block; font-size: 0.7rem; padding: 0.1rem 0.45rem; border-radius: 3px; margin-bottom: 0.4rem; font-weight: 600; }
+    .badge-essential { background: #d1fae5; color: #065f46; }
+    .badge-ai        { background: #e0e7ff; color: #3730a3; }
+    .badge-optional  { background: #f3f4f6; color: #555; }
+
+    .layout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    @media (max-width: 600px) { .layout-grid { grid-template-columns: 1fr; } }
+    .layout-card { background: white; border-radius: 8px; padding: 1rem 1.2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+    .layout-card h4 { font-size: 0.95rem; margin-bottom: 0.4rem; color: #0f3460; }
+    .layout-card p { font-size: 0.88rem; color: #555; line-height: 1.6; margin: 0; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>VS Code — Install &amp; Setup</h1>
+  <p>The editor where Python, JavaScript, Git, and AI tools all come together</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>VS Code &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="vscode-setup.html">Install &amp; Setup</a>
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <!-- ── WHAT IS VS CODE ── -->
+  <section>
+    <h2>What Is VS Code?</h2>
+    <p>
+      Visual Studio Code (VS Code) is a free code editor made by Microsoft. It works for every
+      language covered in this guide — Python, JavaScript, HTML, CSS, Google Apps Script — and
+      it's the environment where AI tools like Claude and GitHub Copilot plug in directly.
+    </p>
+    <p>
+      Think of VS Code as the hub: your code lives here, your terminal is here, Git is here,
+      and your AI assistant is here. Learning one editor well is more valuable than switching
+      between many.
+    </p>
+    <div class="highlight">
+      <strong>VS Code is not just for Python.</strong> The same editor you use to run a Python
+      script works equally well for editing HTML, writing JavaScript, or reviewing a Google Apps
+      Script file that Claude generated for you.
+    </div>
+  </section>
+
+  <!-- ── INSTALL ── -->
+  <section>
+    <h2>Install VS Code</h2>
+    <ol class="steps">
+      <li>
+        <strong>Download the installer</strong>
+        <p>Go to <a href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a>
+        and click the big blue <strong>Download for Windows</strong> button. This gives you the
+        User Installer — no admin rights needed.</p>
+        <!-- Screenshot: VS Code homepage with download button -->
+        <div class="screenshot">
+          <strong>Screenshot placeholder</strong>
+          code.visualstudio.com — Download for Windows button<br>
+          <!-- Replace with: <img src="assets/images/vscode-download.png" alt="VS Code download page"> -->
+        </div>
+      </li>
+      <li>
+        <strong>Run the installer</strong>
+        <p>Open the downloaded <code>.exe</code> and accept the defaults. On the "Select Additional
+        Tasks" screen, check <strong>Add to PATH</strong> and <strong>Open with Code</strong>
+        (both right-click options). These make VS Code easy to launch from the terminal.</p>
+        <!-- Screenshot: installer "Select Additional Tasks" screen with PATH checked -->
+        <div class="screenshot">
+          <strong>Screenshot placeholder</strong>
+          Installer — "Add to PATH" and "Open with Code" checkboxes<br>
+          <!-- Replace with: <img src="assets/images/vscode-installer-options.png" alt="Installer options"> -->
+        </div>
+      </li>
+      <li>
+        <strong>Open VS Code</strong>
+        <p>Launch from the Start menu or by typing <code>code</code> in any terminal window.
+        The first launch shows a Welcome tab — you can close it.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ── LAYOUT ── -->
+  <section>
+    <h2>Getting Oriented</h2>
+    <p>VS Code has five main areas. You'll use all of them within the first few minutes.</p>
+
+    <div class="layout-grid">
+      <div class="layout-card">
+        <h4>Explorer (left sidebar)</h4>
+        <p>Your file tree. Open a folder with <strong>File → Open Folder</strong> and all files
+        appear here. Click any file to open it.</p>
+      </div>
+      <div class="layout-card">
+        <h4>Editor (center)</h4>
+        <p>Where you write code. Multiple files open as tabs. Split the editor with
+        <strong>View → Editor Layout</strong> to see two files side by side.</p>
+      </div>
+      <div class="layout-card">
+        <h4>Terminal (bottom)</h4>
+        <p>A full terminal inside VS Code. Open with <strong>Ctrl+`</strong> (backtick) or
+        <strong>Terminal → New Terminal</strong>. Runs in the folder you have open.</p>
+      </div>
+      <div class="layout-card">
+        <h4>Source Control (left sidebar)</h4>
+        <p>Git integration. Shows changed files, lets you stage, commit, and push without
+        leaving the editor. The branch name shows in the bottom-left corner.</p>
+      </div>
+      <div class="layout-card">
+        <h4>Extensions (left sidebar)</h4>
+        <p>The marketplace for add-ons. Search by name and click Install. Extensions add
+        language support, AI tools, themes, and more.</p>
+      </div>
+      <div class="layout-card">
+        <h4>Command Palette</h4>
+        <p><strong>Ctrl+Shift+P</strong> opens a searchable list of every VS Code action.
+        If you can't find something in a menu, type it here.</p>
+      </div>
+    </div>
+
+    <!-- Screenshot: VS Code with areas labelled -->
+    <div class="screenshot">
+      <strong>Screenshot placeholder</strong>
+      VS Code with Explorer, Editor, Terminal, and Source Control labelled<br>
+      <!-- Replace with: <img src="assets/images/vscode-layout.png" alt="VS Code layout overview"> -->
+    </div>
+  </section>
+
+  <!-- ── EXTENSIONS ── -->
+  <section>
+    <h2>Recommended Extensions</h2>
+    <p>
+      Install extensions from the Extensions panel (<strong>Ctrl+Shift+X</strong>). Search the
+      name, click the result, click <strong>Install</strong>.
+    </p>
+
+    <div class="ext-grid">
+      <div class="ext-card">
+        <span class="ext-badge badge-essential">Essential</span>
+        <div class="ext-name">Python</div>
+        <div class="ext-author">Microsoft</div>
+        <p>Language support for Python — syntax highlighting, linting, debugging, and running
+        scripts. Required if you write any Python.</p>
+      </div>
+      <div class="ext-card">
+        <span class="ext-badge badge-essential">Essential</span>
+        <div class="ext-name">Pylance</div>
+        <div class="ext-author">Microsoft</div>
+        <p>Fast IntelliSense and type checking for Python. Usually installed automatically
+        with the Python extension.</p>
+      </div>
+      <div class="ext-card">
+        <span class="ext-badge badge-ai">AI</span>
+        <div class="ext-name">GitHub Copilot</div>
+        <div class="ext-author">GitHub</div>
+        <p>Inline code suggestions as you type, plus a chat panel. Free tier available;
+        free for verified students. See the Copilot page for setup.</p>
+      </div>
+      <div class="ext-card">
+        <span class="ext-badge badge-ai">AI</span>
+        <div class="ext-name">Claude for VS Code</div>
+        <div class="ext-author">Anthropic</div>
+        <p>Claude AI directly in your editor. Ask questions, generate code, explain errors.
+        See the Claude page for setup and prompting tips.</p>
+      </div>
+      <div class="ext-card">
+        <span class="ext-badge badge-essential">Essential</span>
+        <div class="ext-name">GitLens</div>
+        <div class="ext-author">GitKraken</div>
+        <p>Enhances the built-in Git support — shows who changed each line, full commit
+        history, branch comparisons, and more.</p>
+      </div>
+      <div class="ext-card">
+        <span class="ext-badge badge-optional">Optional</span>
+        <div class="ext-name">Prettier</div>
+        <div class="ext-author">Prettier</div>
+        <p>Auto-formats HTML, CSS, and JavaScript on save. Keeps code consistently
+        readable without manual cleanup.</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <strong>Don't install too many extensions at once.</strong> Start with Python and one AI
+      tool. Add others as you hit a need for them — a cluttered editor slows you down.
+    </div>
+  </section>
+
+  <!-- ── OPEN A PROJECT ── -->
+  <section>
+    <h2>Opening a Project</h2>
+    <p>
+      VS Code works best when you open an entire folder, not just individual files. This gives
+      it the full context of your project — file tree, Git history, terminal path.
+    </p>
+    <ol class="steps">
+      <li>
+        <strong>File → Open Folder</strong>
+        <p>Navigate to your project folder (e.g., your cloned Training-Repo) and click
+        <strong>Select Folder</strong>. VS Code reloads with that folder as the root.</p>
+      </li>
+      <li>
+        <strong>Trust the folder</strong>
+        <p>VS Code may ask "Do you trust the authors of the files in this folder?" — click
+        <strong>Yes, I trust the authors</strong> for folders you created or cloned yourself.</p>
+      </li>
+      <li>
+        <strong>Open the terminal</strong>
+        <p>Press <strong>Ctrl+`</strong>. The terminal opens at the root of your project folder —
+        you're ready to run Python scripts, Git commands, or anything else.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ── NEXT STEPS ── -->
+  <section>
+    <h2>Next Steps</h2>
+    <p>
+      Once VS Code is installed and you've got the Python extension, you're ready to add AI
+      tools that work directly inside the editor.
+    </p>
+    <a href="copilot-vscode.html" class="btn">GitHub Copilot in VS Code</a>
+    <a href="claude-vscode.html" class="btn" style="margin-left: 0.75rem;">Claude in VS Code</a>
+  </section>
+
+</main>
+
+<footer>
+  <p>Get the tools. Use AI. Build things. &mdash; <a href="feedback.html">Report a problem</a></p>
+</footer>
+
+</body>
+</html>
