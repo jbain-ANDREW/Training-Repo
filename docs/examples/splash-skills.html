@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skills + Dark Mode — Example</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f3460;
+      --surface: rgba(255,255,255,0.1);
+      --text: white;
+      --text-muted: rgba(255,255,255,0.65);
+      --toggle-bg: rgba(255,255,255,0.15);
+    }
+
+    body.light {
+      --bg: #f4f6f9;
+      --surface: white;
+      --text: #1a1a2e;
+      --text-muted: #666;
+      --toggle-bg: #e8ecf0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .toggle-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--toggle-bg);
+      color: var(--text);
+      border: none;
+      border-radius: 20px;
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    .toggle-btn:hover { opacity: 0.8; }
+
+    .avatar { font-size: 4rem; margin-bottom: 0.8rem; }
+
+    h1 { font-size: 2.2rem; margin-bottom: 0.3rem; }
+
+    .tagline { font-size: 1rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+
+    .info {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.2rem 1.8rem;
+      max-width: 440px;
+      line-height: 1.8;
+      font-size: 0.93rem;
+      margin-bottom: 1.5rem;
+      transition: background 0.3s;
+    }
+    .info strong {
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .skills { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; max-width: 420px; margin-bottom: 1.5rem; }
+    .skill-tag {
+      background: var(--surface);
+      color: var(--text);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .skill-tag.python   { background: #3b82f6; color: white; }
+    .skill-tag.js       { background: #f59e0b; color: #1a1a2e; }
+    .skill-tag.html     { background: #ef4444; color: white; }
+    .skill-tag.gas      { background: #10b981; color: white; }
+    .skill-tag.learning { background: var(--surface); color: var(--text); border: 1px solid var(--text-muted); }
+
+    .back { margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted); }
+    .back a { color: var(--text-muted); text-decoration: none; }
+    .back a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+  <button class="toggle-btn" onclick="document.body.classList.toggle('light')">
+    ☀️ / 🌙 Toggle
+  </button>
+
+  <div class="avatar">💡</div>
+  <h1>Alex Example</h1>
+  <p class="tagline">Student &mdash; Spring 2026</p>
+
+  <div class="skills">
+    <span class="skill-tag python">Python</span>
+    <span class="skill-tag js">JavaScript</span>
+    <span class="skill-tag html">HTML/CSS</span>
+    <span class="skill-tag gas">Google Apps Script</span>
+    <span class="skill-tag learning">Learning: Machine Learning</span>
+    <span class="skill-tag learning">Learning: React</span>
+  </div>
+
+  <div class="info">
+    <strong>What's different here</strong>
+    A dark/light toggle button (top right) and color-coded skill tags.
+    The toggle uses one line of JavaScript — <code>classList.toggle('light')</code> —
+    and CSS variables handle all the color switching.
+  </div>
+
+  <p class="back"><a href="../splash-exercises.html">← Back to exercises</a></p>
+</body>
+</html>

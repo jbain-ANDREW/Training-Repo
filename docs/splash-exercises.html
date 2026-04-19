@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Splash Page Exercises | Get the tools. Use AI. Build things.</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 900px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 3rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 0.4rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    .section-intro { font-size: 0.93rem; color: #666; margin-bottom: 1.2rem; line-height: 1.6; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 1rem 0; }
+
+    /* Exercise card */
+    .exercise {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .exercise-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.3rem;
+      border-bottom: 1px solid #eef;
+    }
+    .exercise-num {
+      background: #0f3460;
+      color: white;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .exercise-title { font-size: 1.05rem; font-weight: 600; flex: 1; }
+    .exercise-level {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .level-1 { background: #d1fae5; color: #065f46; }
+    .level-2 { background: #dbeafe; color: #1e40af; }
+    .level-3 { background: #fef3c7; color: #92400e; }
+    .level-4 { background: #f3e8ff; color: #6b21a8; }
+
+    .exercise-body { padding: 1.1rem 1.3rem; }
+    .exercise-body p { font-size: 0.93rem; color: #444; line-height: 1.7; margin-bottom: 0.8rem; }
+
+    .preview-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #f0f4f8;
+      color: #0f3460;
+      text-decoration: none;
+      padding: 0.45rem 1rem;
+      border-radius: 5px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      transition: background 0.2s;
+    }
+    .preview-link:hover { background: #e2e8f0; }
+
+    .prompt-section { margin-top: 0.6rem; }
+    .prompt-section h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.07em; color: #888; margin-bottom: 0.5rem; }
+
+    .prompt-box {
+      background: #1a1a2e;
+      color: #c9d1d9;
+      border-radius: 6px;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.87rem;
+      line-height: 1.7;
+      margin-bottom: 0.6rem;
+      white-space: pre-wrap;
+    }
+    .prompt-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.3rem;
+    }
+    .prompt-label span {
+      font-size: 0.72rem;
+      background: #0f3460;
+      color: white;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+    }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.35rem; border-radius: 3px; font-size: 0.85rem; font-family: 'Courier New', monospace; }
+
+    .what-to-look-for { background: #f8fafc; border-radius: 6px; padding: 0.8rem 1rem; font-size: 0.88rem; color: #555; margin-top: 0.8rem; line-height: 1.7; }
+    .what-to-look-for strong { color: #0f3460; display: block; margin-bottom: 0.3rem; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Splash Page Exercises</h1>
+  <p>Use Claude or Copilot to make your splash page progressively more interesting</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>AI Tools &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <section>
+    <div class="tip">
+      <strong>Before you start:</strong> you need a splash page from the
+      <a href="github-exercise.html">GitHub exercise</a>. Open that file in VS Code,
+      then open Claude or Copilot Chat alongside it. For each exercise below, paste your current
+      HTML into the chat along with the prompt.
+    </div>
+  </section>
+
+  <!-- Exercise 1 -->
+  <section>
+    <h2>Exercise 1 — Animated Entrance</h2>
+    <p class="section-intro">Add CSS animations so your name and content fade and slide in when the page loads. Pure CSS — no JavaScript needed.</p>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <div class="exercise-num">1</div>
+        <div class="exercise-title">Fade and slide everything in on load</div>
+        <span class="exercise-level level-1">Beginner</span>
+      </div>
+      <div class="exercise-body">
+        <p>See what this looks like before you build it:</p>
+        <a class="preview-link" href="examples/splash-animated.html" target="_blank">
+          ▶ View live example
+        </a>
+        <p>
+          The example uses CSS <code>@keyframes</code> with staggered <code>animation-delay</code> values
+          so each element appears slightly after the one above it. The background also slowly shifts through a gradient loop.
+        </p>
+
+        <div class="prompt-section">
+          <h4>Prompt to use with Claude or Copilot</h4>
+          <div class="prompt-label"><span>Claude / Copilot Chat</span></div>
+          <div class="prompt-box">Here is my HTML splash page:
+
+[paste your full HTML here]
+
+Please add CSS animations so that:
+- The emoji avatar fades in and drops down from above
+- The name slides up and fades in 0.3 seconds later
+- The tagline slides up 0.5 seconds after that
+- The info box slides up 0.7 seconds after that
+
+Also add a slowly shifting gradient animation to the page background.
+Use only CSS — no JavaScript. Keep all my existing styles and content.</div>
+        </div>
+
+        <div class="what-to-look-for">
+          <strong>What to look for in the response</strong>
+          Claude should add <code>@keyframes</code> rules and <code>animation</code> properties with different delays.
+          If the animations feel too fast or slow, follow up: "Make the animations slower" or "Increase the delay between elements."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exercise 2 -->
+  <section>
+    <h2>Exercise 2 — Dark / Light Toggle</h2>
+    <p class="section-intro">Add a button that switches the page between dark and light mode. Introduces CSS variables and a tiny bit of JavaScript.</p>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <div class="exercise-num">2</div>
+        <div class="exercise-title">Toggle dark and light mode with a button</div>
+        <span class="exercise-level level-1">Beginner</span>
+      </div>
+      <div class="exercise-body">
+        <a class="preview-link" href="examples/splash-skills.html" target="_blank">
+          ▶ View live example (includes skill tags)
+        </a>
+        <p>
+          The example uses CSS custom properties (<code>--bg</code>, <code>--text</code>, etc.) so that
+          toggling a single class on <code>&lt;body&gt;</code> switches all the colors at once.
+          The JavaScript is one line: <code>document.body.classList.toggle('light')</code>.
+        </p>
+
+        <div class="prompt-section">
+          <h4>Prompt to use with Claude or Copilot</h4>
+          <div class="prompt-label"><span>Claude / Copilot Chat</span></div>
+          <div class="prompt-box">Here is my HTML splash page:
+
+[paste your full HTML here]
+
+Add a dark/light mode toggle button. Requirements:
+- The button should appear in the top-right corner of the page
+- Clicking it switches between the current dark theme and a clean light theme
+- Use CSS custom properties (variables) for all colors so the switch is smooth
+- Add a CSS transition so the background and text color fade over 0.3 seconds
+- Use the minimum JavaScript needed — ideally just one line
+- Label the button with ☀️ / 🌙
+Keep all my existing content.</div>
+        </div>
+
+        <div class="what-to-look-for">
+          <strong>What to look for in the response</strong>
+          Look for <code>:root</code> with CSS variables and a <code>body.light</code> override block.
+          If the button is in the wrong position, ask: "Move the button to the top-right corner and keep it there when scrolling."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exercise 3 -->
+  <section>
+    <h2>Exercise 3 — Skills Tags</h2>
+    <p class="section-intro">Add a row of color-coded pill badges showing your skills, tools, or interests.</p>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <div class="exercise-num">3</div>
+        <div class="exercise-title">Add colored skill / interest tags</div>
+        <span class="exercise-level level-2">Intermediate</span>
+      </div>
+      <div class="exercise-body">
+        <a class="preview-link" href="examples/splash-skills.html" target="_blank">
+          ▶ View live example
+        </a>
+        <p>
+          Each tag is a <code>&lt;span&gt;</code> with a class. Different classes get different background colors.
+          Tags for things you're learning get a different style (outlined instead of filled).
+        </p>
+
+        <div class="prompt-section">
+          <h4>Prompt to use with Claude or Copilot</h4>
+          <div class="prompt-label"><span>Claude / Copilot Chat</span></div>
+          <div class="prompt-box">Here is my HTML splash page:
+
+[paste your full HTML here]
+
+Add a row of skill/interest tags below my name. Requirements:
+- Tags should be pill-shaped (rounded) with colored backgrounds
+- Include these skills: Python, JavaScript, HTML/CSS, Google Apps Script
+- Include these "currently learning" items: [add your own] — style these differently (outline only, no fill)
+- The tags should wrap on smaller screens
+- Make it look clean and modern
+Place the tags between my name/tagline and the info box.</div>
+        </div>
+
+        <div class="what-to-look-for">
+          <strong>What to look for in the response</strong>
+          Look for <code>display: flex; flex-wrap: wrap</code> on the container.
+          To change colors, follow up: "Make the Python tag blue and the JavaScript tag yellow."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exercise 4 -->
+  <section>
+    <h2>Exercise 4 — Typewriter Effect</h2>
+    <p class="section-intro">Make your tagline cycle through several phrases using a typewriter animation. Introduces basic JavaScript logic.</p>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <div class="exercise-num">4</div>
+        <div class="exercise-title">Cycle through phrases with a typing animation</div>
+        <span class="exercise-level level-2">Intermediate</span>
+      </div>
+      <div class="exercise-body">
+        <a class="preview-link" href="examples/splash-typing.html" target="_blank">
+          ▶ View live example
+        </a>
+        <p>
+          The JavaScript types one character at a time, pauses when the phrase is complete,
+          then deletes it and moves to the next. The blinking cursor is pure CSS.
+        </p>
+
+        <div class="prompt-section">
+          <h4>Prompt to use with Claude or Copilot</h4>
+          <div class="prompt-label"><span>Claude / Copilot Chat</span></div>
+          <div class="prompt-box">Here is my HTML splash page:
+
+[paste your full HTML here]
+
+Replace my static tagline with a typewriter effect that cycles through these phrases:
+- "Student. Builder. Tinkerer."
+- "I write Python and break things."
+- "Currently learning [your thing here]."
+- "I use AI to code faster."
+
+Requirements:
+- Type each phrase one character at a time
+- Pause for 1.5 seconds when a phrase is complete
+- Delete it character by character, then start the next phrase
+- Show a blinking cursor while typing (CSS only)
+- Loop forever
+Write this in plain JavaScript — no libraries.</div>
+        </div>
+
+        <div class="what-to-look-for">
+          <strong>What to look for in the response</strong>
+          Look for a <code>setTimeout</code> or <code>setInterval</code> loop and an array of phrases.
+          To adjust speed, ask: "Make the typing faster" or "Make the delete speed twice as fast as the typing speed."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exercise 5 -->
+  <section>
+    <h2>Exercise 5 — Put It All Together</h2>
+    <p class="section-intro">Combine everything into one polished page, then submit it as a Pull Request to replace your original splash page.</p>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <div class="exercise-num">5</div>
+        <div class="exercise-title">Design your definitive splash page</div>
+        <span class="exercise-level level-3">Challenge</span>
+      </div>
+      <div class="exercise-body">
+        <p>
+          Take the best pieces from the previous exercises and ask Claude or Copilot to combine them
+          into one cohesive page. Use this as a chance to make it genuinely yours — your name,
+          your colors, your interests.
+        </p>
+
+        <div class="prompt-section">
+          <h4>Prompt to use with Claude or Copilot</h4>
+          <div class="prompt-label"><span>Claude / Copilot Chat</span></div>
+          <div class="prompt-box">I want to build a polished personal splash page. Here are the features I want:
+
+1. Animated entrance — elements fade/slide in on load with staggered delays
+2. Dark/light toggle button in the top-right corner
+3. Color-coded skill tags: [your skills]
+4. Typewriter effect on my tagline cycling through: [your phrases]
+5. My name: [your name]
+6. My color scheme: [describe it, e.g. "dark navy and white" or "warm orange tones"]
+
+Write the complete HTML file — everything in one file, no external dependencies.
+Make it look modern and clean.</div>
+        </div>
+
+        <div class="what-to-look-for">
+          <strong>After you have a page you like</strong>
+          Save it as <code>docs/splash-pages/firstname-lastname.html</code> in the repo,
+          commit it on your branch, and open a Pull Request. It will appear in the
+          <a href="splash-pages/">Splash Page Archive</a>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Copilot in VS Code | Get the tools. Use AI. Build things.</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .highlight { background: #d1fae5; border-left: 4px solid #059669; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .screenshot { background: #dde3ea; border: 2px dashed #aab; border-radius: 6px; padding: 2rem 1rem; text-align: center; color: #667; font-size: 0.88rem; margin: 0.8rem 0; }
+    .screenshot strong { display: block; margin-bottom: 0.3rem; font-size: 0.95rem; color: #445; }
+    .screenshot img { max-width: 100%; border-radius: 4px; display: block; margin: 0 auto; }
+
+    .tier-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .tier-card { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 1.1rem 1.2rem; }
+    .tier-card .tier-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem; }
+    .tier-card .tier-price { font-size: 1.4rem; font-weight: 700; color: #0f3460; margin-bottom: 0.6rem; }
+    .tier-card .tier-price span { font-size: 0.8rem; font-weight: normal; color: #888; }
+    .tier-card ul { padding-left: 1.1rem; font-size: 0.88rem; color: #444; line-height: 1.9; }
+    .tier-card.recommended { border: 2px solid #059669; }
+    .tier-badge { display: inline-block; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 3px; margin-left: 0.4rem; vertical-align: middle; }
+    .tier-badge.free { background: #d1fae5; color: #065f46; }
+    .tier-badge.rec  { background: #0f3460; color: white; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li { counter-increment: step; padding: 0.9rem 1rem 0.9rem 3.2rem; background: white; border-radius: 6px; margin-bottom: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); position: relative; }
+    .steps li::before { content: counter(step); position: absolute; left: 1rem; top: 1rem; background: #0f3460; color: white; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+    .steps li p { margin-top: 0.3rem; font-size: 0.94rem; color: #444; }
+
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    @media (max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+    .compare-card { background: white; border-radius: 8px; padding: 1rem 1.2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+    .compare-card h4 { font-size: 0.97rem; margin-bottom: 0.5rem; color: #0f3460; }
+    .compare-card ul { padding-left: 1.1rem; font-size: 0.88rem; line-height: 1.9; color: #444; }
+
+    .prompt-box { background: #1a1a2e; color: #c9d1d9; border-radius: 8px; padding: 1.1rem 1.3rem; margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.7; }
+    .prompt-box .prompt-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.5; margin-bottom: 0.5rem; display: block; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>GitHub Copilot in VS Code</h1>
+  <p>Autocomplete, chat, and inline suggestions — and free for verified students</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>AI Tools &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <section>
+    <h2>What Is GitHub Copilot?</h2>
+    <p>
+      GitHub Copilot is an AI tool built into VS Code that suggests code as you type — similar to
+      autocomplete, but for entire functions, blocks, and files. It also has a chat panel where you
+      can ask questions, explain code, or request changes.
+    </p>
+    <p>
+      Copilot is made by GitHub (owned by Microsoft) and is powered by OpenAI models. It is deeply
+      integrated into VS Code and works across all languages — Python, JavaScript, Google Apps Script, HTML, and more.
+    </p>
+  </section>
+
+  <section>
+    <h2>Plans &amp; Pricing</h2>
+
+    <div class="highlight">
+      <strong>Students get Copilot completely free.</strong>
+      If you have a verified student email address, apply for the
+      <a href="https://education.github.com/pack" target="_blank">GitHub Student Developer Pack</a> —
+      it includes Copilot Pro at no cost, along with many other tools.
+      Verification usually takes 1–3 days.
+    </div>
+
+    <div class="tier-grid">
+      <div class="tier-card">
+        <div class="tier-name">Free</div>
+        <div class="tier-price">$0 <span>/ month</span></div>
+        <ul>
+          <li>2,000 code completions/month</li>
+          <li>50 chat messages/month</li>
+          <li>Access to GPT-4o and Claude Sonnet</li>
+          <li>Good for: occasional use, trying it out</li>
+        </ul>
+      </div>
+      <div class="tier-card recommended">
+        <div class="tier-name">Student <span class="tier-badge free">Free for students</span></div>
+        <div class="tier-price">$0 <span>w/ GitHub Education</span></div>
+        <ul>
+          <li>Unlimited completions</li>
+          <li>Unlimited chat messages</li>
+          <li>All Pro features</li>
+          <li>Requires .edu email or school verification</li>
+          <li>Good for: any student — apply immediately</li>
+        </ul>
+      </div>
+      <div class="tier-card">
+        <div class="tier-name">Pro <span class="tier-badge rec">Recommended if not a student</span></div>
+        <div class="tier-price">$10 <span>/ month or $100/year</span></div>
+        <ul>
+          <li>Unlimited completions</li>
+          <li>Unlimited chat</li>
+          <li>Multi-file editing</li>
+          <li>Good for: regular daily use</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Copilot vs. Claude — Which Should You Use?</h2>
+    <p>They are different tools that complement each other. Many developers use both.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4>Copilot is better for</h4>
+        <ul>
+          <li>Inline autocomplete while typing</li>
+          <li>Completing repetitive code patterns fast</li>
+          <li>Staying in flow without switching windows</li>
+          <li>Generating boilerplate quickly</li>
+          <li>Cost (free tier is generous)</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h4>Claude is better for</h4>
+        <ul>
+          <li>Longer back-and-forth conversations</li>
+          <li>Explaining complex logic in detail</li>
+          <li>Reasoning through architecture decisions</li>
+          <li>Debugging with full context</li>
+          <li>Writing from a detailed description</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip">
+      A practical workflow: use Copilot for the fast stuff while you type, and open Claude when you
+      hit a problem that needs more thought or context.
+    </div>
+  </section>
+
+  <section>
+    <h2>Set Up Copilot in VS Code</h2>
+    <ol class="steps">
+      <li>
+        <strong>Create or sign in to your GitHub account</strong>
+        <p>Go to <a href="https://github.com" target="_blank">github.com</a>. You already have one if you did the GitHub exercise.</p>
+      </li>
+      <li>
+        <strong>Enable Copilot on your account</strong>
+        <p>Go to <strong>github.com/settings/copilot</strong> and activate the free tier — or apply for the Student Developer Pack first if you qualify.</p>
+        <div class="screenshot">
+          <strong>Screenshot: GitHub Copilot settings page — Enable button</strong>
+          <!-- Replace with: <img src="assets/images/copilot-enable.png" alt="GitHub Copilot settings"> -->
+          [ screenshot: github.com/settings/copilot — Enable Copilot button ]
+        </div>
+      </li>
+      <li>
+        <strong>Install the GitHub Copilot extension in VS Code</strong>
+        <p>Open the Extensions panel (<code>Ctrl+Shift+X</code>), search <strong>GitHub Copilot</strong>, and install the extension by GitHub. This also installs the Copilot Chat extension automatically.</p>
+        <div class="screenshot">
+          <strong>Screenshot: VS Code Extensions — GitHub Copilot by GitHub</strong>
+          <!-- Replace with: <img src="assets/images/copilot-extension.png" alt="Copilot extension in VS Code"> -->
+          [ screenshot: VS Code Extensions — GitHub Copilot — Install button ]
+        </div>
+      </li>
+      <li>
+        <strong>Sign in to GitHub from VS Code</strong>
+        <p>VS Code will prompt you to sign in to GitHub. Follow the browser prompt — it will redirect back to VS Code when done.</p>
+        <div class="screenshot">
+          <strong>Screenshot: VS Code GitHub sign-in prompt</strong>
+          <!-- Replace with: <img src="assets/images/copilot-signin.png" alt="VS Code GitHub sign in"> -->
+          [ screenshot: VS Code — "Sign in to GitHub" notification ]
+        </div>
+      </li>
+      <li>
+        <strong>Verify it's working</strong>
+        <p>Open any <code>.py</code>, <code>.js</code>, or <code>.html</code> file. Start typing and you should see grey suggestion text appear. Press <code>Tab</code> to accept a suggestion.</p>
+        <div class="screenshot">
+          <strong>Screenshot: Copilot inline suggestion appearing in VS Code</strong>
+          <!-- Replace with: <img src="assets/images/copilot-inline.png" alt="Copilot inline suggestion"> -->
+          [ screenshot: VS Code editor — grey autocomplete suggestion from Copilot ]
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Using Copilot — Key Interactions</h2>
+
+    <h3>Inline autocomplete</h3>
+    <p>Start typing and Copilot suggests code in grey. Press <code>Tab</code> to accept, <code>Esc</code> to dismiss, or keep typing to ignore it.</p>
+
+    <h3>Write a comment, get the code</h3>
+    <p>One of the most powerful tricks: write a comment describing what you want, press Enter, and Copilot will write the code beneath it.</p>
+    <div class="prompt-box">
+      <span class="prompt-label">Type this comment in a .py file, then press Enter</span>
+      # Read a CSV file and return a list of rows where the "score" column is above 80
+    </div>
+
+    <h3>Copilot Chat</h3>
+    <p>Open the chat panel with <code>Ctrl+Alt+I</code> or click the Copilot icon in the sidebar. Use it exactly like Claude — paste code, ask questions, request changes.</p>
+    <div class="prompt-box">
+      <span class="prompt-label">Example chat prompt</span>
+      Here is my HTML splash page. Add a button that toggles between a light and dark background when clicked. Keep the existing styles.
+      [paste your HTML]
+    </div>
+
+    <h3>Explain and fix with right-click</h3>
+    <p>Select any code in the editor, right-click, and choose <strong>Copilot → Explain This</strong> or <strong>Fix This</strong>. Useful when you're reading unfamiliar code or hit an error.</p>
+
+    <div class="tip">
+      Copilot learns from the code already in your file. The more context you give it — good variable names,
+      clear comments, existing functions — the better its suggestions will be.
+    </div>
+  </section>
+
+  <section>
+    <h2>Your First Exercise</h2>
+    <p>
+      Use Copilot to make your splash page more interesting. The
+      <a href="splash-exercises.html">Splash Page Exercises</a> include ready-made prompts
+      you can paste into Copilot Chat.
+    </p>
+    <a class="btn" href="splash-exercises.html">Go to Splash Page Exercises →</a>
+  </section>
+
+</main>
+
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
+</body>
+</html>

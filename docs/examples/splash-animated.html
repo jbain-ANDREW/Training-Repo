@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animated Splash — Example</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f3460;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    /* Animated background gradient */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0f3460, #16213e, #1a1a2e, #0f3460);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .avatar {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+      animation: floatIn 0.8s ease forwards;
+      opacity: 0;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.4rem;
+      animation: slideUp 0.7s ease 0.3s forwards;
+      opacity: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      opacity: 0;
+      animation: slideUp 0.7s ease 0.5s forwards;
+      margin-bottom: 2rem;
+      color: rgba(255,255,255,0.75);
+    }
+
+    .info {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 1.3rem 2rem;
+      max-width: 420px;
+      line-height: 1.9;
+      font-size: 0.95rem;
+      opacity: 0;
+      animation: slideUp 0.7s ease 0.7s forwards;
+    }
+
+    .info strong {
+      opacity: 0.55;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: block;
+    }
+
+    .back {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      opacity: 0;
+      animation: slideUp 0.7s ease 0.9s forwards;
+    }
+    .back a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .back a:hover { color: white; }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(-20px) scale(0.8); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="avatar">🚀</div>
+    <h1>Alex Example</h1>
+    <p class="tagline">Student &mdash; Spring 2026</p>
+    <div class="info">
+      <strong>What's different here</strong>
+      Everything fades and slides in on load. The background shifts through a gradient loop.
+      Both are pure CSS — no JavaScript needed.
+      <br><br>
+      <strong>How it was made</strong>
+      CSS <code>@keyframes</code> animations with staggered <code>animation-delay</code> values,
+      plus an animated <code>background-size</code> gradient on the body.
+    </div>
+    <p class="back"><a href="../splash-exercises.html">← Back to exercises</a></p>
+  </div>
+</body>
+</html>

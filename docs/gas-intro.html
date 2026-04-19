@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google Apps Script | Get the tools. Use AI. Build things.</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .tip      { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn     { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .highlight { background: #d1fae5; border-left: 4px solid #059669; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .screenshot { background: #dde3ea; border: 2px dashed #aab; border-radius: 6px; padding: 2rem 1rem; text-align: center; color: #667; font-size: 0.88rem; margin: 0.8rem 0; }
+    .screenshot strong { display: block; margin-bottom: 0.3rem; font-size: 0.95rem; color: #445; }
+    .screenshot img { max-width: 100%; border-radius: 4px; display: block; margin: 0 auto; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li { counter-increment: step; padding: 0.9rem 1rem 0.9rem 3.2rem; background: white; border-radius: 6px; margin-bottom: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); position: relative; }
+    .steps li::before { content: counter(step); position: absolute; left: 1rem; top: 1rem; background: #0f3460; color: white; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+    .steps li p { margin-top: 0.3rem; font-size: 0.94rem; color: #444; }
+
+    pre {
+      background: #1a1a2e;
+      color: #c9d1d9;
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      font-size: 0.88rem;
+      line-height: 1.65;
+      margin: 0.8rem 0;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+
+    .prompt-box { background: #1a1a2e; color: #c9d1d9; border-radius: 8px; padding: 1.1rem 1.3rem; margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.7; }
+    .prompt-box .prompt-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.5; margin-bottom: 0.5rem; display: block; }
+
+    .exercise-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.3rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      border-top: 4px solid #0f3460;
+    }
+    .exercise-card.intermediate { border-top-color: #f59e0b; }
+    .exercise-card.challenge    { border-top-color: #ef4444; }
+    .exercise-num { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 0.3rem; }
+    .exercise-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .exercise-badge { display: inline-block; font-size: 0.72rem; padding: 0.15rem 0.5rem; border-radius: 3px; margin-left: 0.4rem; vertical-align: middle; font-weight: 600; }
+    .badge-beginner     { background: #d1fae5; color: #065f46; }
+    .badge-intermediate { background: #fef3c7; color: #92400e; }
+    .badge-challenge    { background: #fee2e2; color: #991b1b; }
+
+    .advantage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .advantage-card { background: white; border-radius: 8px; padding: 1rem 1.1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+    .advantage-card .adv-icon { font-size: 1.6rem; margin-bottom: 0.4rem; }
+    .advantage-card strong { display: block; font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .advantage-card p { font-size: 0.88rem; color: #555; margin: 0; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+    .btn-green { background: #059669; }
+    .btn-green:hover { background: #047857; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Google Apps Script</h1>
+  <p>Write JavaScript in your browser — no install, no setup, deploy in minutes</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>AI Tools &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <!-- ── WHAT IS GAS ── -->
+  <section>
+    <h2>What Is Google Apps Script?</h2>
+    <p>
+      Google Apps Script (GAS) is a scripting platform built into Google's cloud. You write
+      JavaScript in a browser-based editor at
+      <a href="https://script.google.com" target="_blank">script.google.com</a> — no terminal,
+      no install, no environment to configure. Your code runs on Google's servers.
+    </p>
+
+    <div class="advantage-grid">
+      <div class="advantage-card">
+        <div class="adv-icon">🌐</div>
+        <strong>Runs in the browser</strong>
+        <p>Write code at script.google.com from any computer. Nothing to install.</p>
+      </div>
+      <div class="advantage-card">
+        <div class="adv-icon">📦</div>
+        <strong>Google services built in</strong>
+        <p>Access Sheets, Docs, Gmail, Drive, Forms, and Calendar with a few lines of code.</p>
+      </div>
+      <div class="advantage-card">
+        <div class="adv-icon">🚀</div>
+        <strong>Deploy as a web app</strong>
+        <p>Get a public URL that runs your script — like a mini web server, free.</p>
+      </div>
+      <div class="advantage-card">
+        <div class="adv-icon">🤖</div>
+        <strong>Great for AI generation</strong>
+        <p>Claude and Copilot know GAS well. Describe what you want and paste the result.</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <strong>Where GAS shines:</strong> automating repetitive tasks (filling a Sheet, sending emails),
+      building lightweight web apps (forms, dashboards, link pages), and connecting Google services together —
+      all without a server or local environment.
+    </div>
+  </section>
+
+  <!-- ── THE EXAMPLE APP ── -->
+  <section>
+    <h2>Example: Personal Link Page</h2>
+    <p>
+      This is the complete code for a personal link page (think mini Linktree) deployed as a Google Apps Script
+      web app. When someone visits your URL, <code>doGet()</code> runs and returns an HTML page.
+      Paste it into a new project and you'll have a live URL in under five minutes.
+    </p>
+
+    <h3>Code.gs</h3>
+    <pre><code>function doGet() {
+  return HtmlService.createHtmlOutput(buildPage())
+    .setTitle('My Links')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function buildPage() {
+  const name    = 'Your Name';
+  const tagline = 'Student &mdash; Spring 2026';
+  const avatar  = '🚀';
+
+  const links = [
+    { label: 'GitHub',    url: 'https://github.com/your-username' },
+    { label: 'LinkedIn',  url: 'https://linkedin.com/in/your-profile' },
+    { label: 'Portfolio', url: 'https://your-site.github.io' },
+    { label: 'Email Me',  url: 'mailto:you@example.com' },
+  ];
+
+  const linkHTML = links.map(link =>
+    `&lt;a href="${link.url}" target="_blank"&gt;${link.label}&lt;/a&gt;`
+  ).join('');
+
+  return `&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;style&gt;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1a1a2e;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+    }
+    .avatar  { font-size: 4rem; margin-bottom: 0.8rem; }
+    h1       { font-size: 2rem; margin-bottom: 0.3rem; }
+    .tagline { opacity: 0.65; margin-bottom: 2rem; }
+    .links   { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 320px; }
+    .links a {
+      display: block;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+    .links a:hover { background: rgba(255,255,255,0.2); }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="avatar"&gt;${avatar}&lt;/div&gt;
+  &lt;h1&gt;${name}&lt;/h1&gt;
+  &lt;p class="tagline"&gt;${tagline}&lt;/p&gt;
+  &lt;div class="links"&gt;${linkHTML}&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;`;
+}</code></pre>
+
+    <div class="tip">
+      <strong>How it works:</strong> <code>doGet()</code> is a reserved function name — Google calls it
+      automatically when someone visits your web app URL. It returns an <code>HtmlOutput</code> object
+      built from a JavaScript template string. The <code>links</code> array maps to <code>&lt;a&gt;</code>
+      tags using <code>.map()</code> and <code>.join()</code>.
+    </div>
+  </section>
+
+  <!-- ── DEPLOY STEPS ── -->
+  <section>
+    <h2>Deploy Your Link Page</h2>
+    <p>Follow these steps to get a live URL. You only need a Google account.</p>
+
+    <ol class="steps">
+      <li>
+        <strong>Open the editor</strong>
+        <p>Go to <a href="https://script.google.com" target="_blank">script.google.com</a> and click
+        <strong>New project</strong> in the top-left corner.</p>
+        <!-- Screenshot: script.google.com home page with "New project" button circled -->
+        <div class="screenshot">
+          <strong>Screenshot placeholder</strong>
+          script.google.com — click "New project"<br>
+          <!-- Replace with: <img src="assets/images/gas-new-project.png" alt="New project button"> -->
+        </div>
+      </li>
+      <li>
+        <strong>Name your project</strong>
+        <p>Click "Untitled project" at the top and rename it to something like <strong>My Link Page</strong>.</p>
+      </li>
+      <li>
+        <strong>Replace the default code</strong>
+        <p>Delete the starter <code>myFunction()</code> and paste the full <code>Code.gs</code> above.
+        Update <code>name</code>, <code>tagline</code>, <code>avatar</code>, and the <code>links</code> array
+        with your own information.</p>
+        <!-- Screenshot: editor with pasted code -->
+        <div class="screenshot">
+          <strong>Screenshot placeholder</strong>
+          Apps Script editor with Code.gs pasted in<br>
+          <!-- Replace with: <img src="assets/images/gas-paste-code.png" alt="Code pasted in editor"> -->
+        </div>
+      </li>
+      <li>
+        <strong>Save the project</strong>
+        <p>Press <code>Ctrl+S</code> (or the save icon). The title bar should show the project name without
+        an asterisk when saved.</p>
+      </li>
+      <li>
+        <strong>Deploy as a web app</strong>
+        <p>Click <strong>Deploy → New deployment</strong>. Set type to <strong>Web app</strong>.
+        Under "Who has access" choose <strong>Anyone</strong>. Click <strong>Deploy</strong>.</p>
+        <!-- Screenshot: Deploy dialog with Web app selected and Anyone access -->
+        <div class="screenshot">
+          <strong>Screenshot placeholder</strong>
+          Deploy dialog — type: Web app, access: Anyone<br>
+          <!-- Replace with: <img src="assets/images/gas-deploy-dialog.png" alt="Deploy dialog"> -->
+        </div>
+      </li>
+      <li>
+        <strong>Copy your URL and test it</strong>
+        <p>After deploying, Google gives you a URL that looks like
+        <code>https://script.google.com/macros/s/AKf.../exec</code>.
+        Open it in a new tab — you should see your link page.</p>
+        <!-- Screenshot: Deployed web app URL screen -->
+        <div class="screenshot">
+          <strong>Screenshot placeholder</strong>
+          Deployment complete screen showing the web app URL<br>
+          <!-- Replace with: <img src="assets/images/gas-deploy-url.png" alt="Deployment URL screen"> -->
+        </div>
+      </li>
+    </ol>
+
+    <div class="warn">
+      <strong>Making changes after deploying:</strong> edits to the code don't automatically update the
+      live URL. Go to <strong>Deploy → Manage deployments</strong>, click the pencil icon, and choose
+      <strong>New version</strong> to push updates.
+    </div>
+  </section>
+
+  <!-- ── AI GENERATION EXERCISES ── -->
+  <section>
+    <h2>AI Generation Exercises</h2>
+    <p>
+      These exercises use Claude or Copilot to extend the link page. Each one gives you a starting prompt —
+      paste it into Claude at <a href="https://claude.ai" target="_blank">claude.ai</a> or into Copilot Chat
+      in VS Code. Copy the generated code back into your Apps Script editor and redeploy.
+    </p>
+
+    <!-- Exercise 1 -->
+    <div class="exercise-card">
+      <div class="exercise-num">Exercise 1</div>
+      <div class="exercise-title">Add a visit counter <span class="exercise-badge badge-beginner">Beginner</span></div>
+      <p>
+        Google Apps Script has a built-in key-value store called <strong>Properties Service</strong>
+        that persists between page loads. Ask the AI to add a counter that tracks how many times
+        your page has been visited and displays it at the bottom.
+      </p>
+      <div class="prompt-box">
+        <span class="prompt-label">Prompt for Claude or Copilot</span>
+        I have a Google Apps Script web app with a <code>doGet()</code> function that returns an HTML link page.
+        Add a visit counter using <code>PropertiesService.getScriptProperties()</code> that increments each time
+        <code>doGet()</code> is called and displays the total visit count at the bottom of the page in small
+        muted text. Keep all existing HTML and styling intact.
+      </div>
+      <p><strong>What to look for:</strong> The AI should add <code>getProperty</code> / <code>setProperty</code>
+      calls in <code>doGet()</code> before the return, and inject the count into the HTML template string.</p>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise-card intermediate">
+      <div class="exercise-num">Exercise 2</div>
+      <div class="exercise-title">Add a typewriter tagline <span class="exercise-badge badge-intermediate">Intermediate</span></div>
+      <p>
+        The HTML returned by <code>HtmlService</code> can include <code>&lt;script&gt;</code> tags with
+        JavaScript that runs in the visitor's browser. Ask the AI to replace the static tagline with a
+        typewriter effect that cycles through several phrases.
+      </p>
+      <div class="prompt-box">
+        <span class="prompt-label">Prompt for Claude or Copilot</span>
+        I have a Google Apps Script web app that returns an HTML link page. The page has a
+        <code>&lt;p class="tagline"&gt;</code> element with a static subtitle. Replace it with a typewriter
+        effect that cycles through these phrases: "Student — Spring 2026", "Python &amp; JavaScript",
+        "Ask me about Google Apps Script", "Building things with AI". Use a pure JavaScript
+        <code>setTimeout</code> loop. The script tag should be inside the returned HTML string.
+      </div>
+      <p><strong>What to look for:</strong> The AI should embed a <code>&lt;script&gt;</code> block in the
+      template string with the same typewriter pattern from the splash page exercises.</p>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise-card intermediate">
+      <div class="exercise-num">Exercise 3</div>
+      <div class="exercise-title">Pull data from a Google Sheet <span class="exercise-badge badge-intermediate">Intermediate</span></div>
+      <p>
+        One of GAS's superpowers is reading directly from a Google Sheet without any API keys or
+        authentication setup. Ask the AI to move your links list into a Sheet so you can update
+        them without touching code.
+      </p>
+      <div class="prompt-box">
+        <span class="prompt-label">Prompt for Claude or Copilot</span>
+        I have a Google Apps Script web app. I want to store my links in a Google Sheet instead of
+        hardcoding them. The Sheet has two columns: column A is the link label, column B is the URL.
+        Modify <code>doGet()</code> to read all rows from the Sheet using
+        <code>SpreadsheetApp.openById(SHEET_ID).getActiveSheet().getDataRange().getValues()</code>,
+        filter out empty rows, and build the links array from that data. Replace SHEET_ID with a
+        placeholder comment. Keep the rest of the HTML unchanged.
+      </div>
+      <p><strong>What to look for:</strong> The AI should add a <code>SpreadsheetApp.openById()</code> call,
+      map the 2D array from <code>getValues()</code> into the links format, and note where you paste your
+      Sheet ID.</p>
+    </div>
+
+    <!-- Exercise 4 -->
+    <div class="exercise-card challenge">
+      <div class="exercise-num">Exercise 4</div>
+      <div class="exercise-title">Build a different tool entirely <span class="exercise-badge badge-challenge">Challenge</span></div>
+      <p>
+        Now that you know GAS can serve HTML, read from Sheets, and persist data — build something
+        new from scratch using the AI. Some ideas: a simple RSVP form that writes responses to a
+        Sheet, a countdown timer to an event date, or a public status page for a project.
+      </p>
+      <div class="prompt-box">
+        <span class="prompt-label">Example prompt (adapt it)</span>
+        Write a complete Google Apps Script web app with a <code>doGet()</code> function that returns
+        a single-page RSVP form. The form should collect name, email, and a yes/no attendance field.
+        Submitting the form should call a <code>doPost()</code> function that appends the data to a
+        Google Sheet (use a placeholder SHEET_ID). After submission, show a thank-you message.
+        Style the page with a dark background (#1a1a2e), white text, and centered layout. No external
+        libraries or frameworks — plain HTML, CSS, and JavaScript only.
+      </div>
+      <p><strong>What to look for:</strong> The AI may split logic across <code>doGet()</code> and
+      <code>doPost()</code>. Make sure the form's <code>action</code> attribute is set to the script URL
+      and the method is POST, or the AI uses <code>google.script.run</code> for client-side calls.</p>
+    </div>
+  </section>
+
+  <!-- ── TIPS AND LIMITS ── -->
+  <section>
+    <h2>Good to Know</h2>
+
+    <h3>Execution limits</h3>
+    <p>
+      Free Google accounts get 6 minutes of execution time per script run and a daily quota of 90
+      minutes total. For the kinds of scripts on this page — serving HTML, reading a Sheet — you
+      will never come close to those limits.
+    </p>
+
+    <h3>Sharing and permissions</h3>
+    <p>
+      When you deploy with "Anyone" access, anyone with the URL can view the page without signing in.
+      If your script reads a Sheet, that Sheet's data becomes visible too — don't put anything private
+      in a publicly deployed app.
+    </p>
+
+    <h3>Re-deploying after changes</h3>
+    <p>
+      Saving the code does not update the live URL. You must create a new version:
+      <strong>Deploy → Manage deployments → edit pencil → New version → Deploy</strong>.
+    </p>
+
+    <div class="tip">
+      <strong>Using AI for debugging:</strong> if your GAS code throws an error, copy the full error message
+      from the Apps Script execution log (View → Executions) and paste it into Claude or Copilot along with
+      your code. The error messages are specific enough that the AI can usually identify the fix immediately.
+    </div>
+  </section>
+
+  <!-- ── NEXT STEPS ── -->
+  <section>
+    <h2>Next Steps</h2>
+    <p>
+      Google Apps Script is a great bridge between "I can write a little code" and "I can automate
+      real things." Once you're comfortable with the link page, the same patterns — <code>doGet()</code>,
+      <code>HtmlService</code>, <code>SpreadsheetApp</code> — apply to much more complex projects.
+    </p>
+    <p>
+      Return to the splash page exercises to practice more CSS and JavaScript in plain HTML files,
+      or explore the AI Tools section for tips on getting better results from Claude and Copilot.
+    </p>
+    <a href="splash-exercises.html" class="btn">Splash Page Exercises</a>
+    <a href="claude-vscode.html" class="btn" style="margin-left: 0.75rem;">Claude in VS Code</a>
+  </section>
+
+</main>
+
+<footer>
+  <p>Get the tools. Use AI. Build things. &mdash; <a href="feedback.html">Report a problem</a></p>
+</footer>
+
+</body>
+</html>

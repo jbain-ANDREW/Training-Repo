@@ -3,36 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Python &amp; GitHub Setup</title>
+  <title>Get the tools. Use AI. Build things.</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
 
-    header {
-      background: #1a1a2e;
-      color: white;
-      padding: 2.5rem 2rem;
-      text-align: center;
-    }
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
     header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
     header p { opacity: 0.75; font-size: 1.05rem; }
 
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      background: #16213e;
-      padding: 0.75rem;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: #e0e0e0;
-      text-decoration: none;
-      font-size: 0.95rem;
-      padding: 0.3rem 0.8rem;
-      border-radius: 4px;
-      transition: background 0.2s;
-    }
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
     nav a:hover { background: #0f3460; }
     .nav-dropdown { position: relative; display: inline-block; }
     .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
@@ -42,7 +23,7 @@
     .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
     .nav-dropdown-menu a:hover { background: #16213e; }
 
-    main { max-width: 940px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    main { max-width: 960px; margin: 2.5rem auto; padding: 0 1.5rem; }
 
     .intro {
       background: white;
@@ -64,48 +45,19 @@
       font-size: 0.94rem;
     }
     .path-box strong { display: block; margin-bottom: 0.4rem; font-size: 1rem; }
-    .path-steps {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      align-items: center;
-      margin-top: 0.4rem;
-    }
-    .path-step {
-      background: #0f3460;
-      color: white;
-      padding: 0.3rem 0.8rem;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      text-decoration: none;
-      white-space: nowrap;
-    }
+    .path-steps { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin-top: 0.4rem; }
+    .path-step { background: #0f3460; color: white; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.85rem; text-decoration: none; white-space: nowrap; }
     .path-step:hover { background: #16213e; }
     .path-arrow { color: #0f3460; font-size: 1rem; }
 
     section { margin-bottom: 2.5rem; }
-    h2 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      border-left: 4px solid #0f3460;
-      padding-left: 0.6rem;
-      color: #1a1a2e;
-    }
+    h2 { font-size: 1.2rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; color: #1a1a2e; }
 
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.1rem;
-    }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.1rem; }
     .card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      padding: 1.2rem 1.3rem;
-      text-decoration: none;
-      color: #222;
-      display: flex;
-      flex-direction: column;
+      background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 1.2rem 1.3rem; text-decoration: none; color: #222;
+      display: flex; flex-direction: column;
       transition: transform 0.15s, box-shadow 0.15s;
     }
     .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
@@ -113,44 +65,23 @@
     .card h3 { font-size: 1rem; margin-bottom: 0.3rem; color: #0f3460; }
     .card p { font-size: 0.88rem; color: #555; line-height: 1.5; flex: 1; }
     .card-tag {
-      display: inline-block;
-      margin-top: 0.7rem;
-      font-size: 0.75rem;
-      background: #e8ecf0;
-      color: #555;
-      padding: 0.2rem 0.5rem;
-      border-radius: 3px;
-      align-self: flex-start;
+      display: inline-block; margin-top: 0.7rem; font-size: 0.75rem;
+      background: #e8ecf0; color: #555; padding: 0.2rem 0.5rem;
+      border-radius: 3px; align-self: flex-start;
     }
-    .card-tag.start { background: #d1fae5; color: #065f46; }
+    .card-tag.start   { background: #d1fae5; color: #065f46; }
     .card-tag.exercise { background: #dbeafe; color: #1e40af; }
     .card-tag.reference { background: #f3e8ff; color: #6b21a8; }
+    .card-tag.ai      { background: #fef3c7; color: #92400e; }
 
     .splash-cta {
-      background: #1a1a2e;
-      color: white;
-      border-radius: 8px;
-      padding: 1.4rem 1.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
+      background: #1a1a2e; color: white; border-radius: 8px;
+      padding: 1.4rem 1.6rem; display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 1rem;
     }
     .splash-cta h3 { font-size: 1.05rem; margin-bottom: 0.2rem; }
     .splash-cta p { font-size: 0.88rem; opacity: 0.75; }
-    .btn {
-      display: inline-block;
-      background: white;
-      color: #0f3460;
-      padding: 0.6rem 1.4rem;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.93rem;
-      white-space: nowrap;
-      transition: opacity 0.2s;
-    }
+    .btn { display: inline-block; background: white; color: #0f3460; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-weight: 600; font-size: 0.93rem; white-space: nowrap; transition: opacity 0.2s; }
     .btn:hover { opacity: 0.85; }
 
     footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
@@ -159,8 +90,8 @@
 <body>
 
 <header>
-  <h1>Python &amp; GitHub Setup</h1>
-  <p>GitHub is how the software world shares and manages code. Start here.</p>
+  <h1>Get the tools. Use AI. Build things.</h1>
+  <p>A setup guide for students and makers who want to use AI to write code faster.</p>
 </header>
 
 <nav>
@@ -181,17 +112,35 @@
       <a href="python-complexity.html">When It Gets Complex</a>
     </div>
   </div>
+  <div class="nav-dropdown">
+    <span>AI Tools &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
   <a href="feedback.html">Report a Problem</a>
-  <a href="https://github.com/jbain-ANDREW/Training-Repo">GitHub Repo</a>
   <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
 </nav>
 
 <main>
 
   <div class="intro">
     <p>
-      This site is your guide to getting set up with GitHub, the terminal, and Python on Windows.
-      There is no single right order — but if this is all new to you, the suggested path below is a good place to start.
+      This site walks you through the stack you need to do real work with AI coding tools —
+      Git for version control, Python for scripting, and Claude or Copilot inside VS Code to
+      write and improve code faster than you could on your own.
+    </p>
+    <p>
+      No prior experience needed. Each guide assumes you are starting from scratch on Windows.
     </p>
     <div class="path-box">
       <strong>Suggested path for beginners</strong>
@@ -200,9 +149,11 @@
         <span class="path-arrow">→</span>
         <a class="path-step" href="github-exercise.html">GitHub Exercise</a>
         <span class="path-arrow">→</span>
-        <a class="path-step" href="github-desktop.html">Try GitHub Desktop</a>
-        <span class="path-arrow">→</span>
         <a class="path-step" href="python-setup.html">Python Setup</a>
+        <span class="path-arrow">→</span>
+        <a class="path-step" href="claude-vscode.html">Claude in VS Code</a>
+        <span class="path-arrow">→</span>
+        <a class="path-step" href="splash-exercises.html">Try an Exercise</a>
       </div>
       <p style="margin-top:0.6rem; font-size:0.88rem; opacity:0.8;">
         Already comfortable with some of these? Jump in wherever makes sense.
@@ -210,70 +161,95 @@
     </div>
   </div>
 
-  <!-- GitHub -->
   <section>
     <h2>GitHub &amp; Version Control</h2>
     <div class="card-grid">
-
       <a class="card" href="terminal-basics.html">
         <div class="card-icon">⌨️</div>
         <h3>Terminal Basics</h3>
-        <p>Never used a terminal before? Start here. Learn what it is, how to open it on Windows, and the handful of commands you need to follow along with everything else.</p>
+        <p>Never used a terminal before? Learn what it is, how to open it on Windows, and the handful of commands you need to follow along with everything else.</p>
         <span class="card-tag start">Start here</span>
       </a>
-
       <a class="card" href="github-exercise.html">
         <div class="card-icon">🌿</div>
         <h3>GitHub Exercise — Terminal</h3>
-        <p>Clone the repo, create a branch, make your splash page, and open a Pull Request using terminal commands. The classic workflow used on real teams.</p>
+        <p>Clone the repo, create a branch, make your splash page, and open a Pull Request using terminal commands. The workflow used on real teams.</p>
         <span class="card-tag exercise">Exercise</span>
       </a>
-
       <a class="card" href="github-desktop.html">
         <div class="card-icon">🖥️</div>
         <h3>GitHub Exercise — Desktop App</h3>
-        <p>Do the same exercise using GitHub Desktop — a visual app with no terminal required. Try this after the terminal version to see the same concepts from a different angle.</p>
+        <p>Same exercise using GitHub Desktop — a visual app with no terminal required. Try both and compare.</p>
         <span class="card-tag exercise">Exercise</span>
       </a>
-
     </div>
   </section>
 
-  <!-- Python -->
   <section>
     <h2>Python Setup</h2>
     <div class="card-grid">
-
       <a class="card" href="python-setup.html">
         <div class="card-icon">🐍</div>
         <h3>Python — Fresh Install</h3>
-        <p>No Python on your machine yet. Step-by-step install guide for Windows: download, the critical PATH checkbox, verify it works, and run your first script in VS Code.</p>
+        <p>No Python yet. Step-by-step install guide for Windows: download, the critical PATH checkbox, verify it works, run your first script in VS Code.</p>
         <span class="card-tag start">Start here</span>
       </a>
-
       <a class="card" href="python-cleanup.html">
         <div class="card-icon">🔍</div>
         <h3>Python — Already Installed</h3>
-        <p>Already have Python but not sure what version or if it's set up correctly? Audit what's on your machine, fix PATH problems, and sort out conflicts with Anaconda or the Microsoft Store.</p>
+        <p>Not sure what version you have or whether it's set up correctly? Audit what's on your machine and fix PATH problems.</p>
         <span class="card-tag reference">Reference</span>
       </a>
-
       <a class="card" href="python-complexity.html">
         <div class="card-icon">📦</div>
         <h3>Python — When It Gets Complex</h3>
-        <p>What are packages, venv, and conda? Why do environments exist? Read this when your plain install starts to feel limiting — or when a course asks you to set one up.</p>
+        <p>What are packages, venv, and conda? Read this when a plain install starts to feel limiting or a project asks you to set up an environment.</p>
         <span class="card-tag reference">Reference</span>
       </a>
-
     </div>
   </section>
 
-  <!-- Splash archive CTA -->
+  <section>
+    <h2>AI Tools in VS Code</h2>
+    <div class="card-grid">
+      <a class="card" href="claude-vscode.html">
+        <div class="card-icon">🤖</div>
+        <h3>Claude in VS Code</h3>
+        <p>Install the Claude extension, understand the free and paid tiers, and use Claude to generate, explain, and improve code directly inside your editor.</p>
+        <span class="card-tag ai">AI Tool</span>
+      </a>
+      <a class="card" href="copilot-vscode.html">
+        <div class="card-icon">✈️</div>
+        <h3>GitHub Copilot in VS Code</h3>
+        <p>Copilot autocompletes code as you type and answers questions in chat. Free tier available — and completely free for students via GitHub Education.</p>
+        <span class="card-tag ai">AI Tool</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Exercises</h2>
+    <div class="card-grid">
+      <a class="card" href="splash-exercises.html">
+        <div class="card-icon">🎨</div>
+        <h3>Splash Page Exercises</h3>
+        <p>Use Claude or Copilot to make your splash page do more — animations, dark mode toggle, skills tags, typing effects. Live examples and copy-paste prompts included.</p>
+        <span class="card-tag exercise">Exercise</span>
+      </a>
+      <a class="card" href="gas-intro.html">
+        <div class="card-icon">📊</div>
+        <h3>Google Apps Script</h3>
+        <p>No install needed. Deploy a real web app in minutes using Google Apps Script, then use AI to extend it. Great for automations, dashboards, and Google Workspace tools.</p>
+        <span class="card-tag exercise">Exercise</span>
+      </a>
+    </div>
+  </section>
+
   <section>
     <div class="splash-cta">
       <div>
         <h3>Splash Page Archive</h3>
-        <p>Every page in this archive was submitted by a student just like you. Complete the exercise and yours will appear here too.</p>
+        <p>Every page here was built and submitted by someone working through these guides. Complete the exercise and yours will appear too.</p>
       </div>
       <a class="btn" href="splash-pages/">View the archive →</a>
     </div>
@@ -281,6 +257,6 @@
 
 </main>
 
-<footer>Python &amp; GitHub Setup &mdash; jbain-ANDREW</footer>
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
 </body>
 </html>

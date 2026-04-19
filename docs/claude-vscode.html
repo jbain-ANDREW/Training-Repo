@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude in VS Code | Get the tools. Use AI. Build things.</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+    pre { background: #1a1a2e; color: #c9d1d9; padding: 1.1rem 1.3rem; border-radius: 6px; overflow-x: auto; font-size: 0.88rem; line-height: 1.6; margin: 0.6rem 0; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .screenshot { background: #dde3ea; border: 2px dashed #aab; border-radius: 6px; padding: 2rem 1rem; text-align: center; color: #667; font-size: 0.88rem; margin: 0.8rem 0; }
+    .screenshot strong { display: block; margin-bottom: 0.3rem; font-size: 0.95rem; color: #445; }
+    .screenshot img { max-width: 100%; border-radius: 4px; display: block; margin: 0 auto; }
+
+    /* Tier table */
+    .tier-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .tier-card { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 1.1rem 1.2rem; }
+    .tier-card .tier-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem; }
+    .tier-card .tier-price { font-size: 1.4rem; font-weight: 700; color: #0f3460; margin-bottom: 0.6rem; }
+    .tier-card .tier-price span { font-size: 0.8rem; font-weight: normal; color: #888; }
+    .tier-card ul { padding-left: 1.1rem; font-size: 0.88rem; color: #444; line-height: 1.9; }
+    .tier-card.recommended { border: 2px solid #0f3460; }
+    .tier-badge { display: inline-block; background: #0f3460; color: white; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 3px; margin-left: 0.4rem; vertical-align: middle; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li { counter-increment: step; padding: 0.9rem 1rem 0.9rem 3.2rem; background: white; border-radius: 6px; margin-bottom: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); position: relative; }
+    .steps li::before { content: counter(step); position: absolute; left: 1rem; top: 1rem; background: #0f3460; color: white; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+    .steps li p { margin-top: 0.3rem; font-size: 0.94rem; color: #444; }
+
+    .prompt-box {
+      background: #1a1a2e;
+      color: #c9d1d9;
+      border-radius: 8px;
+      padding: 1.1rem 1.3rem;
+      margin: 0.8rem 0;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      position: relative;
+    }
+    .prompt-box .prompt-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.5; margin-bottom: 0.5rem; display: block; }
+    .prompt-box .copy-hint { font-size: 0.78rem; opacity: 0.45; margin-top: 0.6rem; display: block; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Claude in VS Code</h1>
+  <p>What Claude is, what it costs, how to set it up, and how to use it to write better code</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>AI Tools &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <a href="feedback.html">Report a Problem</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <section>
+    <h2>What Is Claude?</h2>
+    <p>
+      Claude is an AI assistant made by Anthropic. In a coding context it can write code from a description,
+      explain what existing code does, find bugs, suggest improvements, and help you think through a problem.
+      It works across languages — Python, JavaScript, Google Apps Script, HTML/CSS, and more.
+    </p>
+    <p>
+      Unlike a search engine, Claude understands context. You can paste in your code, describe what's wrong,
+      and get a specific answer — not a list of links.
+    </p>
+  </section>
+
+  <section>
+    <h2>Plans &amp; Pricing</h2>
+    <p>Claude is available through the web at claude.ai and through a VS Code extension. Both use the same account.</p>
+
+    <div class="tier-grid">
+      <div class="tier-card">
+        <div class="tier-name">Free</div>
+        <div class="tier-price">$0 <span>/ month</span></div>
+        <ul>
+          <li>claude.ai web access</li>
+          <li>Limited messages per day</li>
+          <li>Access to Claude Haiku (fast)</li>
+          <li>No VS Code extension access</li>
+          <li>Good for: trying it out, occasional questions</li>
+        </ul>
+      </div>
+      <div class="tier-card recommended">
+        <div class="tier-name">Pro <span class="tier-badge">Recommended</span></div>
+        <div class="tier-price">$20 <span>/ month</span></div>
+        <ul>
+          <li>Much higher message limits</li>
+          <li>Access to Claude Sonnet &amp; Opus (most capable)</li>
+          <li>Priority access when busy</li>
+          <li>Claude Code (VS Code extension)</li>
+          <li>Good for: regular coding work, projects</li>
+        </ul>
+      </div>
+      <div class="tier-card">
+        <div class="tier-name">API / Pay-as-you-go</div>
+        <div class="tier-price">Usage <span>based</span></div>
+        <ul>
+          <li>Direct API access</li>
+          <li>Pay per token (very cheap for light use)</li>
+          <li>Required for Claude Code CLI</li>
+          <li>Good for: developers building tools</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip">
+      <strong>For students and passion projects:</strong> The free tier at claude.ai is a great starting point.
+      If you find yourself hitting the daily limit regularly, Pro at $20/month is worth it —
+      especially once you are using it as a genuine coding partner rather than just asking occasional questions.
+    </div>
+    <div class="warn">
+      There is no dedicated student discount for Claude as of early 2026.
+      If budget is a concern, start free and compare with
+      <a href="copilot-vscode.html">GitHub Copilot</a>, which is free for verified students.
+    </div>
+  </section>
+
+  <section>
+    <h2>What Claude Can and Can't Do</h2>
+    <h3>Claude is great at</h3>
+    <ul style="padding-left:1.3rem; line-height:2; font-size:0.94rem; color:#444;">
+      <li>Writing code from a description ("write a Python function that...")</li>
+      <li>Explaining code you paste in ("what does this do?")</li>
+      <li>Debugging ("here's my error — what's wrong?")</li>
+      <li>Refactoring and improving existing code</li>
+      <li>Generating Google Apps Script, JavaScript, HTML/CSS</li>
+      <li>Talking through approach before you write anything</li>
+    </ul>
+    <h3>Claude is not good at</h3>
+    <ul style="padding-left:1.3rem; line-height:2; font-size:0.94rem; color:#444;">
+      <li>Real-time information (knowledge has a cutoff date)</li>
+      <li>Running your code — it can write it, but you have to run it</li>
+      <li>Knowing what's actually on your machine (unless you tell it)</li>
+      <li>Always being right — verify its output, especially for logic-heavy code</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Set Up Claude in VS Code</h2>
+    <div class="tip">This requires a Claude Pro account ($20/month). If you are on the free tier, you can still use claude.ai in your browser alongside VS Code — just paste code back and forth.</div>
+    <ol class="steps">
+      <li>
+        <strong>Create a Claude account</strong>
+        <p>Go to <a href="https://claude.ai" target="_blank">claude.ai</a> and sign up. Free tier is fine to start.</p>
+      </li>
+      <li>
+        <strong>Open the Extensions panel in VS Code</strong>
+        <p>Press <code>Ctrl+Shift+X</code> and search for <strong>Claude</strong>. Install the extension by Anthropic.</p>
+        <div class="screenshot">
+          <strong>Screenshot: VS Code Extensions — Claude extension by Anthropic</strong>
+          <!-- Replace with: <img src="assets/images/claude-extension.png" alt="Claude extension in VS Code marketplace"> -->
+          [ screenshot: VS Code Extensions panel — Claude by Anthropic — Install button ]
+        </div>
+      </li>
+      <li>
+        <strong>Sign in</strong>
+        <p>After installing, a Claude icon will appear in the left sidebar. Click it and sign in with your Anthropic account.</p>
+        <div class="screenshot">
+          <strong>Screenshot: Claude sidebar open in VS Code</strong>
+          <!-- Replace with: <img src="assets/images/claude-sidebar.png" alt="Claude sidebar in VS Code"> -->
+          [ screenshot: VS Code — Claude icon in sidebar — Sign in prompt ]
+        </div>
+      </li>
+      <li>
+        <strong>Open a chat</strong>
+        <p>Click the Claude icon to open the chat panel. You can now ask questions, paste code, and get responses without leaving VS Code.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>How to Talk to Claude (Prompting Basics)</h2>
+    <p>The quality of Claude's response depends heavily on how clearly you describe what you want. A few patterns that work well:</p>
+
+    <h3>Give context, then ask</h3>
+    <div class="prompt-box">
+      <span class="prompt-label">Example prompt</span>
+      I have a Python script that reads a CSV file and calculates the average of a column called "score".
+      It works but crashes when the column has empty cells. Here's the code: [paste code]
+      Fix the crash and explain what was wrong.
+      <span class="copy-hint">Tip: paste your actual code where it says [paste code]</span>
+    </div>
+
+    <h3>Describe the goal, not just the symptom</h3>
+    <div class="prompt-box">
+      <span class="prompt-label">Less useful</span>
+      Why doesn't this work?
+    </div>
+    <div class="prompt-box">
+      <span class="prompt-label">More useful</span>
+      I'm trying to make a button on my HTML page change the background color when clicked.
+      I wrote this JavaScript but nothing happens when I click. Here's my code: [paste code]
+      What am I missing?
+    </div>
+
+    <h3>Ask for options, not just an answer</h3>
+    <div class="prompt-box">
+      <span class="prompt-label">Example prompt</span>
+      I want to store a small list of names and scores in my Google Apps Script.
+      What are two or three ways to do that, and what are the tradeoffs?
+    </div>
+
+    <div class="tip">
+      If Claude's first answer isn't quite right, don't start over — just reply and refine.
+      "That almost works but the animation is too fast" or "Can you do that without jQuery?"
+      are perfectly good follow-ups.
+    </div>
+  </section>
+
+  <section>
+    <h2>Your First Exercise</h2>
+    <p>
+      The best way to learn Claude is to use it on a real task.
+      The <a href="splash-exercises.html">Splash Page Exercises</a> give you progressively more interesting
+      things to try — each with a ready-made prompt you can paste straight into Claude.
+    </p>
+    <a class="btn" href="splash-exercises.html">Go to Splash Page Exercises →</a>
+  </section>
+
+</main>
+
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
+</body>
+</html>

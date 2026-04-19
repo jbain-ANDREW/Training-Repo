@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Typing Effect — Example</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1a1a2e;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .avatar { font-size: 4.5rem; margin-bottom: 1rem; }
+
+    h1 { font-size: 2.3rem; margin-bottom: 0.5rem; }
+
+    .typing-line {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 2rem;
+      min-height: 1.6em;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: white;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 0.7s step-end infinite;
+    }
+
+    .info {
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 1.2rem 1.8rem;
+      max-width: 440px;
+      font-size: 0.93rem;
+      line-height: 1.8;
+    }
+    .info strong { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; opacity: 0.5; margin-bottom: 0.4rem; }
+
+    .back { margin-top: 1.8rem; font-size: 0.85rem; opacity: 0.5; }
+    .back a { color: white; text-decoration: none; }
+    .back a:hover { opacity: 1; }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="avatar">⌨️</div>
+  <h1>Alex Example</h1>
+  <div class="typing-line">
+    <span id="typed"></span><span class="cursor"></span>
+  </div>
+
+  <div class="info">
+    <strong>What's different here</strong>
+    The tagline cycles through phrases using a typewriter effect written in about 30 lines of JavaScript.
+    It types each phrase, pauses, then deletes and moves to the next one.
+  </div>
+
+  <p class="back"><a href="../splash-exercises.html">← Back to exercises</a></p>
+
+  <script>
+    const phrases = [
+      'Student. Builder. Tinkerer.',
+      'I write Python and break things.',
+      'Currently learning machine learning.',
+      'Ask me about Google Apps Script.',
+      'I use AI to code faster.'
+    ]
+
+    let phraseIndex = 0
+    let charIndex = 0
+    let deleting = false
+    const el = document.getElementById('typed')
+
+    function type() {
+      const current = phrases[phraseIndex]
+      if (!deleting) {
+        el.textContent = current.slice(0, charIndex + 1)
+        charIndex++
+        if (charIndex === current.length) {
+          deleting = true
+          setTimeout(type, 1800)
+          return
+        }
+      } else {
+        el.textContent = current.slice(0, charIndex - 1)
+        charIndex--
+        if (charIndex === 0) {
+          deleting = false
+          phraseIndex = (phraseIndex + 1) % phrases.length
+        }
+      }
+      setTimeout(type, deleting ? 40 : 70)
+    }
+
+    setTimeout(type, 600)
+  </script>
+</body>
+</html>
