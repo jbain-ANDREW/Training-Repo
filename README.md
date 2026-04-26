@@ -54,3 +54,18 @@ Then open a Pull Request on GitHub. Once it's reviewed and merged, your page wil
 - Only add or edit files inside `docs/splash-pages/` — nothing else.
 - One file per student, named `firstname-lastname.html`.
 - Changes outside `docs/splash-pages/` will not be accepted.
+
+## Assets / Screenshots
+
+Screenshots and images used in the docs live in `assets/images/`.
+
+| File | Path | Notes |
+|---|---|---|
+| `Screenshot 2026-04-26 154405.jpg` | `assets/images/` | Currently loose in repo root — move here |
+
+**Naming convention for new screenshots:** `topic-description.png`, e.g. `github-clone-dialog.png`, `vscode-extensions-panel.png`.
+
+Save new screenshots to:
+```
+assets/images/your-filename.png
+```
