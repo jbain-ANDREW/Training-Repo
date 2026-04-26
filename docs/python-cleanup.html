@@ -75,6 +75,7 @@
     .btn-outline:hover { background: #0f3460; color: white; }
 
     footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+      .screenshot-filename { display: block; font-family: monospace; font-size: 12px; font-weight: 600; color: #b03020; background: #fff5f5; border: 1px dashed #e09090; padding: 4px 10px; border-radius: 3px; margin-top: 8px; }
   </style>
 </head>
 <body>
@@ -160,7 +161,7 @@
         <p>This shows the version that runs when you type <code>python</code>. Note the version number.</p>
         <div class="screenshot">
           <strong>Screenshot: cmd — python --version output</strong>
-          <!-- Replace with: <img src="assets/images/cleanup-python-version.png" alt="cmd showing python version"> -->
+          <code class="screenshot-filename">save as: assets/images/cleanup-python-version.png</code>
           [ screenshot: cmd — python --version → e.g. Python 3.9.7 ]
         </div>
       </li>
@@ -170,7 +171,7 @@
         <p>This lists every Python executable Windows can find, in order of priority. The first line is the one that runs when you type <code>python</code>.</p>
         <div class="screenshot">
           <strong>Screenshot: cmd — "where python" listing multiple paths</strong>
-          <!-- Replace with: <img src="assets/images/cleanup-where-python.png" alt="where python showing multiple paths"> -->
+          <code class="screenshot-filename">save as: assets/images/cleanup-where-python.png</code>
           [ screenshot: where python — may show multiple paths like C:\Users\...\AppData\Local\Programs\Python\... ]
         </div>
       </li>
@@ -217,7 +218,7 @@
         <p>Download the latest installer from python.org, run it, and this time choose <strong>Modify</strong>. On the next screen, look for "Add Python to environment variables" and check it.</p>
         <div class="screenshot">
           <strong>Screenshot: Installer Modify screen — "Add Python to environment variables" checkbox</strong>
-          <!-- Replace with: <img src="assets/images/cleanup-modify-path.png" alt="Python installer modify screen"> -->
+          <code class="screenshot-filename">save as: assets/images/cleanup-modify-path.png</code>
           [ screenshot: installer Modify → Optional Features → "Add Python to environment variables" ]
         </div>
       </li>
@@ -235,7 +236,7 @@
         <p>Press <code>Win</code>, search for <strong>"Manage app execution aliases"</strong>, open it.</p>
         <div class="screenshot">
           <strong>Screenshot: Windows search — "Manage app execution aliases"</strong>
-          <!-- Replace with: <img src="assets/images/cleanup-app-aliases.png" alt="Windows app execution aliases settings"> -->
+          <code class="screenshot-filename">save as: assets/images/cleanup-app-aliases.png</code>
           [ screenshot: Windows search showing "Manage app execution aliases" ]
         </div>
       </li>
@@ -244,7 +245,7 @@
         <p>Find <strong>python.exe</strong> and <strong>python3.exe</strong> in the list and toggle them <strong>Off</strong>.</p>
         <div class="screenshot">
           <strong>Screenshot: App execution aliases — python.exe toggled Off</strong>
-          <!-- Replace with: <img src="assets/images/cleanup-aliases-off.png" alt="python.exe alias toggled off"> -->
+          <code class="screenshot-filename">save as: assets/images/cleanup-aliases-off.png</code>
           [ screenshot: python.exe and python3.exe toggles set to Off ]
         </div>
       </li>
@@ -264,7 +265,7 @@ python --version</pre>
         <p>Press <code>Win</code>, search <strong>"Add or remove programs"</strong>, open it. Search for <strong>Python</strong>.</p>
         <div class="screenshot">
           <strong>Screenshot: Add or remove programs — Python entries listed</strong>
-          <!-- Replace with: <img src="assets/images/cleanup-add-remove.png" alt="Add or remove programs showing Python versions"> -->
+          <code class="screenshot-filename">save as: assets/images/cleanup-add-remove.png</code>
           [ screenshot: Apps &amp; features — multiple Python versions listed ]
         </div>
       </li>
@@ -285,7 +286,7 @@ python --version</pre>
         <strong>In VS Code</strong>, make sure the selected interpreter is the python.org one, not the Conda one (check the bottom-left status bar when a <code>.py</code> file is open).
         <div class="screenshot">
           <strong>Screenshot: VS Code status bar — Python interpreter selector</strong>
-          <!-- Replace with: <img src="assets/images/cleanup-vscode-interpreter.png" alt="VS Code interpreter selector in status bar"> -->
+          <code class="screenshot-filename">save as: assets/images/cleanup-vscode-interpreter.png</code>
           [ screenshot: VS Code bottom bar — Python 3.12.x interpreter selected ]
         </div>
       </li>
