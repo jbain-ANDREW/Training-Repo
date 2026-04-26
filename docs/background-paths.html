@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paths Explained | Background Reading</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.6rem; line-height: 1.8; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .terminal {
+      background: #1a1a2e; color: #c9d1d9; padding: 1.1rem 1.3rem;
+      border-radius: 6px; font-family: 'Courier New', monospace;
+      font-size: 0.88rem; line-height: 1.8; margin: 0.6rem 0;
+    }
+    .terminal .prompt { color: #58a6ff; }
+    .terminal .comment { color: #8b949e; }
+    .terminal .output { color: #adbac7; }
+    .terminal .hl { color: #f7b000; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .enrichment-note {
+      background: #f0f7ff; border: 2px solid #0f3460; border-radius: 8px;
+      padding: 0.9rem 1.1rem; margin-bottom: 2rem; font-size: 0.93rem; line-height: 1.6;
+    }
+    .enrichment-note strong { display: block; margin-bottom: 0.3rem; color: #0f3460; font-size: 1rem; }
+
+    /* File tree diagram */
+    .tree {
+      background: #1a1a2e; color: #c9d1d9; padding: 1rem 1.3rem;
+      border-radius: 6px; font-family: 'Courier New', monospace;
+      font-size: 0.88rem; line-height: 1.9; margin: 0.8rem 0;
+    }
+    .tree .folder { color: #58a6ff; }
+    .tree .file   { color: #c9d1d9; }
+    .tree .path   { color: #f7b000; }
+    .tree .indent { color: #444; }
+
+    .path-anatomy {
+      background: #f0f4f8; border-radius: 8px; padding: 1.2rem 1.4rem; margin: 1rem 0;
+      font-family: 'Courier New', monospace; font-size: 0.92rem; line-height: 2;
+    }
+    .path-anatomy .seg { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 3px; margin: 0 1px; }
+    .seg-drive { background: #dbeafe; color: #1e40af; }
+    .seg-folder { background: #d1fae5; color: #065f46; }
+    .seg-file { background: #fef3c7; color: #92400e; }
+    .seg-sep { color: #888; }
+    .path-legend { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.6rem; font-size: 0.82rem; }
+    .path-legend span { display: flex; align-items: center; gap: 0.3rem; }
+
+    .diagram {
+      display: flex; align-items: center; justify-content: flex-start;
+      gap: 0.5rem; padding: 1rem; background: #f0f4f8;
+      border-radius: 8px; margin: 0.8rem 0; flex-wrap: wrap;
+    }
+    .d-box {
+      background: #0f3460; color: white; padding: 0.45rem 0.9rem;
+      border-radius: 5px; font-size: 0.85rem;
+    }
+    .d-sep { color: #888; font-family: 'Courier New', monospace; font-size: 1.1rem; }
+    .diagram-caption { font-size: 0.83rem; color: #667; margin-top: 0.4rem; font-style: italic; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Paths Explained</h1>
+  <p>What file paths are, why Windows makes them confusing, and how the PATH variable works</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>VS Code &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="vscode-setup.html">Install &amp; Setup</a>
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Background &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="background-github.html">What Is GitHub?</a>
+      <a href="background-python-envs.html">Python Environments</a>
+      <a href="background-paths.html">Paths Explained</a>
+      <a href="background-vscode.html">Editors and IDEs</a>
+      <a href="background-llm-modes.html">Working With AI</a>
+      <a href="background-llm-limits.html">What AI Can&rsquo;t Do</a>
+    </div>
+  </div>
+  <a href="feedback.html">Suggest or Improve</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <div class="enrichment-note">
+    <strong>Background reading — optional</strong>
+    Paths cause more beginner frustration than almost anything else. This page explains what they
+    are, why Windows is particularly tricky, and what the mysterious <strong>PATH</strong> environment
+    variable actually does. Knowing this makes error messages much less cryptic.
+  </div>
+
+  <section>
+    <h2>Your File System Is a Tree</h2>
+    <p>
+      Every file on your computer lives inside a folder, which lives inside another folder, all the way
+      up to a root. On Windows, the root is a drive letter like <code>C:\</code>. On Mac and Linux,
+      the root is just <code>/</code>.
+    </p>
+    <div class="tree">
+      <span class="folder">C:\</span><br>
+      <span class="indent">├── </span><span class="folder">Users\</span><br>
+      <span class="indent">│   └── </span><span class="folder">yourname\</span><br>
+      <span class="indent">│       ├── </span><span class="folder">Documents\</span><br>
+      <span class="indent">│       │   └── </span><span class="folder">Github\</span><br>
+      <span class="indent">│       │       └── </span><span class="file">my-project\</span><br>
+      <span class="indent">│       │           └── </span><span class="path">index.html</span><br>
+      <span class="indent">│       └── </span><span class="folder">Downloads\</span><br>
+      <span class="indent">└── </span><span class="folder">Program Files\</span>
+    </div>
+    <p>
+      A <strong>path</strong> is the sequence of folder names you follow from the root to reach
+      a specific file. It's an address — just like a street address tells you how to get to a building,
+      a path tells the computer how to get to a file.
+    </p>
+  </section>
+
+  <section>
+    <h2>Reading a Path</h2>
+    <p>Here's the full path to the <code>index.html</code> file from the tree above:</p>
+
+    <div class="path-anatomy">
+      <span class="seg seg-drive">C:</span><span class="seg-sep">\</span><span class="seg seg-folder">Users</span><span class="seg-sep">\</span><span class="seg seg-folder">yourname</span><span class="seg-sep">\</span><span class="seg seg-folder">Documents</span><span class="seg-sep">\</span><span class="seg seg-folder">Github</span><span class="seg-sep">\</span><span class="seg seg-folder">my-project</span><span class="seg-sep">\</span><span class="seg seg-file">index.html</span>
+      <div class="path-legend">
+        <span><span class="seg seg-drive" style="font-size:0.8rem;">C:</span> Drive letter</span>
+        <span><span class="seg seg-folder" style="font-size:0.8rem;">folder</span> Folder names</span>
+        <span><span class="seg seg-file" style="font-size:0.8rem;">index.html</span> File name</span>
+        <span><span style="color:#888; font-family:monospace;">\ </span> Separator (Windows)</span>
+      </div>
+    </div>
+    <p>
+      Each <code>\</code> is a separator — it means "go inside this folder." Read left to right:
+      start at drive C, enter Users, enter yourname, enter Documents, and so on.
+    </p>
+  </section>
+
+  <section>
+    <h2>Absolute vs. Relative Paths</h2>
+
+    <h3>Absolute path</h3>
+    <p>
+      Starts from the root and works anywhere, regardless of where you currently are.
+      It's the full address. Always unambiguous.
+    </p>
+    <div class="terminal">
+      <span class="comment"># Absolute — works from anywhere</span><br>
+      <span class="hl">C:\Users\yourname\Documents\Github\my-project\index.html</span>
+    </div>
+
+    <h3>Relative path</h3>
+    <p>
+      Describes a location <em>relative to where you currently are</em>. If you're already inside
+      <code>my-project\</code>, you can just say <code>index.html</code>. If you need to go up a level
+      first, use <code>..</code>.
+    </p>
+    <div class="terminal">
+      <span class="comment"># You are currently in: C:\Users\yourname\Documents\Github\my-project\</span><br>
+      <span class="comment"># Relative path to same file — just the filename</span><br>
+      <span class="hl">index.html</span><br>
+      <br>
+      <span class="comment"># Relative path to a file one folder up</span><br>
+      <span class="hl">..\other-project\readme.txt</span>
+    </div>
+    <div class="tip">
+      In terminal commands, relative paths are shorter and often more convenient.
+      Absolute paths are safer when you're not sure what your current directory is.
+    </div>
+  </section>
+
+  <section>
+    <h2>Windows vs. Mac/Linux: The Separator Problem</h2>
+    <p>
+      Windows uses a <strong>backslash</strong> (<code>\</code>) as the folder separator.
+      Mac and Linux use a <strong>forward slash</strong> (<code>/</code>). This tiny difference
+      causes real problems when:
+    </p>
+    <ul>
+      <li>You copy a path from a Windows tutorial into a Mac terminal (or vice versa)</li>
+      <li>A Python script uses hardcoded Windows paths but runs on a server (Linux)</li>
+      <li>VS Code's terminal (which uses PowerShell or bash) behaves differently from cmd</li>
+    </ul>
+    <div class="tip">
+      Python's <code>os.path</code> module and the newer <code>pathlib</code> library handle this
+      automatically — they give you the right separator for whatever OS you're on.
+      Avoid writing <code>\</code> or <code>/</code> in Python file paths directly.
+    </div>
+    <p>
+      Also: Windows paths are <strong>case-insensitive</strong> (<code>Documents</code> and
+      <code>documents</code> mean the same thing). Mac and Linux are <strong>case-sensitive</strong>.
+      Code that works on Windows can silently fail when moved to a Linux server.
+    </p>
+  </section>
+
+  <section>
+    <h2>The PATH Environment Variable</h2>
+    <p>
+      When you type a command in the terminal — like <code>python</code>, <code>git</code>,
+      or <code>code</code> — the OS needs to find the actual program file to run.
+      It doesn't search your entire computer. Instead, it searches a specific list of folders
+      called the <strong>PATH</strong>.
+    </p>
+    <p>
+      PATH is an environment variable: a named piece of text that the OS makes available to
+      all programs. It contains a list of folder paths separated by semicolons.
+    </p>
+
+    <div class="terminal">
+      <span class="comment"># See your current PATH (PowerShell)</span><br>
+      <span class="prompt">PS&gt;</span> $env:PATH<br>
+      <span class="output">C:\Windows\System32;C:\Program Files\Git\cmd;C:\Users\you\AppData\Local\Programs\Python\Python312\Scripts;...</span>
+    </div>
+
+    <p>
+      When you type <code>python</code>, the OS walks down this list of folders and stops at the
+      first one that contains a file named <code>python.exe</code>. The <em>order matters</em> —
+      whichever folder comes first wins.
+    </p>
+
+    <div class="diagram">
+      <div class="d-box">Type: python</div>
+      <span style="color:#888; font-size:1.2rem;">&#8594;</span>
+      <div class="d-box" style="background:#16213e;">Search PATH folders<br><small style="font-size:0.75rem;">in order</small></div>
+      <span style="color:#888; font-size:1.2rem;">&#8594;</span>
+      <div class="d-box" style="background:#065f46;">Found! Run python.exe<br><small style="font-size:0.75rem;">in first matching folder</small></div>
+    </div>
+    <p class="diagram-caption">PATH controls which program runs when you type a command name.</p>
+
+    <h3>Why this causes problems with Python</h3>
+    <p>
+      If you install Python multiple times (or conda creates environments), there can be
+      multiple <code>python.exe</code> files in different folders. The one at the top of PATH wins —
+      which may not be the one you intended. This is why the Python installer has a critical
+      checkbox: <strong>"Add Python to PATH"</strong>. If you skip it, typing <code>python</code>
+      in the terminal does nothing.
+    </p>
+    <div class="warn">
+      Checking "Add Python to PATH" during installation puts the new Python folder <em>at the front</em>
+      of PATH, making it the default. If you have an older Python that you want to keep as default,
+      be careful with this option.
+    </div>
+  </section>
+
+  <section>
+    <h2>Common Windows Path Problems</h2>
+
+    <h3>Spaces in folder names</h3>
+    <p>
+      <code>C:\Users\John Smith\Documents</code> — that space in "John Smith" will break many
+      terminal commands unless you put the whole path in quotes:
+    </p>
+    <div class="terminal">
+      <span class="comment"># This fails if the path has spaces</span><br>
+      cd C:\Users\John Smith\Documents<br>
+      <br>
+      <span class="comment"># This works</span><br>
+      cd "C:\Users\John Smith\Documents"
+    </div>
+
+    <h3>The AppData folder is hidden</h3>
+    <p>
+      Many tools (including Python, pip, and VS Code extensions) install things into
+      <code>C:\Users\yourname\AppData\</code>. This folder is hidden by default in File Explorer.
+      You can see it in the terminal or by typing the path directly into File Explorer's address bar.
+    </p>
+
+    <h3>"Command not found" errors</h3>
+    <p>
+      If you install a tool and the terminal says it can't find it, the tool's folder probably
+      isn't in PATH. The fix: either add it to PATH manually (search "Edit the system environment
+      variables" in Windows) or reinstall the tool and look for a "Add to PATH" option during setup.
+    </p>
+  </section>
+
+</main>
+
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
+</body>
+</html>

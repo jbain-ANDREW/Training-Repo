@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -73,6 +73,7 @@
     .card-tag.exercise { background: #dbeafe; color: #1e40af; }
     .card-tag.reference { background: #f3e8ff; color: #6b21a8; }
     .card-tag.ai      { background: #fef3c7; color: #92400e; }
+    .card-tag.background { background: #ede9fe; color: #4c1d95; }
 
     .splash-cta {
       background: #1a1a2e; color: white; border-radius: 8px;
@@ -125,6 +126,17 @@
     <div class="nav-dropdown-menu">
       <a href="splash-exercises.html">Splash Page Exercises</a>
       <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Background &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="background-github.html">What Is GitHub?</a>
+      <a href="background-python-envs.html">Python Environments</a>
+      <a href="background-paths.html">Paths Explained</a>
+      <a href="background-vscode.html">Editors and IDEs</a>
+      <a href="background-llm-modes.html">Working With AI</a>
+      <a href="background-llm-limits.html">What AI Can&rsquo;t Do</a>
     </div>
   </div>
   <a href="feedback.html">Suggest or Improve</a>
@@ -242,6 +254,52 @@
         <h3>Google Apps Script</h3>
         <p>No install needed. Deploy a real web app in minutes using Google Apps Script, then use AI to extend it. Great for automations, dashboards, and Google Workspace tools.</p>
         <span class="card-tag exercise">Exercise</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Background Reading</h2>
+    <p style="font-size:0.93rem; color:#555; margin-bottom:1rem; line-height:1.6;">
+      Optional enrichment — skip these and come back later, or read them first if you want context before diving in.
+      Each page answers a "why does this work this way?" question that the setup guides don't stop to explain.
+    </p>
+    <div class="card-grid">
+      <a class="card" href="background-github.html">
+        <div class="card-icon">🌐</div>
+        <h3>What Is GitHub?</h3>
+        <p>Why version control exists, how Git and GitHub differ, key concepts (repos, commits, branches, PRs), and how to submit your exercise work.</p>
+        <span class="card-tag background">Background</span>
+      </a>
+      <a class="card" href="background-python-envs.html">
+        <div class="card-icon">🐍</div>
+        <h3>Python Environments</h3>
+        <p>Multiple Python installations can coexist on one machine with different packages. What venv and conda are, and why the "which Python" problem happens.</p>
+        <span class="card-tag background">Background</span>
+      </a>
+      <a class="card" href="background-paths.html">
+        <div class="card-icon">📁</div>
+        <h3>Paths Explained</h3>
+        <p>File paths as addresses, absolute vs. relative, Windows backslash vs. Unix slash, and the PATH environment variable that controls which programs run.</p>
+        <span class="card-tag background">Background</span>
+      </a>
+      <a class="card" href="background-vscode.html">
+        <div class="card-icon">✏️</div>
+        <h3>Editors and IDEs</h3>
+        <p>The spectrum from Notepad to full IDE, what VS Code actually gives you, why it became the standard, and what happens if you use something else.</p>
+        <span class="card-tag background">Background</span>
+      </a>
+      <a class="card" href="background-llm-modes.html">
+        <div class="card-icon">🤝</div>
+        <h3>Working With AI: Two Modes</h3>
+        <p>Copy-paste vs. cowork (agentic) mode — why the difference matters, what changes when AI runs inside your editor, and how to write better prompts.</p>
+        <span class="card-tag background">Background</span>
+      </a>
+      <a class="card" href="background-llm-limits.html">
+        <div class="card-icon">🧠</div>
+        <h3>What AI Can (and Can't) Do</h3>
+        <p>How LLMs actually work, the key insight that Claude can't do X but can write code that can, what hallucinations are, and how to stay in control.</p>
+        <span class="card-tag background">Background</span>
       </a>
     </div>
   </section>

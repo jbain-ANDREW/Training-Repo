@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Working With AI: Two Modes | Background Reading</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+    ul { padding-left: 1.4rem; margin-bottom: 0.6rem; line-height: 1.8; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .enrichment-note {
+      background: #f0f7ff; border: 2px solid #0f3460; border-radius: 8px;
+      padding: 0.9rem 1.1rem; margin-bottom: 2rem; font-size: 0.93rem; line-height: 1.6;
+    }
+    .enrichment-note strong { display: block; margin-bottom: 0.3rem; color: #0f3460; font-size: 1rem; }
+
+    /* Mode comparison */
+    .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1rem 0; }
+    @media (max-width: 600px) { .mode-grid { grid-template-columns: 1fr; } }
+    .mode-card {
+      background: white; border-radius: 8px; padding: 1.2rem 1.3rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .mode-card h4 { font-size: 1rem; margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 2px solid #f0f4f8; }
+    .mode-card.copypaste h4 { color: #555; }
+    .mode-card.cowork h4 { color: #0f3460; }
+
+    /* Loop diagram */
+    .loop {
+      background: #f0f4f8; border-radius: 8px; padding: 1.2rem;
+      margin: 1rem 0; font-size: 0.88rem;
+    }
+    .loop-title { font-weight: bold; font-size: 0.9rem; margin-bottom: 0.8rem; color: #444; }
+    .loop-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+    .loop-step {
+      background: #0f3460; color: white; padding: 0.4rem 0.8rem;
+      border-radius: 5px; font-size: 0.83rem; text-align: center;
+    }
+    .loop-step.muted { background: #8899aa; }
+    .loop-step.friction { background: #b91c1c; }
+    .loop-step.good { background: #065f46; }
+    .loop-arrow { color: #888; font-size: 1rem; }
+    .loop.fast .loop-step { background: #065f46; }
+    .loop.fast .loop-step.ai { background: #0f3460; }
+
+    .prompt-box {
+      background: #1a1a2e; color: #c9d1d9; padding: 1rem 1.2rem;
+      border-radius: 6px; font-size: 0.88rem; line-height: 1.7; margin: 0.6rem 0;
+    }
+    .prompt-box .label { color: #58a6ff; font-size: 0.8rem; display: block; margin-bottom: 0.4rem; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Working With AI: Two Modes</h1>
+  <p>Copy-paste vs. cowork — why the difference matters and which mode to use when</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>VS Code &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="vscode-setup.html">Install &amp; Setup</a>
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Background &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="background-github.html">What Is GitHub?</a>
+      <a href="background-python-envs.html">Python Environments</a>
+      <a href="background-paths.html">Paths Explained</a>
+      <a href="background-vscode.html">Editors and IDEs</a>
+      <a href="background-llm-modes.html">Working With AI</a>
+      <a href="background-llm-limits.html">What AI Can&rsquo;t Do</a>
+    </div>
+  </div>
+  <a href="feedback.html">Suggest or Improve</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <div class="enrichment-note">
+    <strong>Background reading — optional</strong>
+    Once you have Claude or Copilot set up, you'll discover there are two very different ways to
+    work with it. Understanding the difference — and when to use each — is one of the most useful
+    things you can learn.
+  </div>
+
+  <section>
+    <h2>Mode 1: Copy-Paste</h2>
+    <p>
+      This is the most obvious way to use an AI coding tool. You open a browser tab with Claude
+      or ChatGPT, type a question or paste in some code, read the response, and manually copy
+      whatever looks useful into your editor.
+    </p>
+    <p>
+      It works. For a quick question — "what does this error mean?" or "write me a function that
+      does X" — it's perfectly fine. But it has real friction built in.
+    </p>
+
+    <div class="loop">
+      <div class="loop-title">Copy-paste workflow</div>
+      <div class="loop-steps">
+        <div class="loop-step">Write code in editor</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step friction">Copy code to clipboard</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">Paste into browser chat</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">Describe the problem</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">Read AI response</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step friction">Copy code from browser</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step friction">Paste into editor</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">Test it</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step friction">Repeat for each error</div>
+      </div>
+    </div>
+
+    <p>The red steps are pure friction — moving text between two places. When you're iterating
+    quickly on something, those context switches add up fast.</p>
+  </section>
+
+  <section>
+    <h2>Mode 2: Cowork (Agentic)</h2>
+    <p>
+      In cowork mode, the AI tool runs <em>inside</em> your editor and has direct access to your
+      files. You describe what you want in the chat panel; the AI reads your code, makes the
+      changes, and applies them directly. You never leave the editor.
+    </p>
+    <p>
+      This is what the Claude and Copilot VS Code extensions enable. Instead of copying and
+      pasting, you're having a conversation with something that can see your entire project and
+      act on it.
+    </p>
+
+    <div class="loop fast">
+      <div class="loop-title">Cowork workflow</div>
+      <div class="loop-steps">
+        <div class="loop-step ai">AI reads your file(s)</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step ai">You describe what you want</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step ai">AI makes the change directly</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step ai">You review and accept</div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step ai">Continue the conversation</div>
+      </div>
+    </div>
+
+    <div class="mode-grid">
+      <div class="mode-card copypaste">
+        <h4>Copy-paste</h4>
+        <ul>
+          <li>Works from any browser</li>
+          <li>No setup beyond an account</li>
+          <li>Good for one-off questions</li>
+          <li>AI has no context about your project</li>
+          <li>You do all the copy-paste work</li>
+          <li>Errors require another round-trip</li>
+        </ul>
+      </div>
+      <div class="mode-card cowork">
+        <h4>Cowork / Agentic</h4>
+        <ul>
+          <li>AI sees your open files automatically</li>
+          <li>Changes applied in-place — no pasting</li>
+          <li>Multi-step tasks possible in one conversation</li>
+          <li>Error messages fed back to AI instantly</li>
+          <li>Much faster iteration loop</li>
+          <li>Requires VS Code + extension setup</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Why Context Makes Such a Difference</h2>
+    <p>
+      When you use copy-paste mode and paste a snippet of code, you're giving the AI a fragment
+      without surrounding context — other files, imports, variable names defined elsewhere,
+      the specific error message it just produced. The AI works with what you give it.
+    </p>
+    <p>
+      In cowork mode, the AI can see the full file, or multiple files, or even browse your project
+      structure. A question like "why isn't this function finding my data?" becomes much easier
+      to answer when the AI can also see the file that defines where the data lives.
+    </p>
+    <p>
+      Think of the difference between calling someone on the phone to describe your car problem
+      versus having a mechanic who can see the car, run diagnostics, and make the repair right there.
+      Both work. One is dramatically more efficient.
+    </p>
+  </section>
+
+  <section>
+    <h2>Good Prompts in Both Modes</h2>
+    <p>
+      Regardless of which mode you use, the quality of your prompt determines the quality of the
+      response. Vague prompts produce vague code. Specific prompts produce useful code.
+    </p>
+
+    <div class="prompt-box">
+      <span class="label">Weak prompt</span>
+      Fix my code.
+    </div>
+
+    <div class="prompt-box">
+      <span class="label">Better prompt</span>
+      My Python script reads a CSV file and should print the average of the "score" column.
+      It runs without errors but prints 0.0 instead of the correct value. The CSV file has a header row.
+      Here's the script: [paste code]
+    </div>
+
+    <p>
+      In cowork mode, you can be even more direct because the AI already has the context:
+    </p>
+    <div class="prompt-box">
+      <span class="label">Cowork prompt (AI has the file open)</span>
+      The calculate_average function is returning 0.0 instead of the correct average.
+      Find the bug and fix it.
+    </div>
+
+    <div class="tip">
+      You don't need to know how to fix the bug yourself to write a good prompt.
+      You do need to be specific about what the code is supposed to do and what
+      it's actually doing instead. The AI handles the "how" — you handle the "what."
+    </div>
+  </section>
+
+  <section>
+    <h2>How This Course Uses Both Modes</h2>
+    <p>
+      The exercises in this course are designed to work in either mode. The splash page exercises
+      give you copy-paste prompts that you can paste into Claude on the web — that's intentionally
+      simple so you can try it immediately without setup.
+    </p>
+    <p>
+      Once you have Claude or Copilot running inside VS Code, the same exercises become faster
+      and more iterative. You can ask follow-up questions, ask it to explain what it changed,
+      and modify the result without leaving your editor.
+    </p>
+    <a class="btn" href="claude-vscode.html">Set up Claude in VS Code →</a>
+    &nbsp;
+    <a class="btn" href="splash-exercises.html" style="background:#16213e;">Try an Exercise →</a>
+  </section>
+
+</main>
+
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
+</body>
+</html>

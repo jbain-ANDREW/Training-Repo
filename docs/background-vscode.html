@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editors and IDEs | Background Reading</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+    ul { padding-left: 1.4rem; margin-bottom: 0.6rem; line-height: 1.8; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .enrichment-note {
+      background: #f0f7ff; border: 2px solid #0f3460; border-radius: 8px;
+      padding: 0.9rem 1.1rem; margin-bottom: 2rem; font-size: 0.93rem; line-height: 1.6;
+    }
+    .enrichment-note strong { display: block; margin-bottom: 0.3rem; color: #0f3460; font-size: 1rem; }
+
+    /* Spectrum diagram */
+    .spectrum {
+      background: #f0f4f8; border-radius: 8px; padding: 1.2rem; margin: 1rem 0;
+    }
+    .spectrum-bar {
+      height: 8px; border-radius: 4px;
+      background: linear-gradient(to right, #e8ecf0, #0f3460);
+      margin-bottom: 0.8rem;
+    }
+    .spectrum-items {
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .spectrum-item {
+      text-align: center; flex: 1; min-width: 90px;
+    }
+    .spectrum-item .name {
+      font-size: 0.88rem; font-weight: bold; color: #0f3460; display: block;
+    }
+    .spectrum-item .desc {
+      font-size: 0.78rem; color: #555; line-height: 1.4;
+    }
+    .spectrum-item.highlight .name { color: #c41230; }
+    .spectrum-item.highlight .desc { color: #333; }
+
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    @media (max-width: 560px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      background: white; border-radius: 6px; padding: 1rem 1.1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+    }
+    .feature-card h4 { font-size: 0.92rem; color: #0f3460; margin-bottom: 0.4rem; }
+    .feature-card p { font-size: 0.88rem; line-height: 1.6; margin: 0; color: #444; }
+
+    .alt-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.92rem; }
+    .alt-table th { background: #0f3460; color: white; padding: 0.6rem 0.8rem; text-align: left; }
+    .alt-table td { padding: 0.6rem 0.8rem; background: white; border-bottom: 1px solid #dde; vertical-align: top; }
+    .alt-table tr:last-child td { border-bottom: none; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Editors and IDEs</h1>
+  <p>What VS Code is, where it fits in the landscape, and what happens if you use something else</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>VS Code &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="vscode-setup.html">Install &amp; Setup</a>
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Background &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="background-github.html">What Is GitHub?</a>
+      <a href="background-python-envs.html">Python Environments</a>
+      <a href="background-paths.html">Paths Explained</a>
+      <a href="background-vscode.html">Editors and IDEs</a>
+      <a href="background-llm-modes.html">Working With AI</a>
+      <a href="background-llm-limits.html">What AI Can&rsquo;t Do</a>
+    </div>
+  </div>
+  <a href="feedback.html">Suggest or Improve</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <div class="enrichment-note">
+    <strong>Background reading — optional</strong>
+    This page explains why we use VS Code rather than just opening files in Notepad,
+    what alternatives exist, and why the editor choice matters more once you bring AI tools into the workflow.
+  </div>
+
+  <section>
+    <h2>The Spectrum From Plain Editor to Full IDE</h2>
+    <p>
+      Tools for writing code exist on a spectrum from lightweight to heavy. At one end is Notepad —
+      it opens text files and nothing else. At the other end is a full IDE (Integrated Development
+      Environment) like Visual Studio or PyCharm — these know your entire codebase, run tests,
+      debug step by step, and manage builds.
+    </p>
+    <p>
+      VS Code lives in the middle, but leans heavily toward the IDE end. It's free, fast to start,
+      and works on any language. Extensions let you add IDE-level features only when you need them.
+    </p>
+
+    <div class="spectrum">
+      <div class="spectrum-bar"></div>
+      <div class="spectrum-items">
+        <div class="spectrum-item">
+          <span class="name">Notepad</span>
+          <span class="desc">Plain text only. No awareness of code at all.</span>
+        </div>
+        <div class="spectrum-item">
+          <span class="name">Notepad++</span>
+          <span class="desc">Syntax highlighting. Tabs. Still lightweight.</span>
+        </div>
+        <div class="spectrum-item highlight">
+          <span class="name">VS Code ★</span>
+          <span class="desc">Extensions, AI, terminal, Git — all in one window.</span>
+        </div>
+        <div class="spectrum-item">
+          <span class="name">PyCharm / VS</span>
+          <span class="desc">Full IDE. Project-aware, heavier, more setup.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What VS Code Actually Gives You</h2>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>Syntax highlighting</h4>
+        <p>Different colors for keywords, strings, functions, and errors. Makes code much easier to read and spots typos immediately.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Autocomplete</h4>
+        <p>As you type, VS Code suggests completions — function names, variable names, import paths. Saves typing and prevents misspellings.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Inline error detection</h4>
+        <p>Red squiggles appear under code that won't run — before you even try to run it. Much faster feedback loop than "run and see."</p>
+      </div>
+      <div class="feature-card">
+        <h4>Integrated terminal</h4>
+        <p>Open a terminal inside VS Code with Ctrl+`. It starts in your project folder automatically — no navigating needed.</p>
+      </div>
+      <div class="feature-card">
+        <h4>File explorer sidebar</h4>
+        <p>See your entire project as a tree on the left. Click to open files, drag to reorganize, right-click for common operations.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Git integration</h4>
+        <p>The source control sidebar shows changed files, lets you stage and commit, and highlights added/removed lines in the gutter.</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      None of these features exist in Notepad. You can technically write code in Notepad and run it
+      from the terminal — it works. But for anything beyond trivial scripts, the feedback loop is
+      frustratingly slow.
+    </div>
+  </section>
+
+  <section>
+    <h2>Why VS Code Won</h2>
+    <p>
+      Microsoft released VS Code in 2015 and open-sourced it immediately. Within a few years it had
+      become the most widely used editor in the world — not because it forced anyone, but because
+      it was genuinely better than the alternatives for most people.
+    </p>
+    <ul>
+      <li><strong>Free</strong> — full-featured with no paid tier</li>
+      <li><strong>Fast</strong> — opens in seconds; doesn't try to analyze your whole codebase upfront</li>
+      <li><strong>Language-agnostic</strong> — Python, JavaScript, HTML, Go, Rust — one editor for everything</li>
+      <li><strong>Extension marketplace</strong> — thousands of extensions; you add what you need</li>
+      <li><strong>Cross-platform</strong> — identical on Windows, Mac, and Linux</li>
+      <li><strong>AI-ready</strong> — Claude, Copilot, and other AI tools have official VS Code extensions</li>
+    </ul>
+    <p>
+      Stack Overflow's developer survey has ranked VS Code as the most popular editor every year
+      since 2018, used by over 70% of respondents.
+    </p>
+  </section>
+
+  <section>
+    <h2>Alternatives Worth Knowing</h2>
+
+    <table class="alt-table">
+      <tr>
+        <th>Tool</th>
+        <th>What it is</th>
+        <th>When you might use it</th>
+      </tr>
+      <tr>
+        <td><strong>Cursor</strong></td>
+        <td>A VS Code fork built around AI. Almost identical interface but AI features are first-class, not an add-on.</td>
+        <td>If you're doing AI-heavy coding and want deeper integration than extensions provide.</td>
+      </tr>
+      <tr>
+        <td><strong>PyCharm</strong></td>
+        <td>JetBrains' Python-focused IDE. Heavier than VS Code but has excellent Python-specific features.</td>
+        <td>Large Python projects where you want deep refactoring tools and a full debugger.</td>
+      </tr>
+      <tr>
+        <td><strong>Notepad++</strong></td>
+        <td>A lightweight Windows editor with syntax highlighting and tabs.</td>
+        <td>Quick edits to config files when you don't want to open VS Code.</td>
+      </tr>
+      <tr>
+        <td><strong>Google Colab / Jupyter</strong></td>
+        <td>Browser-based Python notebooks. Mixes code cells, text, and output in one document.</td>
+        <td>Data analysis, machine learning experiments, sharing code with embedded results.</td>
+      </tr>
+      <tr>
+        <td><strong>Replit</strong></td>
+        <td>A fully online editor and execution environment. Nothing to install.</td>
+        <td>Quick experiments or sharing runnable code with others who have no setup.</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>VS Code + AI: Why the Combination Matters</h2>
+    <p>
+      Using AI tools like Claude or Copilot from a web browser means constant context-switching:
+      copy code from the browser, paste into the editor, edit, copy back, explain the error,
+      paste the fix... It works, but it's friction-heavy.
+    </p>
+    <p>
+      When the AI tool runs <em>inside</em> VS Code, it can see your open files, understand the
+      full context of your project, run code, read error messages, and apply fixes directly.
+      The gap between "AI suggests something" and "that thing is in your code" collapses to zero.
+    </p>
+    <p>
+      This is why installing Claude or Copilot as a VS Code extension is worth the few extra minutes
+      of setup. Read more about the difference between copy-paste and cowork modes in
+      <a href="background-llm-modes.html">Working With AI: Two Modes</a>.
+    </p>
+    <a class="btn" href="vscode-setup.html">Install VS Code →</a>
+    &nbsp;
+    <a class="btn" href="claude-vscode.html" style="background:#16213e;">Add Claude to VS Code →</a>
+  </section>
+
+</main>
+
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
+</body>
+</html>

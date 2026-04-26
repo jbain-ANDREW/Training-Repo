@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Is GitHub? | Background Reading</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.6rem; line-height: 1.8; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .enrichment-note {
+      background: #f0f7ff; border: 2px solid #0f3460; border-radius: 8px;
+      padding: 0.9rem 1.1rem; margin-bottom: 2rem; font-size: 0.93rem; line-height: 1.6;
+    }
+    .enrichment-note strong { display: block; margin-bottom: 0.3rem; color: #0f3460; font-size: 1rem; }
+
+    .diagram {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.6rem; padding: 1.2rem 1rem; background: #f0f4f8;
+      border-radius: 8px; margin: 1rem 0; flex-wrap: wrap;
+    }
+    .d-box {
+      background: #0f3460; color: white; padding: 0.55rem 1.1rem;
+      border-radius: 6px; font-size: 0.88rem; text-align: center; min-width: 90px;
+    }
+    .d-box small { display: block; font-size: 0.75rem; opacity: 0.75; margin-top: 0.15rem; }
+    .d-box.alt { background: #16213e; }
+    .d-box.cloud { background: #27548a; }
+    .d-arrow { color: #0f3460; font-weight: bold; font-size: 1.1rem; }
+    .diagram-caption { font-size: 0.83rem; color: #667; text-align: center; margin-top: 0.3rem; font-style: italic; }
+
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    @media (max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+    .compare-col { background: white; border-radius: 6px; padding: 1rem 1.1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+    .compare-col h4 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .compare-col.bad h4 { color: #b91c1c; }
+    .compare-col.good h4 { color: #065f46; }
+    .compare-col ul { padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.7; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      padding: 0.9rem 1rem 0.9rem 3.2rem;
+      background: white; border-radius: 6px; margin-bottom: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07); position: relative;
+    }
+    .steps li::before {
+      content: counter(step); position: absolute; left: 1rem; top: 1rem;
+      background: #0f3460; color: white; width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: bold;
+    }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+    .steps li p { margin-top: 0.3rem; font-size: 0.94rem; color: #444; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>What Is GitHub?</h1>
+  <p>Version control, collaboration, and why this became the standard tool for almost everyone who writes code</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>VS Code &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="vscode-setup.html">Install &amp; Setup</a>
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Background &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="background-github.html">What Is GitHub?</a>
+      <a href="background-python-envs.html">Python Environments</a>
+      <a href="background-paths.html">Paths Explained</a>
+      <a href="background-vscode.html">Editors and IDEs</a>
+      <a href="background-llm-modes.html">Working With AI</a>
+      <a href="background-llm-limits.html">What AI Can&rsquo;t Do</a>
+    </div>
+  </div>
+  <a href="feedback.html">Suggest or Improve</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <div class="enrichment-note">
+    <strong>Background reading — optional</strong>
+    You don't need this page to complete the exercises. If you're comfortable jumping in, go straight to
+    <a href="terminal-basics.html">Terminal Basics</a> or <a href="github-exercise.html">the GitHub exercise</a>.
+    This page is for people who want to understand <em>why</em> we use these tools before touching them.
+  </div>
+
+  <section>
+    <h2>The Problem GitHub Solves</h2>
+    <p>
+      Imagine you're working on a document — a report, a website, a script. At some point you make a
+      change that breaks something. You want to go back to how it was yesterday, but you've been
+      overwriting the same file. Or you're collaborating with someone and you both make different changes
+      to the same file at the same time. Who wins?
+    </p>
+    <p>
+      Before version control tools existed, people handled this with naming conventions — <code>report_v2.docx</code>,
+      <code>report_v2_final.docx</code>, <code>report_v2_final_REAL.docx</code>. It works until it doesn't.
+    </p>
+
+    <div class="compare-grid">
+      <div class="compare-col bad">
+        <h4>&#x2717; Without version control</h4>
+        <ul>
+          <li>Files named <em>final_v3_ACTUAL.html</em></li>
+          <li>Can't tell what changed or when</li>
+          <li>Emailing zip files back and forth</li>
+          <li>Accidentally overwriting someone's work</li>
+          <li>No way to safely experiment</li>
+        </ul>
+      </div>
+      <div class="compare-col good">
+        <h4>&#x2713; With version control (Git + GitHub)</h4>
+        <ul>
+          <li>One file, full history of every change</li>
+          <li>Every change tagged with what, who, and when</li>
+          <li>Roll back to any previous state instantly</li>
+          <li>Multiple people work in parallel safely</li>
+          <li>Experiment freely — branches are cheap</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Git vs. GitHub — What's the Difference?</h2>
+    <p>
+      <strong>Git</strong> is the version control software itself — it runs on your computer and keeps
+      track of changes to your files. It was created by Linus Torvalds (the same person who created Linux)
+      in 2005. Git works entirely locally, even with no internet connection.
+    </p>
+    <p>
+      <strong>GitHub</strong> is a website (and service) that stores your Git repositories in the cloud.
+      Think of Git as the engine and GitHub as the garage where the engine stores its work so others can
+      see it, contribute, and collaborate.
+    </p>
+
+    <div class="diagram">
+      <div class="d-box">Your computer<small>Git tracks changes locally</small></div>
+      <div class="d-arrow">&#8594; git push &#8594;</div>
+      <div class="d-box cloud">GitHub<small>Cloud backup + sharing</small></div>
+      <div class="d-arrow">&#8594; git clone &#8594;</div>
+      <div class="d-box alt">Collaborator<small>Gets a full copy</small></div>
+    </div>
+    <p class="diagram-caption">Git handles the tracking; GitHub handles the sharing.</p>
+
+    <div class="tip">
+      GitHub is not the only option — GitLab and Bitbucket do the same thing. But GitHub has the largest
+      community and the most open-source projects, so it has become the default.
+    </div>
+  </section>
+
+  <section>
+    <h2>Key Concepts in 60 Seconds</h2>
+
+    <h3>Repository (repo)</h3>
+    <p>
+      A folder that Git is tracking. It contains your project files plus a hidden folder (<code>.git/</code>)
+      where Git stores the entire history of every change ever made. You never edit the <code>.git/</code>
+      folder directly — Git manages it.
+    </p>
+
+    <h3>Commit</h3>
+    <p>
+      A saved snapshot of your project at a specific moment. Every commit has a message describing
+      what changed, plus a timestamp and the author's name. You can always return to any commit.
+    </p>
+
+    <div class="diagram">
+      <div class="d-box">Commit A<small>Initial file</small></div>
+      <div class="d-arrow">&#8594;</div>
+      <div class="d-box">Commit B<small>Added header</small></div>
+      <div class="d-arrow">&#8594;</div>
+      <div class="d-box">Commit C<small>Fixed typo</small></div>
+      <div class="d-arrow">&#8594;</div>
+      <div class="d-box alt">Commit D<small>You are here</small></div>
+    </div>
+    <p class="diagram-caption">Every commit is a checkpoint you can return to at any time.</p>
+
+    <h3>Branch</h3>
+    <p>
+      A parallel version of the project where you can experiment without affecting the main version.
+      When your experiment works, you <em>merge</em> it back. This is how teams work simultaneously
+      on different features without stepping on each other.
+    </p>
+
+    <h3>Pull Request (PR)</h3>
+    <p>
+      A request to merge your branch into another branch (usually <code>main</code>). It's also a
+      review mechanism — teammates can look at the changes, leave comments, and approve before anything
+      gets merged. In this course, you'll open a PR to submit your exercise.
+    </p>
+
+    <h3>Fork</h3>
+    <p>
+      A personal copy of someone else's repository on your own GitHub account. You can make any changes
+      you want to your fork without affecting the original. It's how you contribute to projects you don't
+      have direct write access to.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why GitHub Became the Standard</h2>
+    <p>
+      GitHub launched in 2008 and grew by hosting open-source projects for free. By the time major companies
+      needed a collaboration platform, GitHub already had millions of projects, packages, and developers.
+      The network effect kicked in: more projects meant more developers, which attracted more projects.
+    </p>
+    <p>
+      Today GitHub hosts over 400 million repositories. Most open-source libraries you'll ever install
+      live there. Job listings for software roles routinely ask for a GitHub profile link the way design
+      roles ask for a portfolio. Microsoft acquired GitHub in 2018 for $7.5 billion — and kept it free for most users.
+    </p>
+    <p>
+      Learning Git and GitHub is not optional if you intend to work with code professionally. It's
+      the infrastructure that everything else plugs into.
+    </p>
+  </section>
+
+  <section>
+    <h2>Getting a GitHub Account</h2>
+    <p>
+      A basic GitHub account is free and takes two minutes to create.
+      Go to <strong>github.com</strong>, click <strong>Sign up</strong>, and follow the steps.
+      Choose a username you'd be comfortable showing to a future employer — your GitHub profile
+      is often your first technical portfolio.
+    </p>
+    <div class="tip">
+      <strong>Students:</strong> After creating your account, apply for the
+      <strong>GitHub Student Developer Pack</strong> at education.github.com.
+      It gives you free access to GitHub Copilot and dozens of other tools normally behind paywalls.
+    </div>
+
+    <h3>Public vs. Private Repositories</h3>
+    <p>
+      <strong>Public repos</strong> are visible to anyone on the internet — no account required to read
+      or download them. The Training-Repo you'll be working with is public. Anyone can clone it without
+      logging in.
+    </p>
+    <p>
+      <strong>Private repos</strong> are only visible to you and people you explicitly invite.
+      If you want to keep your work private, you can create a private fork — but for this course,
+      public is fine and makes submission easier.
+    </p>
+    <div class="tip">
+      You don't need to share your GitHub username with the instructor to access the repo —
+      it's public. But please do share it anyway so the instructor can find your submitted work easily.
+      See the submission instructions below.
+    </div>
+  </section>
+
+  <section>
+    <h2>How to Submit Your Exercise Work</h2>
+    <p>
+      When you complete an exercise, here's the full submission workflow:
+    </p>
+    <ol class="steps">
+      <li>
+        <strong>Fork the Training-Repo</strong>
+        <p>On <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">the repo page</a>,
+        click the <strong>Fork</strong> button in the top-right corner. This creates your own copy
+        of the repo under your GitHub account.</p>
+      </li>
+      <li>
+        <strong>Clone your fork to your computer</strong>
+        <p>Use the GitHub exercise instructions to clone your fork locally. You'll make changes here.</p>
+      </li>
+      <li>
+        <strong>Complete the exercise and commit your changes</strong>
+        <p>Follow the exercise steps, then commit and push your changes to your fork on GitHub.</p>
+      </li>
+      <li>
+        <strong>Open a Pull Request</strong>
+        <p>Go to your fork on GitHub and click <strong>Contribute → Open Pull Request</strong>.
+        This signals to the instructor that your work is ready to review.</p>
+      </li>
+      <li>
+        <strong>Email your instructor</strong>
+        <p>Send a short email to let the instructor know you've submitted, including your GitHub username
+        and a link to your pull request. This ensures nothing slips through the cracks.</p>
+      </li>
+    </ol>
+
+    <h3>How the Instructor Reviews Your Work</h3>
+    <p>
+      GitHub shows exactly what changed between your version and the original — line by line.
+      The instructor can see every file you added or modified, leave comments on specific lines,
+      and follow the full history of what you did and when. You don't need to explain what you changed;
+      the commit history does that automatically.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ready to Try It?</h2>
+    <p>You now have enough context to make sense of the exercises. Pick whichever approach fits you best:</p>
+    <a class="btn" href="github-exercise.html">Exercise — Terminal (recommended) →</a>
+    &nbsp;
+    <a class="btn" href="github-desktop.html" style="background:#16213e;">Exercise — Desktop App →</a>
+  </section>
+
+</main>
+
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
+</body>
+</html>

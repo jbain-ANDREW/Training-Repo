@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What AI Can (and Can't) Do | Background Reading</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+    ul { padding-left: 1.4rem; margin-bottom: 0.6rem; line-height: 1.8; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .enrichment-note {
+      background: #f0f7ff; border: 2px solid #0f3460; border-radius: 8px;
+      padding: 0.9rem 1.1rem; margin-bottom: 2rem; font-size: 0.93rem; line-height: 1.6;
+    }
+    .enrichment-note strong { display: block; margin-bottom: 0.3rem; color: #0f3460; font-size: 1rem; }
+
+    /* The key distinction diagram */
+    .distinction {
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.5rem;
+      align-items: center; background: #f0f4f8; border-radius: 8px;
+      padding: 1.2rem; margin: 1rem 0;
+    }
+    @media (max-width: 560px) {
+      .distinction { grid-template-columns: 1fr; }
+      .distinction-arrow { transform: rotate(90deg); text-align: center; }
+    }
+    .d-side {
+      background: white; border-radius: 6px; padding: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+    }
+    .d-side h4 { font-size: 0.88rem; margin-bottom: 0.5rem; }
+    .d-side.cant h4 { color: #b91c1c; }
+    .d-side.can h4 { color: #065f46; }
+    .d-side p { font-size: 0.88rem; line-height: 1.6; margin: 0; color: #444; }
+    .distinction-arrow { text-align: center; font-size: 1.5rem; color: #0f3460; }
+
+    .example-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.92rem; }
+    .example-table th { background: #0f3460; color: white; padding: 0.6rem 0.8rem; text-align: left; }
+    .example-table td { padding: 0.6rem 0.8rem; background: white; border-bottom: 1px solid #dde; vertical-align: top; line-height: 1.6; }
+    .example-table tr:last-child td { border-bottom: none; }
+    .example-table .no { color: #b91c1c; font-weight: bold; }
+    .example-table .yes { color: #065f46; font-weight: bold; }
+
+    .hallucination-box {
+      background: #fff8e1; border: 2px solid #f59e0b; border-radius: 8px;
+      padding: 1rem 1.2rem; margin: 1rem 0;
+    }
+    .hallucination-box h4 { font-size: 1rem; color: #92400e; margin-bottom: 0.5rem; }
+    .hallucination-box p { font-size: 0.93rem; line-height: 1.6; margin-bottom: 0.4rem; }
+    .hallucination-box p:last-child { margin-bottom: 0; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>What AI Can (and Can&rsquo;t) Do</h1>
+  <p>The mental model that makes everything else click — including why "Claude can't do X" is often the wrong framing</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>VS Code &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="vscode-setup.html">Install &amp; Setup</a>
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Background &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="background-github.html">What Is GitHub?</a>
+      <a href="background-python-envs.html">Python Environments</a>
+      <a href="background-paths.html">Paths Explained</a>
+      <a href="background-vscode.html">Editors and IDEs</a>
+      <a href="background-llm-modes.html">Working With AI</a>
+      <a href="background-llm-limits.html">What AI Can&rsquo;t Do</a>
+    </div>
+  </div>
+  <a href="feedback.html">Suggest or Improve</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <div class="enrichment-note">
+    <strong>Background reading — optional</strong>
+    People coming to AI tools for the first time often have one of two misconceptions: either they
+    think AI is magic and can do anything, or they get frustrated because it can't do a specific
+    thing they asked for. This page gives you the mental model that explains both.
+  </div>
+
+  <section>
+    <h2>What an AI Language Model Actually Is</h2>
+    <p>
+      Claude, ChatGPT, Copilot, and similar tools are all <em>large language models</em> (LLMs).
+      At their core, they are extremely sophisticated pattern-matching engines trained on enormous
+      amounts of text — books, websites, code, conversations.
+    </p>
+    <p>
+      When you ask a question, the model predicts, word by word, what the most useful response would
+      look like. It's not "thinking" in the way a human does, and it doesn't "know" things the way
+      a textbook does. It generates text that fits the pattern of a good response to your input,
+      based on what it learned during training.
+    </p>
+    <p>
+      This is a subtle but important distinction. It explains both why these tools are so capable
+      (they've learned from an enormous range of human knowledge) and why they sometimes produce
+      confidently wrong answers.
+    </p>
+  </section>
+
+  <section>
+    <h2>The Key Insight: Claude Can't — But Code Can</h2>
+    <p>
+      There are many things that Claude (or any LLM by itself) genuinely cannot do:
+      read a file on your computer, send an email, fetch live data from a website, make a
+      reservation, or run a calculation on 10,000 rows of data. These require access to external
+      systems, and Claude is just generating text.
+    </p>
+    <p>
+      But here's the insight that changes everything:
+    </p>
+
+    <div class="distinction">
+      <div class="d-side cant">
+        <h4>&#x2717; Claude cannot do this</h4>
+        <p>"Read my CSV file and calculate the average score by department."</p>
+      </div>
+      <div class="distinction-arrow">&#8594;</div>
+      <div class="d-side can">
+        <h4>&#x2713; Claude can write code that does this</h4>
+        <p>A Python script that reads your CSV, groups by department, and calculates the average — which you then run yourself.</p>
+      </div>
+    </div>
+
+    <p>
+      Claude is a <strong>code generator</strong>. It can write programs that do things Claude
+      itself cannot. Your job shifts from "write the code" to "describe what the code should do
+      and run it." That's a very different — and often much more accessible — way to work.
+    </p>
+  </section>
+
+  <section>
+    <h2>Examples of the Pattern</h2>
+
+    <table class="example-table">
+      <tr>
+        <th>What you want</th>
+        <th>Can Claude do it directly?</th>
+        <th>Can Claude write code that does it?</th>
+      </tr>
+      <tr>
+        <td>Sort a list of 10,000 names alphabetically</td>
+        <td class="no">No — too much data to process in text</td>
+        <td class="yes">Yes — a 3-line Python script</td>
+      </tr>
+      <tr>
+        <td>Send an email on your behalf</td>
+        <td class="no">No — no access to your email</td>
+        <td class="yes">Yes — a script using Gmail API or a mail library</td>
+      </tr>
+      <tr>
+        <td>Read a file from your hard drive</td>
+        <td class="no">No — unless you paste the contents in</td>
+        <td class="yes">Yes — one line of Python: <code>open("file.txt").read()</code></td>
+      </tr>
+      <tr>
+        <td>Check a website for a price change</td>
+        <td class="no">No — can't browse live web</td>
+        <td class="yes">Yes — a script using the <code>requests</code> library</td>
+      </tr>
+      <tr>
+        <td>Explain what a piece of code does</td>
+        <td class="yes">Yes — this is exactly what LLMs are great at</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Write a function from a description</td>
+        <td class="yes">Yes — one of the most powerful use cases</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Debug an error message</td>
+        <td class="yes">Yes — paste the error and the code, ask what's wrong</td>
+        <td>—</td>
+      </tr>
+    </table>
+
+    <div class="tip">
+      The practical takeaway: when you hit something Claude "can't do," ask yourself —
+      <em>can it write code that does it?</em> The answer is often yes. Then your job is to
+      run that code and report back what happened.
+    </div>
+  </section>
+
+  <section>
+    <h2>Hallucinations: When AI Makes Things Up</h2>
+
+    <div class="hallucination-box">
+      <h4>What is a hallucination?</h4>
+      <p>
+        A hallucination is when an AI produces an answer that sounds confident and plausible
+        but is factually wrong. It might cite a research paper that doesn't exist,
+        invent a function name that looks real but isn't, or give you code that runs
+        but produces wrong results.
+      </p>
+      <p>
+        It happens because the model is generating text that <em>fits the pattern</em> of a
+        correct answer, not because it's verifying facts against a source of truth.
+        It doesn't know it's wrong — it has no mechanism for self-doubt.
+      </p>
+    </div>
+
+    <h3>How common are hallucinations?</h3>
+    <p>
+      For common, well-documented tasks — writing a Python function, fixing a CSS layout,
+      explaining a terminal command — hallucinations are rare because the model has seen
+      correct examples of these thousands of times. For obscure questions, recent events,
+      or very specific factual claims, the risk is higher.
+    </p>
+    <p>
+      Code is actually easier to verify than facts — you run it and see if it works.
+      A hallucinated historical date is harder to catch.
+    </p>
+
+    <h3>How to handle hallucinations</h3>
+    <ul>
+      <li><strong>Run the code.</strong> Don't assume it works because it looks right. Test it.</li>
+      <li><strong>Verify specific claims.</strong> If Claude tells you a specific function exists in a library, check the documentation.</li>
+      <li><strong>Ask follow-up questions.</strong> "Are you sure about that?" sometimes prompts a correction.</li>
+      <li><strong>Use it as a starting point, not an endpoint.</strong> AI-generated code is a draft, not a final answer.</li>
+    </ul>
+
+    <div class="warn">
+      Never submit AI-generated work as your own without understanding it first.
+      Not because it will always be wrong — often it's correct — but because you need to
+      be able to stand behind it, explain it, and fix it when something changes.
+    </div>
+  </section>
+
+  <section>
+    <h2>The Right Mental Model: A Knowledgeable Collaborator</h2>
+    <p>
+      The most useful way to think about Claude and similar tools is as a knowledgeable
+      collaborator who types very fast and never gets tired, but who:
+    </p>
+    <ul>
+      <li>Can only see what's in front of them (what you've shown in the conversation)</li>
+      <li>Sometimes fills in gaps with plausible-sounding guesses</li>
+      <li>Is excellent at well-documented, common tasks</li>
+      <li>Needs you to verify, test, and direct the work</li>
+      <li>Gets dramatically better when given clear, specific context</li>
+    </ul>
+    <p>
+      You are still the engineer. Claude handles the typing. That division of labor is what makes
+      this workflow so productive — as long as you stay in the loop.
+    </p>
+    <a class="btn" href="splash-exercises.html">Try building something →</a>
+    &nbsp;
+    <a class="btn" href="background-llm-modes.html" style="background:#16213e;">Working With AI: Two Modes →</a>
+  </section>
+
+</main>
+
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
+</body>
+</html>

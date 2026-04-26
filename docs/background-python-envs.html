@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Environments | Background Reading</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 190px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.6rem; line-height: 1.8; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+
+    .terminal {
+      background: #1a1a2e; color: #c9d1d9; padding: 1.1rem 1.3rem;
+      border-radius: 6px; font-family: 'Courier New', monospace;
+      font-size: 0.88rem; line-height: 1.8; margin: 0.6rem 0;
+    }
+    .terminal .prompt { color: #58a6ff; }
+    .terminal .comment { color: #8b949e; }
+    .terminal .output { color: #adbac7; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .enrichment-note {
+      background: #f0f7ff; border: 2px solid #0f3460; border-radius: 8px;
+      padding: 0.9rem 1.1rem; margin-bottom: 2rem; font-size: 0.93rem; line-height: 1.6;
+    }
+    .enrichment-note strong { display: block; margin-bottom: 0.3rem; color: #0f3460; font-size: 1rem; }
+
+    .diagram {
+      display: flex; align-items: flex-start; justify-content: center;
+      gap: 1rem; padding: 1.2rem 1rem; background: #f0f4f8;
+      border-radius: 8px; margin: 1rem 0; flex-wrap: wrap;
+    }
+    .d-machine {
+      background: #1a1a2e; color: white; border-radius: 8px; padding: 0.8rem 1rem;
+      min-width: 120px; text-align: center;
+    }
+    .d-machine h4 { font-size: 0.85rem; margin-bottom: 0.5rem; opacity: 0.8; }
+    .d-env {
+      background: #0f3460; color: white; border-radius: 5px; padding: 0.45rem 0.8rem;
+      font-size: 0.82rem; margin-bottom: 0.4rem; text-align: left;
+    }
+    .d-env small { display: block; opacity: 0.7; font-size: 0.74rem; margin-top: 0.1rem; }
+    .d-env.active { background: #27548a; }
+    .diagram-caption { font-size: 0.83rem; color: #667; text-align: center; margin-top: 0.3rem; font-style: italic; }
+
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    @media (max-width: 600px) { .compare-grid { grid-template-columns: 1fr; } }
+    .compare-col { background: white; border-radius: 6px; padding: 1rem 1.1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+    .compare-col h4 { font-size: 0.95rem; margin-bottom: 0.5rem; color: #0f3460; }
+    .compare-col ul { padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.7; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.93rem; transition: background 0.2s; margin-top: 0.5rem; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Python Environments</h1>
+  <p>Why multiple Python installations can coexist on one machine — and why that matters</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>VS Code &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="vscode-setup.html">Install &amp; Setup</a>
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Background &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="background-github.html">What Is GitHub?</a>
+      <a href="background-python-envs.html">Python Environments</a>
+      <a href="background-paths.html">Paths Explained</a>
+      <a href="background-vscode.html">Editors and IDEs</a>
+      <a href="background-llm-modes.html">Working With AI</a>
+      <a href="background-llm-limits.html">What AI Can&rsquo;t Do</a>
+    </div>
+  </div>
+  <a href="feedback.html">Suggest or Improve</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <div class="enrichment-note">
+    <strong>Background reading — optional</strong>
+    This page explains something that confuses almost everyone at some point: why does
+    <code>python --version</code> sometimes give a different answer than you expect, and
+    why do projects ask you to set up a "virtual environment"? You don't need this to follow
+    the setup guides, but it'll help if things ever seem inconsistent.
+  </div>
+
+  <section>
+    <h2>Python Is Not One Single Thing</h2>
+    <p>
+      When you install Python, you're installing a specific <em>version</em> — like Python 3.11 or 3.12.
+      That installation includes the Python interpreter (the program that runs your code) plus a set of
+      built-in modules. But here's the catch: you can install multiple versions of Python on the same
+      machine, and they coexist independently.
+    </p>
+    <p>
+      On top of that, Python has a massive ecosystem of third-party packages — libraries like
+      <code>pandas</code>, <code>requests</code>, <code>flask</code> — which you install separately
+      using <code>pip</code>. These packages are installed <em>into a specific Python installation</em>,
+      not globally on your computer.
+    </p>
+    <p>
+      This means two different Python installations on the same machine can have completely different
+      sets of packages. Project A might need an older version of a library; Project B might need
+      a newer one. If they share the same installation, one of them breaks.
+    </p>
+  </section>
+
+  <section>
+    <h2>What an Environment Is</h2>
+    <p>
+      A Python <em>environment</em> is an isolated container — its own Python interpreter plus its own
+      set of packages. Code running inside that environment sees only its packages, not anything installed
+      in other environments.
+    </p>
+    <p>
+      Think of it like different toolboxes for different jobs. The plumbing toolbox and the electrical
+      toolbox are both in the garage, but you pick up the right one before starting work, and they don't
+      interfere with each other.
+    </p>
+
+    <div class="diagram">
+      <div class="d-machine">
+        <h4>Your Computer</h4>
+        <div class="d-env">Python 3.12 (system)<small>pip, setuptools</small></div>
+        <div class="d-env active">env-projectA<small>pandas 1.5, flask 2.0</small></div>
+        <div class="d-env">env-projectB<small>pandas 2.1, flask 3.0</small></div>
+        <div class="d-env">conda: base<small>numpy, scipy, matplotlib</small></div>
+      </div>
+    </div>
+    <p class="diagram-caption">Each environment has its own Python + packages. They don't interfere.</p>
+
+    <div class="warn">
+      If you install all your packages into the system Python and projects start conflicting,
+      unraveling it is painful. Using environments from the start costs almost nothing and saves
+      a lot of headaches.
+    </div>
+  </section>
+
+  <section>
+    <h2>Two Common Tools: venv and conda</h2>
+
+    <div class="compare-grid">
+      <div class="compare-col">
+        <h4>venv (built into Python)</h4>
+        <ul>
+          <li>Ships with Python — no install needed</li>
+          <li>Lightweight: creates a folder in your project</li>
+          <li>Manages Python packages only</li>
+          <li>Activated per terminal session</li>
+          <li>Best for most Python projects</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <h4>conda (Anaconda / Miniconda)</h4>
+        <ul>
+          <li>Separate install — heavier</li>
+          <li>Manages Python <em>and</em> non-Python dependencies</li>
+          <li>Popular in data science and scientific computing</li>
+          <li>Can install different Python <em>versions</em> per environment</li>
+          <li>Best when you need numpy, scipy, or non-Python libs</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip">
+      For this course, you don't need to set up either. The Python setup guide installs Python cleanly
+      and you'll run scripts directly. This page is context for when you encounter venv or conda
+      mentioned in a tutorial or project README.
+    </div>
+  </section>
+
+  <section>
+    <h2>The "Which Python" Problem</h2>
+    <p>
+      If you have multiple Python installations, the terminal picks one based on the PATH (the list of
+      places the OS searches when you type a command — see <a href="background-paths.html">Paths Explained</a>
+      for how that works). Which one gets picked depends on the order things were installed and whether
+      any activation scripts have run.
+    </p>
+    <p>
+      This is why sometimes <code>python</code> returns version 3.9 but you thought you installed 3.12.
+      Or why a package you're sure you installed doesn't seem to be there.
+    </p>
+
+    <div class="terminal">
+      <span class="comment"># Check which Python is actually being used</span><br>
+      <span class="prompt">C:\Users\you&gt;</span> python --version<br>
+      <span class="output">Python 3.9.7</span><br>
+      <br>
+      <span class="comment"># Find out where that Python actually lives</span><br>
+      <span class="prompt">C:\Users\you&gt;</span> where python<br>
+      <span class="output">C:\Users\you\AppData\Local\Programs\Python\Python39\python.exe</span><br>
+      <span class="output">C:\Users\you\AppData\Local\Microsoft\WindowsApps\python.exe</span>
+    </div>
+
+    <div class="warn">
+      The Microsoft Store version of Python (<code>WindowsApps\python.exe</code>) is a stub that
+      redirects to the Store. It can cause confusing behavior. The Python setup guide shows you
+      how to avoid it.
+    </div>
+  </section>
+
+  <section>
+    <h2>How VS Code Picks a Python Interpreter</h2>
+    <p>
+      When you open a Python file in VS Code, it shows the currently selected Python interpreter
+      in the bottom-left corner of the window. Click on it to switch — VS Code will list all
+      the Python installations and environments it can find on your machine.
+    </p>
+    <p>
+      If you're in a project with a <code>venv</code> folder, VS Code usually detects it automatically
+      and offers to activate it. This means the terminal inside VS Code will use that environment's
+      Python and packages, not the system one.
+    </p>
+    <div class="tip">
+      If a script runs fine in the terminal but VS Code shows errors, the interpreter is probably
+      different from what the terminal is using. Check the bottom-left corner of VS Code and make
+      sure it matches.
+    </div>
+  </section>
+
+  <section>
+    <h2>What You Need to Know for This Course</h2>
+    <p>
+      For these exercises, a single clean Python install is enough. You don't need environments yet.
+      But now you have a mental model for what's happening when you see terms like
+      <code>venv</code>, <code>activate</code>, <code>conda env create</code>, or
+      <code>(myenv)</code> appearing in a terminal prompt.
+    </p>
+    <p>
+      When you start working on a real project that has a <code>requirements.txt</code> or
+      <code>environment.yml</code> file, come back to the
+      <a href="python-complexity.html">When It Gets Complex</a> page for step-by-step guidance.
+    </p>
+    <a class="btn" href="python-setup.html">Go to Python Setup →</a>
+  </section>
+
+</main>
+
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
+</body>
+</html>
