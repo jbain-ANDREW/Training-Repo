@@ -93,6 +93,39 @@
     .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.95rem; transition: background 0.2s; }
     .btn:hover { background: #16213e; }
 
+    .ghd-box { border: 2px solid #7c3aed; border-radius: 8px; overflow: hidden; margin-top: 1.5rem; }
+    .ghd-box-header { background: #7c3aed; color: white; padding: 0.65rem 1.1rem; font-weight: 600; font-size: 0.95rem; }
+    .ghd-box-header span { opacity: 0.8; font-size: 0.87rem; font-weight: normal; margin-left: 0.5rem; }
+    .ghd-box-body { padding: 1rem 1.1rem; background: white; }
+    .ghd-steps { counter-reset: gstep; list-style: none; margin: 0; }
+    .ghd-steps li {
+      counter-increment: gstep;
+      padding: 0.7rem 0.8rem 0.7rem 2.7rem;
+      border-bottom: 1px solid #ede9fe;
+      position: relative;
+    }
+    .ghd-steps li:last-child { border-bottom: none; }
+    .ghd-steps li::before {
+      content: counter(gstep);
+      position: absolute; left: 0.7rem; top: 0.8rem;
+      background: #7c3aed; color: white;
+      width: 1.4rem; height: 1.4rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: bold;
+    }
+    .ghd-steps li strong { display: block; margin-bottom: 0.15rem; font-size: 0.93rem; }
+    .ghd-steps li p { font-size: 0.9rem; color: #444; line-height: 1.6; margin: 0.2rem 0 0; }
+    .ghd-steps li .tip { margin: 0.4rem 0 0; }
+    .ghd-steps li .warn { margin: 0.4rem 0 0; }
+
+    .concept-map { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; margin: 1rem 0; }
+    .concept-map table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    .concept-map th { background: #0f3460; color: white; padding: 0.6rem 0.8rem; text-align: left; }
+    .concept-map td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #eef; }
+    .concept-map tr:last-child td { border-bottom: none; }
+    .concept-map td:first-child { font-family: 'Courier New', monospace; font-size: 0.87rem; color: #555; }
+    .concept-map td:last-child { color: #444; font-size: 0.9rem; }
+
     footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
   </style>
 </head>
@@ -308,6 +341,50 @@ git pull origin main --rebase
 git push origin firstname-lastname --force-with-lease</pre>
       This replays your commit on top of the latest <code>main</code> — the conflict disappears.
     </div>
+
+    <div class="ghd-box">
+      <div class="ghd-box-header">🖥️ Prefer GitHub Desktop? <span>Same exercise — click instead of type</span></div>
+      <div class="ghd-box-body">
+        <ul class="ghd-steps">
+          <li>
+            <strong>Clone the repo in GitHub Desktop</strong>
+            <p>File → Clone repository → click the URL tab → paste
+            <code>https://github.com/jbain-ANDREW/Training-Repo</code> → choose a local folder → Clone.</p>
+          </li>
+          <li>
+            <strong>Create your branch</strong>
+            <p>Click <strong>Current Branch</strong> in the top bar → <strong>New Branch</strong> → type
+            <code>firstname-lastname</code> → <strong>Create Branch</strong>.</p>
+          </li>
+          <li>
+            <strong>Edit shared-file.py</strong>
+            <p>Click <strong>Open in Visual Studio Code</strong> (or Repository → Open in Visual Studio Code).
+            Open <code>exercises/pr-and-conflicts/shared-file.py</code> and add your line to
+            the <code>participants</code> list. Save the file.</p>
+          </li>
+          <li>
+            <strong>Commit in GitHub Desktop</strong>
+            <p>Switch back to GitHub Desktop — your changed file appears in the <strong>Changes</strong> panel.
+            In the <strong>Summary</strong> box at the bottom-left, type
+            <em>Add Firstname Lastname to participants</em>.
+            Click <strong>Commit to firstname-lastname</strong>.</p>
+          </li>
+          <li>
+            <strong>Push your branch</strong>
+            <p>Click <strong>Publish branch</strong> (top bar) to send your branch to GitHub.</p>
+          </li>
+          <li>
+            <strong>Open a Pull Request</strong>
+            <p>GitHub Desktop shows a <strong>Create Pull Request</strong> button after pushing.
+            Click it — your browser opens to the GitHub PR form with your branch pre-selected.
+            Set base to <code>main</code>, write a short title, and submit.</p>
+            <div class="tip">If the button doesn't appear, go to
+            <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">github.com/jbain-ANDREW/Training-Repo</a>
+            directly — GitHub shows a yellow "Compare &amp; pull request" banner.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </section>
 
   <!-- ── Part 2 ─────────────────────────────────────────────────── -->
@@ -370,6 +447,52 @@ git commit -m "Resolve motto conflict"</pre>
       Merge conflicts look scary the first time. After three or four of them,
       they become a normal five-minute task.
     </div>
+
+    <div class="ghd-box">
+      <div class="ghd-box-header">🖥️ Prefer GitHub Desktop? <span>Conflict resolution without the terminal</span></div>
+      <div class="ghd-box-body">
+        <ul class="ghd-steps">
+          <li>
+            <strong>Fetch and switch to conflict-setup</strong>
+            <p>Click <strong>Fetch origin</strong> in the top bar to get the latest branches.
+            Then click <strong>Current Branch</strong> → find <code>conflict-setup</code> in the list → click it to switch.</p>
+          </li>
+          <li>
+            <strong>Merge main into conflict-setup</strong>
+            <p>Go to <strong>Branch → Merge into Current Branch&hellip;</strong> → select <code>main</code> from the list
+            → click <strong>Create a merge commit</strong>. GitHub Desktop immediately detects the conflict.</p>
+          </li>
+          <li>
+            <strong>See the conflict indicator</strong>
+            <p>The Changes panel shows <code>shared-file.py</code> with a yellow warning icon.
+            GitHub Desktop displays an <strong>Open in Visual Studio Code</strong> button next to the conflicted file — click it.</p>
+          </li>
+          <li>
+            <strong>Resolve in VS Code</strong>
+            <p>VS Code highlights the two motto versions. Click <strong>Accept Current Change</strong> to keep
+            the <code>conflict-setup</code> version, or <strong>Accept Incoming Change</strong> to take the
+            <code>main</code> version. Either is fine. Save the file.</p>
+            <div class="tip">The three marker lines (<code>&lt;&lt;&lt;</code>, <code>===</code>, <code>&gt;&gt;&gt;</code>) must
+            all be gone before you save — VS Code's accept buttons remove them automatically.</div>
+          </li>
+          <li>
+            <strong>Commit the merge in GitHub Desktop</strong>
+            <p>Switch back to GitHub Desktop — the warning icon is gone and the file shows as changed.
+            Click <strong>Commit merge</strong> (the button appears automatically after all conflicts are resolved).</p>
+          </li>
+          <li>
+            <strong>Push and open a Pull Request</strong>
+            <p>Click <strong>Push origin</strong>, then <strong>Create Pull Request</strong>.
+            Set base to <code>main</code>, compare to <code>conflict-setup</code>.
+            Note in the description which motto you kept and why.</p>
+          </li>
+        </ul>
+        <div class="warn" style="margin-top:0.8rem;">
+          <strong>If GitHub Desktop shows "Open in GitHub Desktop" doesn't load conflict-setup:</strong>
+          Click Fetch origin first, then look under <em>Other Branches</em> in the Current Branch dropdown.
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ── Concepts reference ──────────────────────────────────────── -->
@@ -395,6 +518,57 @@ git diff                        # shows the full diff including conflict markers
     <div class="tip">
       <strong>Abort a merge you're not ready to handle:</strong>
       <code>git merge --abort</code> resets everything back to before the merge started.
+      In GitHub Desktop: Repository → <strong>Abort Merge</strong>.
+    </div>
+
+    <h3>Terminal vs. GitHub Desktop — same operations</h3>
+    <div class="concept-map">
+      <table>
+        <tr>
+          <th>Terminal command</th>
+          <th>GitHub Desktop equivalent</th>
+        </tr>
+        <tr>
+          <td>git clone &lt;url&gt;</td>
+          <td>File → Clone repository → URL tab → paste URL</td>
+        </tr>
+        <tr>
+          <td>git checkout -b firstname-lastname</td>
+          <td>Current Branch → New Branch → type name → Create Branch</td>
+        </tr>
+        <tr>
+          <td>git add &lt;file&gt; + git commit -m "…"</td>
+          <td>Changes panel → type Summary → Commit to branch</td>
+        </tr>
+        <tr>
+          <td>git push origin branch-name</td>
+          <td>Publish branch / Push origin button</td>
+        </tr>
+        <tr>
+          <td>Open PR on github.com</td>
+          <td>Create Pull Request button → browser opens</td>
+        </tr>
+        <tr>
+          <td>git fetch origin + git checkout conflict-setup</td>
+          <td>Fetch origin → Current Branch → select conflict-setup</td>
+        </tr>
+        <tr>
+          <td>git merge main</td>
+          <td>Branch → Merge into Current Branch → select main</td>
+        </tr>
+        <tr>
+          <td>Edit file to remove conflict markers</td>
+          <td>Click "Open in Visual Studio Code" on the conflicted file → accept changes → save</td>
+        </tr>
+        <tr>
+          <td>git add &lt;file&gt; + git commit</td>
+          <td>Commit merge button (appears automatically)</td>
+        </tr>
+        <tr>
+          <td>git merge --abort</td>
+          <td>Repository → Abort Merge</td>
+        </tr>
+      </table>
     </div>
   </section>
 
