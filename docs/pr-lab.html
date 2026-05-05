@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pull Requests &amp; Merge Conflicts | GitHub &amp; Version Control</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; }
+
+    header { background: #1a1a2e; color: white; padding: 2.5rem 2rem; text-align: center; }
+    header h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    header p { opacity: 0.75; font-size: 1.05rem; }
+
+    nav { display: flex; justify-content: center; gap: 1rem; background: #16213e; padding: 0.75rem; flex-wrap: wrap; }
+    nav a { color: #e0e0e0; text-decoration: none; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; transition: background 0.2s; }
+    nav a:hover { background: #0f3460; }
+    .nav-dropdown { position: relative; display: inline-block; }
+    .nav-dropdown > span { color: #e0e0e0; font-size: 0.95rem; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; user-select: none; display: inline-block; }
+    .nav-dropdown > span:hover { background: #0f3460; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #0f3460; border-radius: 4px; min-width: 210px; z-index: 100; padding: 0.3rem 0; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.45rem 1rem; border-radius: 0; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: #16213e; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-left: 4px solid #0f3460; padding-left: 0.6rem; }
+    h3 { font-size: 1.05rem; margin: 1.3rem 0 0.5rem; color: #0f3460; }
+    p { line-height: 1.7; margin-bottom: 0.6rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.6rem; line-height: 1.8; }
+
+    code { background: #e8ecf0; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.9rem; font-family: 'Courier New', monospace; }
+    pre { background: #1a1a2e; color: #c9d1d9; padding: 1.1rem 1.3rem; border-radius: 6px; overflow-x: auto; font-size: 0.88rem; line-height: 1.6; margin-top: 0.6rem; }
+    pre .conflict-ours   { color: #79c0ff; }
+    pre .conflict-theirs { color: #ffa657; }
+    pre .conflict-marker { color: #ff7b72; font-weight: bold; }
+
+    .tip  { background: #e7f3ff; border-left: 4px solid #0f3460; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+    .success { background: #d1fae5; border-left: 4px solid #059669; padding: 0.8rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.93rem; margin: 0.8rem 0; }
+
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      padding: 0.9rem 1rem 0.9rem 3.2rem;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      position: relative;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute; left: 1rem; top: 1rem;
+      background: #0f3460; color: white;
+      width: 1.6rem; height: 1.6rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: bold;
+    }
+    .steps li strong { display: block; margin-bottom: 0.2rem; }
+    .steps li p { margin-top: 0.3rem; font-size: 0.94rem; color: #444; }
+
+    .concept-card {
+      background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 1.2rem 1.4rem; margin-bottom: 1rem;
+    }
+    .concept-card h3 { margin-top: 0; }
+
+    .diagram {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.6rem; padding: 1.2rem 1rem; background: #f0f4f8;
+      border-radius: 8px; margin: 1rem 0; flex-wrap: wrap;
+    }
+    .d-box {
+      background: #0f3460; color: white; padding: 0.55rem 1.1rem;
+      border-radius: 6px; font-size: 0.88rem; text-align: center; min-width: 110px;
+    }
+    .d-box small { display: block; font-size: 0.75rem; opacity: 0.75; margin-top: 0.15rem; }
+    .d-box.green  { background: #059669; }
+    .d-box.orange { background: #d97706; }
+    .d-box.conflict { background: #dc2626; }
+    .d-arrow { color: #0f3460; font-weight: bold; font-size: 1.1rem; }
+    .diagram-caption { font-size: 0.83rem; color: #667; text-align: center; margin-top: 0.3rem; font-style: italic; }
+
+    .part-header {
+      background: #1a1a2e; color: white; border-radius: 8px;
+      padding: 1rem 1.4rem; margin-bottom: 1.2rem;
+    }
+    .part-header h2 { border: none; padding: 0; color: white; font-size: 1.3rem; margin-bottom: 0.2rem; }
+    .part-header p { opacity: 0.8; font-size: 0.93rem; margin: 0; }
+
+    .btn { display: inline-block; background: #0f3460; color: white; padding: 0.6rem 1.4rem; border-radius: 5px; text-decoration: none; font-size: 0.95rem; transition: background 0.2s; }
+    .btn:hover { background: #16213e; }
+
+    footer { text-align: center; padding: 1.5rem; font-size: 0.85rem; color: #888; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Pull Requests &amp; Merge Conflicts</h1>
+  <p>How teams collaborate on shared code — and what to do when two people edit the same thing</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <div class="nav-dropdown">
+    <span>Background &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="background-github.html">What Is GitHub?</a>
+      <a href="background-python-envs.html">Python Environments</a>
+      <a href="background-paths.html">Paths Explained</a>
+      <a href="background-vscode.html">Editors and IDEs</a>
+      <a href="background-llm-modes.html">Working With AI</a>
+      <a href="background-llm-limits.html">What AI Can&rsquo;t Do</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>GitHub &amp; Version Control &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="terminal-basics.html">Terminal Basics</a>
+      <a href="github-exercise.html">Exercise &mdash; Terminal</a>
+      <a href="github-desktop.html">Exercise &mdash; Desktop App</a>
+      <a href="pr-lab.html">Exercise &mdash; PRs &amp; Conflicts</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Python Setup &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="python-setup.html">Fresh Install</a>
+      <a href="python-cleanup.html">Already Installed</a>
+      <a href="python-complexity.html">When It Gets Complex</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>VS Code &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="vscode-setup.html">Install &amp; Setup</a>
+      <a href="claude-vscode.html">Claude in VS Code</a>
+      <a href="copilot-vscode.html">Copilot in VS Code</a>
+    </div>
+  </div>
+  <div class="nav-dropdown">
+    <span>Exercises &#9662;</span>
+    <div class="nav-dropdown-menu">
+      <a href="splash-exercises.html">Splash Page Exercises</a>
+      <a href="gas-intro.html">Google Apps Script</a>
+    </div>
+  </div>
+  <a href="feedback.html">Suggest or Improve</a>
+  <a href="splash-pages/">Splash Pages</a>
+  <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">GitHub Repo</a>
+</nav>
+
+<main>
+
+  <!-- ── Concepts ──────────────────────────────────────────────── -->
+  <section>
+    <h2>Pull Requests — Why They Exist</h2>
+
+    <div class="concept-card">
+      <h3>The core problem: everyone editing the same codebase</h3>
+      <p>
+        On a real project, multiple people are writing code at the same time.
+        If everyone pushed directly to <code>main</code>, you would constantly overwrite each
+        other's work, break things that were just fixed, and have no way to review
+        changes before they went live.
+      </p>
+      <p>
+        The solution is <strong>branches</strong>. Each contributor works on their own branch —
+        a private copy of the project where changes are isolated. When the work is ready,
+        they open a <strong>Pull Request (PR)</strong>: a formal request to merge their branch into
+        <code>main</code>.
+      </p>
+    </div>
+
+    <div class="diagram">
+      <div class="d-box"><code>main</code><small>live code</small></div>
+      <div class="d-arrow">→ branch →</div>
+      <div class="d-box green">your branch<small>your changes</small></div>
+      <div class="d-arrow">→ PR →</div>
+      <div class="d-box"><code>main</code><small>merged</small></div>
+    </div>
+    <p class="diagram-caption">Branch → make changes → PR → review → merge back into main</p>
+
+    <div class="concept-card" style="margin-top:1rem;">
+      <h3>What a Pull Request actually is</h3>
+      <p>A PR is not a Git concept — it is a <strong>GitHub feature</strong> layered on top of Git.
+      When you open a PR you are saying: "Here is my branch. Please compare it to <code>main</code>,
+      show the diff, let people comment, and then merge it when it's approved."</p>
+      <p>The review step is the point. PRs are how teams catch bugs, share knowledge, and keep
+      the <code>main</code> branch stable. Even on solo projects they are useful —
+      the act of writing a PR description often surfaces problems you missed.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Merge Conflicts — What They Are and Why They Happen</h2>
+
+    <div class="concept-card">
+      <h3>Git can usually merge automatically</h3>
+      <p>
+        When you merge two branches, Git compares the changes line by line.
+        If two people edited <em>different</em> lines, Git figures it out silently and
+        everything just works. Most merges are automatic.
+      </p>
+      <p>
+        A <strong>merge conflict</strong> happens when two branches both changed the
+        <em>same line</em> in different ways. Git has no way to know which version is
+        correct — so it stops and asks you to decide.
+      </p>
+    </div>
+
+    <div class="diagram">
+      <div class="d-box"><code>main</code><small>motto A</small></div>
+      <div style="display:flex;flex-direction:column;gap:0.4rem;align-items:center;">
+        <div class="d-box orange">conflict-setup<small>motto B</small></div>
+        <div style="font-size:0.8rem;color:#667;">both changed the same line</div>
+      </div>
+      <div class="d-arrow">→ merge →</div>
+      <div class="d-box conflict">CONFLICT<small>you decide</small></div>
+    </div>
+    <p class="diagram-caption">When two branches change the same line, Git produces a conflict</p>
+
+    <div class="concept-card" style="margin-top:1rem;">
+      <h3>What the conflict markers look like</h3>
+      <p>Git inserts markers directly into the file showing both versions:</p>
+<pre><span class="conflict-marker">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD (conflict-setup)</span>
+<span class="conflict-ours">motto = "if it compiles, ship it"</span>
+<span class="conflict-marker">=======</span>
+<span class="conflict-theirs">motto = "we build things that work"</span>
+<span class="conflict-marker">&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</span></pre>
+      <ul style="margin-top:0.8rem;">
+        <li>Everything between <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> and <code>=======</code> is <strong>your branch's version</strong></li>
+        <li>Everything between <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> is <strong>the incoming version</strong></li>
+      </ul>
+      <p style="margin-top:0.6rem;">
+        To resolve it: delete the markers, keep whichever version (or both, or
+        something new), save the file, then stage and commit.
+      </p>
+    </div>
+
+    <div class="tip">
+      <strong>VS Code makes this visual.</strong> When you open a conflicted file, VS Code
+      highlights the two versions with colored backgrounds and shows buttons —
+      "Accept Current Change", "Accept Incoming Change", "Accept Both".
+      Click one and VS Code removes the markers for you. Then just save and commit.
+    </div>
+  </section>
+
+  <!-- ── Part 1 ─────────────────────────────────────────────────── -->
+  <section>
+    <div class="part-header">
+      <h2>Part 1 — Open a Pull Request</h2>
+      <p>Add your name to a shared file using the branch → commit → PR workflow</p>
+    </div>
+
+    <p>Everyone in the class (including the instructor) will add one line to
+    <code>exercises/pr-and-conflicts/shared-file.py</code>. By the end, the PR list on
+    GitHub will show a PR per person — all changing the same file, all merged cleanly.</p>
+
+    <ul class="steps">
+      <li>
+        <strong>Clone the repo (if you haven't already)</strong>
+        <pre>git clone https://github.com/jbain-ANDREW/Training-Repo.git
+cd Training-Repo</pre>
+      </li>
+      <li>
+        <strong>Create your branch</strong>
+        <p>Never work directly on <code>main</code>. Replace with your actual name in lowercase:</p>
+        <pre>git checkout -b firstname-lastname</pre>
+      </li>
+      <li>
+        <strong>Edit shared-file.py</strong>
+        <p>Open <code>exercises/pr-and-conflicts/shared-file.py</code> in VS Code.
+        Find the <code>participants</code> list and add one line at the end — your name
+        and one word that describes you:</p>
+        <pre>participants = [
+    "James Bain  : builder",        # instructor
+    "Firstname Lastname : your_word",  # ← add this line
+]</pre>
+        <p>Do not edit anyone else's line. Keep the same format.</p>
+      </li>
+      <li>
+        <strong>Stage and commit</strong>
+        <pre>git add exercises/pr-and-conflicts/shared-file.py
+git commit -m "Add Firstname Lastname to participants"</pre>
+      </li>
+      <li>
+        <strong>Push your branch</strong>
+        <pre>git push origin firstname-lastname</pre>
+      </li>
+      <li>
+        <strong>Open a Pull Request on GitHub</strong>
+        <p>Go to <a href="https://github.com/jbain-ANDREW/Training-Repo" target="_blank">github.com/jbain-ANDREW/Training-Repo</a>.
+        GitHub will show a yellow banner: <em>"firstname-lastname had recent pushes — Compare &amp; pull request."</em>
+        Click it. Set base to <code>main</code>, compare to your branch, write a short title, and submit.</p>
+        <div class="tip">Your PR will appear in the <a href="https://github.com/jbain-ANDREW/Training-Repo/pulls" target="_blank">open PRs list</a>. Wait for your instructor to review and merge it.</div>
+      </li>
+    </ul>
+
+    <div class="warn">
+      <strong>If your PR shows a conflict:</strong> Someone else was merged first and their
+      entry is now in the file too. Update your branch:
+      <pre style="margin-top:0.5rem;">git checkout firstname-lastname
+git pull origin main --rebase
+git push origin firstname-lastname --force-with-lease</pre>
+      This replays your commit on top of the latest <code>main</code> — the conflict disappears.
+    </div>
+  </section>
+
+  <!-- ── Part 2 ─────────────────────────────────────────────────── -->
+  <section>
+    <div class="part-header" style="background: #27548a;">
+      <h2>Part 2 — Resolve a Merge Conflict</h2>
+      <p>Check out a branch that deliberately diverges from main — then merge and fix the conflict</p>
+    </div>
+
+    <p>
+      The <code>conflict-setup</code> branch was created with a different motto line than
+      <code>main</code>. When you merge <code>main</code> into it, Git cannot decide which
+      motto is right — so it produces a conflict and asks you to choose.
+    </p>
+
+    <ul class="steps">
+      <li>
+        <strong>Fetch the remote branch and check it out</strong>
+        <pre>git fetch origin
+git checkout conflict-setup</pre>
+        <p>You are now on the <code>conflict-setup</code> branch, which has
+        <code>motto = "if it compiles, ship it"</code>.</p>
+      </li>
+      <li>
+        <strong>Merge main into it</strong>
+        <pre>git merge main</pre>
+        <p>Git will stop with a message like:</p>
+        <pre>Auto-merging exercises/pr-and-conflicts/shared-file.py
+CONFLICT (content): Merge conflict in exercises/pr-and-conflicts/shared-file.py
+Automatic merge failed; fix conflicts and then commit the result.</pre>
+      </li>
+      <li>
+        <strong>Open the conflicted file in VS Code</strong>
+        <p>VS Code will highlight the conflict zone. You will see both motto versions
+        separated by markers. Choose one — or write something entirely new — then
+        delete all three marker lines (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>,
+        <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>) and save the file.</p>
+        <div class="tip">
+          <strong>VS Code shortcut:</strong> Click <em>"Accept Current Change"</em> to keep
+          the <code>conflict-setup</code> version, or <em>"Accept Incoming Change"</em> to take
+          the <code>main</code> version. Either is fine — the point is to practice resolving.
+        </div>
+      </li>
+      <li>
+        <strong>Stage the resolved file and finish the merge</strong>
+        <pre>git add exercises/pr-and-conflicts/shared-file.py
+git commit -m "Resolve motto conflict"</pre>
+        <p>Git will use a default merge-commit message — that is fine. Save and close the editor if it opens one.</p>
+      </li>
+      <li>
+        <strong>Push and open a Pull Request</strong>
+        <pre>git push origin conflict-setup</pre>
+        <p>Go to GitHub and open a PR — base: <code>main</code>, compare: <code>conflict-setup</code>.
+        In the description, note which motto you kept and why.</p>
+      </li>
+    </ul>
+
+    <div class="success">
+      <strong>You just did what every developer does dozens of times a week.</strong>
+      Merge conflicts look scary the first time. After three or four of them,
+      they become a normal five-minute task.
+    </div>
+  </section>
+
+  <!-- ── Concepts reference ──────────────────────────────────────── -->
+  <section>
+    <h2>Quick Reference</h2>
+
+    <h3>PR workflow in four commands</h3>
+    <pre>git checkout -b my-branch       # create a branch
+git add &lt;file&gt;                  # stage changes
+git commit -m "description"     # commit
+git push origin my-branch       # push — then open PR on GitHub</pre>
+
+    <h3>Resolving a conflict in four steps</h3>
+    <pre>git merge &lt;branch&gt;              # triggers the conflict
+# edit the file — remove &lt;&lt;&lt; === &gt;&gt;&gt; markers, keep the right code
+git add &lt;file&gt;                  # mark as resolved
+git commit                      # finish the merge</pre>
+
+    <h3>Check what git thinks is happening</h3>
+    <pre>git status                      # shows conflicted files with "both modified"
+git diff                        # shows the full diff including conflict markers</pre>
+
+    <div class="tip">
+      <strong>Abort a merge you're not ready to handle:</strong>
+      <code>git merge --abort</code> resets everything back to before the merge started.
+    </div>
+  </section>
+
+  <section>
+    <a class="btn" href="https://github.com/jbain-ANDREW/Training-Repo/pulls" target="_blank">View Open Pull Requests on GitHub</a>
+    &nbsp;
+    <a class="btn" href="github-exercise.html" style="background:#16213e;">Back to GitHub Exercise</a>
+  </section>
+
+</main>
+
+<footer>Get the tools. Use AI. Build things. &mdash; jbain-ANDREW</footer>
+</body>
+</html>
