@@ -26,4 +26,4 @@ course   = "ECE — Build With AI"
 # Merging that branch into main creates a conflict here — which is
 # exactly what Part 2 asks you to resolve.
 
-motto = "we build things that work"
+motto = "if it compiles, ship it"
