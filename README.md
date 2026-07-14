@@ -28,7 +28,19 @@ git clone https://github.com/jbain-ANDREW/Training-Repo.git
 cd Training-Repo
 ```
 
-### 3. Do the Exercise
+### 3. Confirm You Have Push Access
+
+You can clone and read this repo without any special access, but **pushing requires write (collaborator) access**. Confirm before you get to the push step, or you will hit a 403 error.
+
+To check: try running `git push` on a test branch, or look for your GitHub username in the repo's collaborator list. If you are not listed or the push fails, file a GitHub Issue:
+
+1. Go to [github.com/jbain-ANDREW/Training-Repo/issues](https://github.com/jbain-ANDREW/Training-Repo/issues)
+2. Open a new issue titled **"Access request — \<your GitHub username\>"**
+3. Include your GitHub username in the body
+
+Issues are reviewed regularly and access is granted so you can see other students' progress as the archive grows.
+
+### 4. Do the Exercise
 
 See the [GitHub Pages site](https://jbain-ANDREW.github.io/Training-Repo) for full exercise instructions.
 
