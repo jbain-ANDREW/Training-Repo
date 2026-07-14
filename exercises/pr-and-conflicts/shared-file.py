@@ -13,6 +13,7 @@
 
 participants = [
     "James Bain  : builder",        # instructor
+    "Hannah Ausdauer : creaative"  # staff
 ]
 
 # ── Lab settings ──────────────────────────────────────────────────
